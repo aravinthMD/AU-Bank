@@ -1,7 +1,4 @@
-# axis-bank
-Application to manage axis bank users who opted for whatsapp banking 
-
-# AxisBank
+# Axis Bank - Application to manage axis bank users who opted for whatsapp banking
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.3.
 
@@ -29,5 +26,9 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
-
 ## Steps to commit code to github
+
+1.git status
+2.git add -A
+3.git commit -m"commit message"
+4.git push
