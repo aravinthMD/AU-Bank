@@ -1,1 +1,366 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import "~bootstrap/dist/css/bootstrap.css";
+
+body {
+  font-family: "Roboto", sans-serif;
+  margin: 0px;
+}
+
+.p-40 {
+  padding: 40px;
+}
+
+.p-40-1 {
+  padding: 10px 40px 0;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  width: 100%;
+  background-color: #e4e4e4;
+}
+
+footer h6 {
+  font-size: 10px;
+  color: #97144d;
+  padding: 5px;
+  margin-top: 20px;
+}
+
+label,
+a {
+  color: #97144d;
+}
+
+label {
+  font-size: 18px;
+}
+
+a {
+  font-size: 12px;
+}
+
+a:hover {
+  border: none;
+  color: #97144d;
+}
+
+.login {
+  width: 30%;
+  margin: auto;
+  background-color: #eeeeee;
+  padding: 30px;
+  // margin-top: 70px;
+  box-shadow: 2px 2px #ded9d9;
+}
+
+.login input {
+  // border: none;
+  //  border-radius: 0;
+  border-bottom: 1px solid #d8d8d8;
+  background-color: #eeeeee;
+  // margin-bottom: 20px;
+  color: #1e2126;
+  font-size: 14px;
+  // padding: 0;
+}
+
+h3 {
+  font-size: 20px;
+  color: #97144d;
+}
+
+.login p {
+  font-size: 13px;
+}
+
+/*
+.login input:focus {
+  outline: none !important;
+  border-color: #719ECE;
+  box-shadow: 0 0 10px #719ECE;
+  background-color: #eeeeee;
+} */
+
+button {
+  width: -webkit-fill-available;
+  color: #fff;
+  background-color: #97144d;
+  border: 1px solid #97144d;
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+h1 {
+  font-size: 30px;
+  font-weight: lighter;
+  color: #1e2126;
+}
+
+.logo {
+  position: relative;
+}
+
+.logo::before {
+  position: absolute;
+  content: " ";
+  width: 100%;
+  height: 13px;
+  top: 0;
+  left: 0;
+  background-color: #97144d;
+}
+
+.logo h4 {
+  top: 25px;
+  position: relative;
+  float: right;
+  color: #97144d;
+  font-size: 14px;
+}
+
+h4 img {
+  height: 35px;
+  margin-right: 15px;
+  border-radius: 50px;
+}
+
+.admin_img {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.admin_img img {
+  width: 50%;
+}
+
+/* login page css end  */
+
+/* side bar style start */
+
+.sidenav {
+  height: 517px;
+  width: 160px;
+  position: absolute;
+  z-index: 1;
+  top: 50;
+  left: 0;
+  background-color: #f3f3f3;
+  overflow-x: hidden;
+  padding-top: 20px;
+  border-right: 2px solid #e7e7e7;
+}
+
+.sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 14px;
+  color: #21313a;
+  display: block;
+}
+
+.sidenav a:hover {
+  background-color: #e7e7e7;
+  color: #97144d;
+  border-left: 4px solid #97144d;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyBpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBXaW5kb3dzIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjkzNUU3ODU0OUE2NDExRUFCNDQ0RkMyQURDNzIwRjJCIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjkzNUU3ODU1OUE2NDExRUFCNDQ0RkMyQURDNzIwRjJCIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6OTM1RTc4NTI5QTY0MTFFQUI0NDRGQzJBREM3MjBGMkIiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6OTM1RTc4NTM5QTY0MTFFQUI0NDRGQzJBREM3MjBGMkIiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz7GorPQAAAB00lEQVR42mL8//8/AwjsTW2ZJx1t3y+goXqZgQCQkJBgYIJxPuy4lXinbfXM1yfOOf7784eVkGa4RgZGxr+/rn+2vJ2zct/F0snL31+5aUSURqb/zMz///9l+A+EP46+Db5RuGTrndnrKn+8fieBVyO3s+RiRjbmH8xMbAx///1i+P/hj8SrWafbLiVPOvJw896oP9++cyNrZIQFzosXLxie7Tvm82ThgfI/1z7bMABt/gd0ARMjM0gZA7uRwC7JCJtJUo7WW0GBg6IRBP7+/MXxbPeRgMdTD3Qzvf0r8/f/H6AZ/xmYgC75z/T3n4CX2mynaZUZTOhu//nmvcSPx69UxaIMu3gCFCcx8bO9ZmZiZwC5gIGf8QWrDN8dkDoWmIbfX7/xPFq+M/vlmrO5DO8YpGVqHKJVYgMnv/G6uuzRgp1lbEJ8r+Vj3ft4FWVvoWg8l9q37++dL6ZA9wD99ofh/9+/YDkRA+2TQj3qEUwsLL+xhurf219N//37CxFkZGFg5mD/BleEpgnFxv+M//4xMbIyMQoxPxXy15ohamGwH18CgGtkYGP6weeuuEAlLaidQ1z4CaEkB9colmJaoxDqPoeVm/sziA9Kr9icCAMAAQYAXa3ABnYswXEAAAAASUVORK5CYII=");
+  background-repeat: no-repeat;
+  background-position: right;
+  font-size: 15px;
+}
+
+.main {
+  margin-left: 160px;
+  /* Same as the width of the sidenav */
+  font-size: 20px;
+  /* Increased text to enable scrolling */
+  padding: 10px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {
+    padding-top: 15px;
+  }
+  .sidenav a {
+    font-size: 14px;
+  }
+}
+
+/* side bar style end  */
+
+/* dash board style start  */
+
+h2 {
+  color: #97144d;
+  font-size: 24px;
+}
+
+.user {
+  width: 40%;
+  margin: auto;
+  background: #eee;
+  box-shadow: 2px 2px #ded9d9;
+}
+
+.user input {
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid #d8d8d8;
+  background-color: #eeeeee;
+  margin-bottom: 20px;
+  color: #1e2126;
+  font-size: 14px;
+  padding: 0;
+}
+
+select {
+  width: -webkit-fill-available;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #97144d;
+  background-color: #eeeeee;
+  color: #1e2126;
+  border-bottom: 1px solid #d8d8d8;
+}
+
+.user a {
+  font-size: 14px;
+  color: #8d8d8d;
+}
+
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+  color: #fff;
+  background-color: #97144d;
+}
+
+.nav-tabs {
+  border-bottom: 2px solid #97144d;
+}
+
+.block_btn {
+  color: #ddbfcc;
+  background-color: #d5a7bb;
+  border: none;
+  cursor: no-drop !important;
+  margin-top: 0;
+}
+
+#block_details {
+  padding: 0 40px;
+}
+
+#block_details h5 {
+  font-size: 15px;
+}
+
+.list h5 {
+  color: #97144d;
+  font-size: 14px;
+}
+
+#block_details button {
+  margin: 0 15px 15px;
+}
+
+/* dashboard style end  */
+
+/* block list style start  */
+
+.has-search .form-control {
+  padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 2.375rem;
+  height: 2.375rem;
+  line-height: 1.875rem;
+  text-align: center;
+  pointer-events: none;
+  color: #aaa;
+  font-size: 15px;
+}
+
+.has-search input {
+  background: #f6f6f6;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+::placeholder {
+  font-size: 15px;
+  color: #b6b8c0 !important;
+}
+
+td,
+th {
+  border: 1px solid #dbdcdf;
+  text-align: left;
+  padding: 8px;
+  background-color: #f9fafa;
+  text-align: center;
+}
+
+th {
+  font-size: 13px;
+  /* font-weight: normal; */
+  color: #97144d;
+  background-color: #f3f3f3;
+}
+
+td {
+  font-size: 12px;
+  /* color: #97144D; */
+}
+
+table button {
+  border-radius: 5px;
+  padding: 0 5px;
+  margin-top: 0;
+  font-size: 14px;
+}
+
+.dropdown button {
+  font-size: 13px;
+  padding: 3px;
+  /* margin-top: 0; */
+  margin: 0 20px;
+}
+
+.search_btn button {
+  background: #e7e7e7;
+  font-size: 13px;
+  color: #8d8d8d;
+  border: none;
+  margin-top: 0;
+  padding: 5px;
+}
+
+.dropdown-item {
+  color: #97144d;
+  margin: 0 20px;
+}
+
+/* block list style end  */
+
+/* change password style start  */
+
+.change_pwd p {
+  font-size: 13px;
+  color: #97144d;
+}
+
+.change_pwd .login {
+  width: 48%;
+  margin-top: 25px;
+}
+
+/* change password style end  */

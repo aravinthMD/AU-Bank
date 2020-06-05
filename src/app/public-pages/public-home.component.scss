@@ -1,0 +1,28 @@
+.logo {
+  position: relative;
+}
+
+.logo::before {
+  position: absolute;
+  content: " ";
+  width: 100%;
+  height: 13px;
+  top: 0;
+  left: 0;
+  background-color: #97144D;
+}
+
+.logo h4 {
+  top: 25px;
+  position: relative;
+  float: right;
+  color: #97144D;
+  font-size: 14px;
+}
+
+img {
+  vertical-align: middle;
+  border-style: none;
+}
+
+
