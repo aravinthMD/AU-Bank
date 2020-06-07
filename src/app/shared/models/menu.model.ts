@@ -8,10 +8,10 @@ export class Menu {
 
 // Admin Menu Items
 export const ADMIN_MENU_ITEMS = [
-  new Menu(10, 'User Creation', '/private/user-creation'),
-  new Menu(20, 'Block Whatsapp', '/private/block-whatsapp'),
-  new Menu(30, 'Design Template', '/private/design-template'),
-  new Menu(40, 'Change Password', '/private/change-password'),
+  new Menu(10, 'User Creation', '/user-creation'),
+  new Menu(20, 'Block Whatsapp', '/block-whatsapp'),
+  new Menu(30, 'Design Template', '/design-template'),
+  new Menu(40, 'Change Password', '/change-password'),
 ];
 
 // Call Center Admin Menu Items

@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { UserCreationComponent } from './user-creation.component';
+import { BlockWhatsappComponent } from './block-whatsapp.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: UserCreationComponent,
+    component: BlockWhatsappComponent,
+    pathMatch: 'full'
   },
 ];
 
@@ -14,4 +15,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class UserCreationRoutingModule {}
+
+export class BlockWhatsappRoutingModule { }

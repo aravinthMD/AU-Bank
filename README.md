@@ -32,3 +32,11 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 2.git add -A
 3.git commit -m"commit message"
 4.git push
+
+
+Things need to be done
+1.need to add authentication api before
+2.add first login change password feature
+3.change UI for block existing user detail
+4.need to fix regular expression for password validation
+5.before production move - remove expression validation for email in login, forgot, reset & change password.

@@ -5,10 +5,11 @@ import { ProtectedHomeComponent } from './protected-pages/protected-home.compone
 import { AuthenticationGuard } from './shared/guards/authentication.guard';
 import { LoginComponent } from './public-pages/login/login.component';
 import { ForgotPasswordComponent } from './public-pages/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './public-pages/reset-password/reset-password.component';
 
 const routes: Routes = [
   {
-    path: 'private',
+    path: '',
     component: ProtectedHomeComponent,
     canActivate: [AuthenticationGuard],
     children: [
@@ -19,18 +20,39 @@ const routes: Routes = [
             (m) => m.UserCreationModule
           ),
       },
+      {
+        path: 'block-whatsapp',
+        loadChildren: () =>
+          import('./protected-pages/block-whatsapp/block-whatsapp.module').then(
+            (m) => m.BlockWhatsappModule
+          ),
+      },
+      {
+        path: 'design-template',
+        loadChildren: () =>
+          import(
+            './protected-pages/design-template/design-template.module'
+          ).then((m) => m.DesignTemplateModule),
+      },
+      {
+        path: 'change-password',
+        loadChildren: () =>
+          import(
+            './protected-pages/change-password/change-password.module'
+          ).then((m) => m.ChangePasswordModule),
+      },
     ],
   },
   {
     path: 'public',
     component: PublicHomeComponent,
     children: [
-      { path: '', redirectTo: 'login', pathMatch: 'full' },
+      { path: '', component: LoginComponent },
       { path: 'login', component: LoginComponent },
       { path: 'forgot-password', component: ForgotPasswordComponent },
+      { path: 'reset-password/:id' , component: ResetPasswordComponent },
     ],
   },
-  { path: '', redirectTo: 'public', pathMatch: 'full'}
 ];
 
 @NgModule({

@@ -10,8 +10,9 @@ import { ForgotPasswordComponent } from './public-pages/forgot-password/forgot-p
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { UserService } from './shared/services/user.service';
 import { JwtInterceptor } from './shared/interceptors/jwt.interceptor';
+import { ResetPasswordComponent } from './public-pages/reset-password/reset-password.component';
+
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { JwtInterceptor } from './shared/interceptors/jwt.interceptor';
     PublicHomeComponent,
     LoginComponent,
     ForgotPasswordComponent,
+    ResetPasswordComponent,
 
   ],
   imports: [
@@ -29,7 +31,7 @@ import { JwtInterceptor } from './shared/interceptors/jwt.interceptor';
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    SharedModule
+    SharedModule,
   ],
   providers: [  {
     provide: HTTP_INTERCEPTORS,

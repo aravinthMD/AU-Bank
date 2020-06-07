@@ -1,0 +1,50 @@
+<div class="p-40">
+  <form [formGroup]="form" (ngSubmit)="fetchUser()">
+    <div class="form-group">
+      <label for="emailId">Email ID</label><br />
+      <input
+        type="email"
+        formControlName="emailId"
+        id="emailId"
+        placeholder="Eg: user@axisbank.com"
+        class="form-control"
+        autocomplete="off"
+      />
+    </div>
+    <button
+      id="block_user"
+      [disabled]="form.invalid || fetchUserLoading || disableUserLoading"
+    >
+      <span
+        *ngIf="fetchUserLoading"
+        class="spinner-border"
+        style="width: 2rem; height: 2rem;"
+        aria-hidden="true"
+      >
+      </span>
+      <span *ngIf="!fetchUserLoading">{{ submitButtontext }}</span>
+    </button>
+  </form>
+</div>
+
+<div id="block_details" *ngIf="userDetail">
+  <div class="row">
+    <div class="col-6 list">
+      <h5>Name:</h5>
+      <h5>Creation Date:</h5>
+      <h5>Last Login:</h5>
+      <h5>Disable Date:</h5>
+      <h5>Role:</h5>
+    </div>
+    <div class="col-6">
+      <h5 style="overflow-wrap: break-word;">
+        {{ userDetail.username }}
+      </h5>
+      <h5>{{ userDetail.createdAt | date: "dd/MM/yyyy" }}</h5>
+      <h5>{{ !userDetail.lastLogin ? '- ' : userDetail.lastLogin | date: "dd/MM/yyyy" }}</h5>
+      <h5>{{ today | date: "dd/MM/yyyy" }}</h5>
+      <h5>{{ userDetail.role | uppercase }}</h5>
+    </div>
+    <button (click)="disableUser()">Disable User</button>
+  </div>
+</div>

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Menu } from '../shared/models/menu.model';
+import { MenuService } from '../shared/services/menu.service';
+import { UserService } from '../shared/services/user.service';
 
 @Component({
   selector: 'app-protected-home',
@@ -6,11 +9,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./protected-home.component.scss'],
 })
 export class ProtectedHomeComponent implements OnInit {
+  menuItems: Menu[];
   userName: string;
+  currentYear = new Date().getFullYear();
 
-  constructor() {}
+ constructor(private menuService: MenuService, private userService: UserService) { }
 
-  ngOnInit(): void {}
+ ngOnInit(): void {
+   this.menuItems = this.menuService.getMenuItems();
+   this.userName = this.userService.currentUserValue.userName;
+ }
 
-  logout() {}
+
+ logout() {}
 }

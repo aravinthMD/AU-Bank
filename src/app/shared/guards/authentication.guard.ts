@@ -5,6 +5,7 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
 } from '@angular/router';
+import { PAGES } from '../utils/constant';
 
 @Injectable({ providedIn: 'root' })
 @Injectable({
@@ -13,14 +14,13 @@ import {
 export class AuthenticationGuard implements CanActivate {
   constructor(private router: Router) {}
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    console.log('AUthenticating guard');
-    // const currentUser = localStorage.getItem('currentUser');
-    // if (currentUser) {
-    //   return true;
-    // } else {
-    //   this.router.navigate(['/public/login']);
-    //   return false;
-    // }
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      return true;
+    } else {
+      this.router.navigate([PAGES.PUBLIC], { queryParams: { returnUrl: state.url } });
+      return false;
+    }
     return true;
 
   }

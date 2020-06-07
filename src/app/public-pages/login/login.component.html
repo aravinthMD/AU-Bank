@@ -37,9 +37,16 @@
         >Enter a valid password with miminum of 8 characters</small
       >
     </div>
-    <a routerLink="/public/forgot-password">Forgot Password?</a><br />
+    <a routerLink="/public/forgot-password">Forgot Password?</a>
     <button [disabled]="loginForm.invalid || loading">
-      {{ loginButtonText }}
+      <span
+        *ngIf="loading"
+        class="spinner-border"
+        style="width: 2rem; height: 2rem;"
+        aria-hidden="true"
+      >
+      </span>
+     <span *ngIf="!loading"> {{ loginButtonText }}</span>
     </button>
   </form>
 </div>

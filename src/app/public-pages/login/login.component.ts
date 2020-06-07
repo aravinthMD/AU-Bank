@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { BUTTON_TEXTS } from 'src/app/shared/utils/constant';
+import { BUTTON_TEXTS, TOASTER_MESSAGES } from 'src/app/shared/utils/constant';
 import { environment } from 'src/environments/environment';
 import { UserService } from 'src/app/shared/services/user.service';
+import { ToasterService } from 'src/app/shared/services/toastr.service';
 
 @Component({
   selector: 'app-login',
@@ -18,10 +19,15 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
 
+  returnUrl: string;
+
+
   submitted = false;
   isFirstLogin: string;
 
-  constructor(private formBuilder: FormBuilder, private userService: UserService, private router: Router) {
+  constructor(private formBuilder: FormBuilder, private userService: UserService,
+              private toasterService: ToasterService,  private router: Router,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -36,40 +42,40 @@ export class LoginComponent implements OnInit {
       emailId: ['', [Validators.required, Validators.pattern(emailRegExp)]],
       password: ['', [Validators.required, Validators.minLength(8)]],
     });
+
+      // If user already logged in and redirect to home page
+    const currentUser = localStorage.getItem('currentUser');
+    const currentHome = localStorage.getItem('currentHome');
+
+    if (currentUser) {
+      this.returnUrl = this.route.snapshot.queryParams.returnUrl ? this.route.snapshot.queryParams.returnUrl : JSON.parse(currentHome);
+      this.router.navigate([this.returnUrl]);
+    }
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.loading = true;
     const fieldControls = this.loginForm.controls;
 
     const emailId = fieldControls.emailId.value;
     const password = fieldControls.password.value;
 
+   // this.userService.generateAuthenticationToken(emailId, password);
+
     this.userService.login(emailId, password).subscribe(response => {
-      console.log('Login Response', response);
-      this.loading = false;
-    },
-    error => {
-      console.log('Login Error', error);
-      this.loading = false;
+      if (!response.message) {
+        if (response.isFirstLogin === 'true') {
+          console.log('first login so redirecting to reset password');
+        } else {
+          const currentHome = this.userService.currentHomeValue;
+          this.toasterService.showSuccess(TOASTER_MESSAGES.LOGIN_SUCCESS);
+          this.loading = false;
+          this.router.navigate([currentHome]);
+         }
+      } else {
+        this.toasterService.showError(response.message.value);
+        this.loading = false;
+      }
     });
-
-    // // stop here if form is invalid
-    // if (this.loginForm.invalid) {
-    //     return;
-    // }else{
-    //   this._login.login(this.loginForm.controls['emailid'].value,this.loginForm.controls['password'].value);
-    //   // this.loginForm.reset();
-    //   this.isFirstLogin = localStorage.getItem('isFirstLogin');
-    //   console.log(this.isFirstLogin)
-    //   if (this.isFirstLogin === "false"){
-    //     this._router.navigate(['/dashboard']);
-    //  }
-    //   if (this.isFirstLogin === "true"){
-    //     this._router.navigate(['/resetpassword']);
-    //  }
-    // }
-
-    // alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.loginForm.value))
   }
 }
