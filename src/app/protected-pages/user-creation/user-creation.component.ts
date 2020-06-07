@@ -26,13 +26,11 @@ export class UserCreationComponent implements OnInit {
     private userService: UserService,
     private toasterService: ToasterService
   ) {
-    let emailRegExp: any;
 
-    if (environment.production) {
-      emailRegExp = /^(([a-zA-Z0-9_\-\.]+)@)+axisbank.com$/;
-    } else {
-      emailRegExp = /^(([a-zA-Z0-9_\-\.]+)@)+gmail.com$/;
-    }
+    const isProductionMode = environment.production;
+    const  emailRegExp = isProductionMode ? /^(([a-zA-Z0-9_\-\.]+)@)+axisbank.com$/ :
+        /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+\.)([a-zA-Z]){2,5}$/;
+
     this.createUserForm = this.formBuilder.group({
       emailId : ['', [Validators.required, Validators.pattern(emailRegExp)]],
       role: ['CallCenter'],
@@ -53,6 +51,7 @@ export class UserCreationComponent implements OnInit {
     const {ProcessVariables}: Response = response;
     if (!ProcessVariables.message) {
       this.toasterService.showSuccess(TOASTER_MESSAGES.CREATE_USER_SUCCESS);
+      this.createUserForm.get('emailId').reset();
       this.loading = false;
     } else {
       this.toasterService.showError(ProcessVariables.message.value);

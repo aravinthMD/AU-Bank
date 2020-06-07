@@ -24,10 +24,10 @@ userId: number;
     private toasterService: ToasterService,
     private router: Router,
   ) {
-    const regExp = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}/;
+    const paswordRegExp = /^([a-zA-Z,0-9,~!@#$%&*()_+-]){8,}$/;
     this.form = this.formBuilder.group({
-      newPassword: ['', [Validators.required, Validators.pattern(regExp)]],
-      confirmPassword: ['', [Validators.required, Validators.pattern(regExp)]],
+      newPassword: ['', [Validators.required, Validators.pattern(paswordRegExp)]],
+      confirmPassword: ['', [Validators.required, Validators.pattern(paswordRegExp)]],
     });
   }
 

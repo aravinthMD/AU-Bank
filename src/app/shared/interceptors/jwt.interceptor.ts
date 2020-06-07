@@ -19,7 +19,7 @@ export class JwtInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     request = request.clone({
       setHeaders: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+         'Content-Type': 'application/x-www-form-urlencoded',
         'authentication-token': 'ShRIP4dKHN/0qHxtVCg106wxqcyRLbPoW7qQ1htCZyYfXZJCEMLuKFgxM9RtZPcl'
       }
     });

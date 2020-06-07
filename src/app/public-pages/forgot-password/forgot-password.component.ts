@@ -24,13 +24,12 @@ export class ForgotPasswordComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    let emailRegExp: any;
 
-    if (environment.production) {
-      emailRegExp = /^(([a-zA-Z0-9_\-\.]+)@)+axisbank.com$/;
-    } else {
-      emailRegExp = /^(([a-zA-Z0-9_\-\.]+)@)+appiyo.com$/;
-    }
+    const isProductionMode = environment.production;
+
+    const emailRegExp = isProductionMode ? /^(([a-zA-Z0-9_\-\.]+)@)+axisbank.com$/ :
+    /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+\.)([a-zA-Z]){2,5}$/;
+
     this.form = this.formBuilder.group({
       emailId: ['', [Validators.required, Validators.pattern(emailRegExp)]],
     });

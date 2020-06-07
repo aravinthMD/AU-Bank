@@ -83,14 +83,19 @@ export class UserService {
   }
 
   generateAuthenticationToken(email: string, password: string) {
-    const body = new HttpParams();
-    body.append('email', email);
-    body.append('password', password);
+    const data = {email, password };
+
+    const body = {
+      email : JSON.stringify(email),
+      password: JSON.stringify(password),
+    };
+
+    const formData = new HttpParams({fromObject : body});
 
     return this.http
-      .post(`http://178.128.125.44/appiyo/account/login`, body.toString())
-      .subscribe((data) => {
-        console.log(data);
+      .post(`http://178.128.125.44/appiyo/account/login`, formData)
+      .subscribe((response) => {
+        console.log(response);
       });
   }
 

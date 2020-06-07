@@ -68,6 +68,7 @@ form: FormGroup;
     this.userService.disableUserById(this.userDetail.newUserId, Number(userId)).subscribe(response => {
       this.toasterService.showSuccess(TOASTER_MESSAGES.DISABLE_USER_SUCCESS);
       this.userDetail = null;
+      this.form.reset();
       this.disableUserLoading = false;
     });
   }

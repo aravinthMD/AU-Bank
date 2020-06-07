@@ -31,16 +31,15 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let emailRegExp: any;
 
-    if (environment.production) {
-      emailRegExp = /^(([a-zA-Z0-9_\-\.]+)@)+axisbank.com$/;
-    } else {
-      emailRegExp = /^(([a-zA-Z0-9_\-\.]+)@)+appiyo.com$/;
-    }
+    const isProduction = environment.production;
+    const emailRegExp = isProduction ?  /^(([a-zA-Z0-9_\-\.]+)@)+axisbank.com$/ :
+       /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+\.)([a-zA-Z]){2,5}$/;
+    const paswordRegExp = /^([a-zA-Z,0-9,~!@#$%&*()_+-]){8,}$/;
+
     this.loginForm = this.formBuilder.group({
       emailId: ['', [Validators.required, Validators.pattern(emailRegExp)]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      password: ['', [Validators.required, Validators.pattern(paswordRegExp)]],
     });
 
       // If user already logged in and redirect to home page
@@ -60,12 +59,13 @@ export class LoginComponent implements OnInit {
     const emailId = fieldControls.emailId.value;
     const password = fieldControls.password.value;
 
-   // this.userService.generateAuthenticationToken(emailId, password);
+    // this.userService.generateAuthenticationToken(emailId, password);
 
     this.userService.login(emailId, password).subscribe(response => {
       if (!response.message) {
         if (response.isFirstLogin === 'true') {
           console.log('first login so redirecting to reset password');
+          this.loading = false;
         } else {
           const currentHome = this.userService.currentHomeValue;
           this.toasterService.showSuccess(TOASTER_MESSAGES.LOGIN_SUCCESS);
