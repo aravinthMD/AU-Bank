@@ -8,15 +8,14 @@ import { ToasterService } from 'src/app/shared/services/toastr.service';
 @Component({
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
-  styleUrls: ['./forgot-password.component.scss'],
 })
 export class ForgotPasswordComponent implements OnInit {
   submitButtonText = BUTTON_TEXTS.SUBMIT_BUTTON_TEXT;
+
   loading = false;
-  errorMessage: any;
 
   form: FormGroup;
-  submitted = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
@@ -24,11 +23,10 @@ export class ForgotPasswordComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
-    const isProductionMode = environment.production;
-
-    const emailRegExp = isProductionMode ? /^(([a-zA-Z0-9_\-\.]+)@)+axisbank.com$/ :
-    /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+\.)([a-zA-Z]){2,5}$/;
+    const isProductionMode: boolean = environment.production;
+    const emailRegExp = isProductionMode
+      ? /^(([a-zA-Z0-9_\-\.]+)@)+axisbank.com$/
+      : /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+\.)([a-zA-Z]){2,5}$/;
 
     this.form = this.formBuilder.group({
       emailId: ['', [Validators.required, Validators.pattern(emailRegExp)]],
@@ -40,18 +38,17 @@ export class ForgotPasswordComponent implements OnInit {
     const fieldControls = this.form.controls;
     const email = fieldControls.emailId.value;
 
-    this.userService.forgotPassword(email).subscribe(
-      (data) => {
-        console.log(data);
+    this.userService.forgotPassword(email).subscribe((response) => {
+      const { ProcessVariables } = response;
+      if (!ProcessVariables.message) {
         this.toasterService.showSuccess(
-         TOASTER_MESSAGES.FORGOT_PASSWORD_SUCCESS
+          TOASTER_MESSAGES.FORGOT_PASSWORD_SUCCESS
         );
         this.loading = false;
-      },
-      (error) => {
-        this.toasterService.showError(error);
+      } else {
         this.loading = false;
+        this.toasterService.showError(ProcessVariables.message.value);
       }
-    );
+    });
   }
 }

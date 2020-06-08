@@ -6,6 +6,7 @@ import { AuthenticationGuard } from './shared/guards/authentication.guard';
 import { LoginComponent } from './public-pages/login/login.component';
 import { ForgotPasswordComponent } from './public-pages/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './public-pages/reset-password/reset-password.component';
+import { ChangePasswordComponent } from './public-pages/change-password/change-password.component';
 
 const routes: Routes = [
   {
@@ -51,6 +52,7 @@ const routes: Routes = [
       { path: 'login', component: LoginComponent },
       { path: 'forgot-password', component: ForgotPasswordComponent },
       { path: 'reset-password/:id' , component: ResetPasswordComponent },
+      { path: 'change-password' , component: ChangePasswordComponent },
     ],
   },
 ];

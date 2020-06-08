@@ -9,10 +9,8 @@ import { Response } from 'src/app/shared/models/user.model';
 @Component({
   selector: 'app-user-creation',
   templateUrl: './user-creation.component.html',
-  styleUrls: ['./user-creation.component.scss'],
 })
 export class UserCreationComponent implements OnInit {
-
   submitButtonText = BUTTON_TEXTS.SUBMIT_BUTTON_TEXT;
 
   loading = false;
@@ -26,13 +24,13 @@ export class UserCreationComponent implements OnInit {
     private userService: UserService,
     private toasterService: ToasterService
   ) {
-
     const isProductionMode = environment.production;
-    const  emailRegExp = isProductionMode ? /^(([a-zA-Z0-9_\-\.]+)@)+axisbank.com$/ :
-        /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+\.)([a-zA-Z]){2,5}$/;
+    const emailRegExp = isProductionMode
+      ? /^(([a-zA-Z0-9_\-\.]+)@)+axisbank.com$/
+      : /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+\.)([a-zA-Z]){2,5}$/;
 
     this.createUserForm = this.formBuilder.group({
-      emailId : ['', [Validators.required, Validators.pattern(emailRegExp)]],
+      emailId: ['', [Validators.required, Validators.pattern(emailRegExp)]],
       role: ['CallCenter'],
     });
   }
@@ -40,23 +38,26 @@ export class UserCreationComponent implements OnInit {
   ngOnInit(): void {}
 
   createUser(): void {
-    const fieldcontrols = this.createUserForm.controls;
+    this.loading = true;
 
+    const fieldcontrols = this.createUserForm.controls;
     const emailId = fieldcontrols.emailId.value;
     const role = fieldcontrols.role.value;
-    const {userId} = this.userService.currentUserValue;
+    const { userId } = this.userService.currentUserValue;
 
-    this.loading = true;
-    this.userService.createUser(emailId, role, Number(userId)).subscribe(response => {
-    const {ProcessVariables}: Response = response;
-    if (!ProcessVariables.message) {
-      this.toasterService.showSuccess(TOASTER_MESSAGES.CREATE_USER_SUCCESS);
-      this.createUserForm.get('emailId').reset();
-      this.loading = false;
-    } else {
-      this.toasterService.showError(ProcessVariables.message.value);
-      this.loading = false;
-    }
-    });
+
+    this.userService
+      .createUser(emailId, role, Number(userId))
+      .subscribe((response) => {
+        const { ProcessVariables }: Response = response;
+        if (!ProcessVariables.message) {
+          this.toasterService.showSuccess(TOASTER_MESSAGES.CREATE_USER_SUCCESS);
+          this.createUserForm.get('emailId').reset();
+          this.loading = false;
+        } else {
+          this.toasterService.showError(ProcessVariables.message.value);
+          this.loading = false;
+        }
+      });
   }
 }

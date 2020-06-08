@@ -9,68 +9,68 @@ import { UserProcessVariables } from 'src/app/shared/models/user.model';
 @Component({
   selector: 'app-block-existing-user',
   templateUrl: './block-existing-user.component.html',
-  styleUrls: ['./block-existing-user.component.scss']
 })
 export class BlockExistingUserComponent implements OnInit {
-submitButtontext = BUTTON_TEXTS.SUBMIT_BUTTON_TEXT;
-disableUserButtonText = BUTTON_TEXTS.DISABLE_USER_BUTTON_TEXT;
+  submitButtontext = BUTTON_TEXTS.SUBMIT_BUTTON_TEXT;
+  disableUserButtonText = BUTTON_TEXTS.DISABLE_USER_BUTTON_TEXT;
 
-today = new Date();
+  today = new Date();
 
-fetchUserLoading = false;
-disableUserLoading = false;
+  fetchUserLoading = false;
+  disableUserLoading = false;
 
-userDetail: UserProcessVariables;
+  userDetail: UserProcessVariables;
 
-form: FormGroup;
+  form: FormGroup;
 
+  constructor(
+    private formBuilder: FormBuilder,
+    private userService: UserService,
+    private toasterService: ToasterService
+  ) {
+    const isProductionMode: boolean = environment.production;
+    const emailRegExp = isProductionMode
+      ? /^(([a-zA-Z0-9_\-\.]+)@)+axisbank.com$/
+      : /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+\.)([a-zA-Z]){2,5}$/;
 
-  constructor(private formBuilder: FormBuilder, private userService: UserService, private toasterService: ToasterService) {
-    let emailRegExp: any;
-
-    if (environment.production) {
-      emailRegExp = /^(([a-zA-Z0-9_\-\.]+)@)+axisbank.com$/;
-    } else {
-      emailRegExp = /^(([a-zA-Z0-9_\-\.]+)@)+gmail.com$/;
-    }
     this.form = this.formBuilder.group({
-      emailId : ['', [Validators.required, Validators.pattern(emailRegExp)]]
-  });
+      emailId: ['', [Validators.required, Validators.pattern(emailRegExp)]],
+    });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   fetchUser(): void {
     this.fetchUserLoading = true;
+
     const emailId = this.form.get('emailId').value;
-    const {userId} = this.userService.currentUserValue;
+    const { userId } = this.userService.currentUserValue;
 
-    this.userService.fetchUserByEmailId(emailId, Number(userId)).subscribe(response => {
-      console.log(response);
-      const {ProcessVariables} = response;
-      if (!ProcessVariables.message) {
-       this.toasterService.showSuccess(TOASTER_MESSAGES.FETCH_USER_SUCCESS);
-       this.userDetail = ProcessVariables;
-       this.fetchUserLoading = false;
-      } else {
-        this.toasterService.showError(ProcessVariables.message.value);
-        this.fetchUserLoading = false;
-      }
-
-    });
-
+    this.userService
+      .fetchUserByEmailId(emailId, Number(userId))
+      .subscribe((response) => {
+        const { ProcessVariables } = response;
+        if (!ProcessVariables.message) {
+          this.toasterService.showSuccess(TOASTER_MESSAGES.FETCH_USER_SUCCESS);
+          this.userDetail = ProcessVariables;
+          this.fetchUserLoading = false;
+        } else {
+          this.toasterService.showError(ProcessVariables.message.value);
+          this.fetchUserLoading = false;
+        }
+      });
   }
 
   disableUser(): void {
     this.disableUserLoading = true;
-    const {userId} = this.userService.currentUserValue;
-    this.userService.disableUserById(this.userDetail.newUserId, Number(userId)).subscribe(response => {
-      this.toasterService.showSuccess(TOASTER_MESSAGES.DISABLE_USER_SUCCESS);
-      this.userDetail = null;
-      this.form.reset();
-      this.disableUserLoading = false;
-    });
+    const { userId } = this.userService.currentUserValue;
+    this.userService
+      .disableUserById(this.userDetail.newUserId, Number(userId))
+      .subscribe((response) => {
+        this.toasterService.showSuccess(TOASTER_MESSAGES.DISABLE_USER_SUCCESS);
+        this.userDetail = null;
+        this.form.reset();
+        this.disableUserLoading = false;
+      });
   }
-
 }

@@ -54,6 +54,11 @@ export class UserService {
     return this.currentMenuSubject.value;
   }
 
+  public setCurrentUserSubject(response: ProcessVariables) {
+    localStorage.setItem('currentUser', JSON.stringify(response));
+    this.currentUserSubject.next(response);
+  }
+
   setHomeAndMenu(data: ProcessVariables): void {
     if (data.role === ROLES.ADMIN) {
       this.currentMenuSubject.next(ADMIN_MENU_ITEMS);

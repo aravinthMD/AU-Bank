@@ -8,11 +8,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
-  styleUrls: ['./reset-password.component.scss'],
 })
 export class ResetPasswordComponent implements OnInit {
   resetPasswordButtonText = BUTTON_TEXTS.RESET_PASSWORD_BUTTON_TEXT;
-userId: number;
+  userId: number;
   form: FormGroup;
 
   loading = false;
@@ -39,6 +38,7 @@ userId: number;
 
   resetPassword(): void {
     this.loading = true;
+
     const fieldControls = this.form.controls;
     const newPassword = fieldControls.newPassword.value;
     const confirmPassword = fieldControls.confirmPassword.value;
@@ -53,7 +53,5 @@ userId: number;
         this.loading = false;
       });
     }
-
-
   }
 }

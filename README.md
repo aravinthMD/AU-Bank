@@ -32,8 +32,3 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 2.git add -A
 3.git commit -m"commit message"
 4.git push
-
-
-Things needs to be completed
-1.need to add token authentication api
-2.add first login change password feature

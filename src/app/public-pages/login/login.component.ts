@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { BUTTON_TEXTS, TOASTER_MESSAGES } from 'src/app/shared/utils/constant';
+import { BUTTON_TEXTS, TOASTER_MESSAGES, PAGES } from 'src/app/shared/utils/constant';
 import { environment } from 'src/environments/environment';
 import { UserService } from 'src/app/shared/services/user.service';
 import { ToasterService } from 'src/app/shared/services/toastr.service';
@@ -9,7 +9,6 @@ import { ToasterService } from 'src/app/shared/services/toastr.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   loginButtonText = BUTTON_TEXTS.LOGIN_BUTTON_TEXT;
@@ -32,8 +31,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const isProduction = environment.production;
-    const emailRegExp = isProduction ?  /^(([a-zA-Z0-9_\-\.]+)@)+axisbank.com$/ :
+    const isProductionMode: boolean = environment.production;
+    const emailRegExp = isProductionMode ?  /^(([a-zA-Z0-9_\-\.]+)@)+axisbank.com$/ :
        /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+\.)([a-zA-Z]){2,5}$/;
     const paswordRegExp = /^([a-zA-Z,0-9,~!@#$%&*()_+-]){8,}$/;
 
@@ -54,24 +53,23 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     this.loading = true;
-    const fieldControls = this.loginForm.controls;
 
+    const fieldControls = this.loginForm.controls;
     const emailId = fieldControls.emailId.value;
     const password = fieldControls.password.value;
 
     // this.userService.generateAuthenticationToken(emailId, password);
 
     this.userService.login(emailId, password).subscribe(response => {
-      if (!response.message) {
-        if (response.isFirstLogin === 'true') {
-          console.log('first login so redirecting to reset password');
-          this.loading = false;
-        } else {
-          const currentHome = this.userService.currentHomeValue;
-          this.toasterService.showSuccess(TOASTER_MESSAGES.LOGIN_SUCCESS);
-          this.loading = false;
-          this.router.navigate([currentHome]);
-         }
+      if (!response.message && response.isFirstLogin === 'false') {
+        const currentHome = this.userService.currentHomeValue;
+        this.toasterService.showSuccess(TOASTER_MESSAGES.LOGIN_SUCCESS);
+        this.loading = false;
+        this.router.navigate([currentHome]);
+      } else if (!response.message && response.isFirstLogin === 'true') {
+        this.toasterService.showWarning(TOASTER_MESSAGES.CHANGE_PASSWORD_WARNING);
+        this.loading = false;
+        this.router.navigate([PAGES.PUBLIC_CHANGE_PASSWORD]);
       } else {
         this.toasterService.showError(response.message.value);
         this.loading = false;

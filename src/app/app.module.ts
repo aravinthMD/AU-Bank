@@ -12,6 +12,7 @@ import { SharedModule } from './shared/shared.module';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './shared/interceptors/jwt.interceptor';
 import { ResetPasswordComponent } from './public-pages/reset-password/reset-password.component';
+import { ChangePasswordComponent } from './public-pages/change-password/change-password.component';
 
 
 
@@ -23,6 +24,7 @@ import { ResetPasswordComponent } from './public-pages/reset-password/reset-pass
     LoginComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
+    ChangePasswordComponent,
 
   ],
   imports: [

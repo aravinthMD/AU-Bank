@@ -14,6 +14,7 @@ export enum ROLES {
 
 export enum PAGES {
   PUBLIC = '/public',
+  PUBLIC_CHANGE_PASSWORD = '/public/change-password',
   USER_CREATION = '/user-creation',
   BLOCK_WHATSAPP = '/block-whatsapp',
   DESIGN_TEMPLATE = '/design-template',
@@ -30,5 +31,6 @@ INVALID_CURRENT_PASSWORD = 'Invalid current password',
 CHANGE_PASSWORD_SUCCESS = 'Change password successfull',
 CREATE_USER_SUCCESS = 'Create user successfull',
 FETCH_USER_SUCCESS = 'User fetch successfull',
-DISABLE_USER_SUCCESS = 'User disabled successfull'
+DISABLE_USER_SUCCESS = 'User disabled successfull',
+CHANGE_PASSWORD_WARNING = 'Please change your password',
 }
