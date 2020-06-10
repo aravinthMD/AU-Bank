@@ -32,5 +32,5 @@ export const environment = {
       processId: '31116bf29e5c11eaa360c282e0885855',
     },
   },
-  host: 'https://www.appiyo.com/',
+  host: 'http://178.128.125.44/appiyo',
 };

@@ -1,15 +1,16 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { BlockWhatsappComponent } from './block-whatsapp.component';
-import { BlockWhatsappRoutingModule } from './block-whatsapp.routing.module';
-
-
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { BlockWhatsappComponent } from "./block-whatsapp.component";
+import { BlockWhatsappRoutingModule } from "./block-whatsapp.routing.module";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [BlockWhatsappComponent],
   imports: [
     CommonModule,
-    BlockWhatsappRoutingModule
-  ]
+    FormsModule,
+    ReactiveFormsModule,
+    BlockWhatsappRoutingModule,
+  ],
 })
-export class BlockWhatsappModule { }
+export class BlockWhatsappModule {}

@@ -1,37 +1,68 @@
 <div class="main">
-  <div class="row m-0">
-    <h2 class="col-md-2 col-lg-2 col-xl-2">Dashboard</h2>
-    <div class="col-md-7">
-      <div class="form-group has-search">
-        <span class="fa fa-search form-control-feedback"></span>
+  <h2>Block Whatsapp</h2>
+  <div class="p-2"></div>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="form-group">
         <input
-          type="text"
+          type="number"
           class="form-control"
-          placeholder="Enter Mobile Number"
+          [(ngModel)]="phoneNumber"
+          placeholder="Eg: 9086808025"
+          #searchInput
+          (keyup)="validate(searchInput)"
         />
       </div>
     </div>
-    <div class="search_btn col-md-1">
-      <button>search</button>
-    </div>
-
-    <div class="dropdown col-md-2">
-      <button
-        class="dropdown-toggle"
-        type="button"
-        id="dropdownMenuButton"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-      >
-        Unblocked
+    <div class="search_btn col-md-3-fluid">
+      <button [disabled]="!validSearch || Searchloading" (click)="fetchUser()">
+        search
       </button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" href="#">All</a>
-        <a class="dropdown-item" href="#">Blocked</a>
-        <a class="dropdown-item" href="#">Unblocked</a>
-      </div>
     </div>
+    <form [formGroup]="form" class="mx-auto">
+      <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <div class="input-group">
+              <input
+                class="form-control"
+                type="date"
+                placeholder="From Date"
+                name="dp"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <div class="input-group">
+              <input
+              type="date"
+                class="form-control"
+                placeholder="To Date"
+                name="dp"
+                formControlName="toDate"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <select class="custom-select" formControlName="filterType" id="role">
+            <option *ngFor="let option of filterOptions" [value]="option">{{
+              option | uppercase
+            }}</option>
+          </select>
+        </div>
+        <div class="search_btn col-md-3-fluid">
+          <button
+            (click)="onSubmit()"
+            [disabled]="form.invalid || reportLoading"
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+    </form>
   </div>
   <table>
     <tr>
@@ -78,7 +109,7 @@
         SR No
       </th>
     </tr>
-    <tr>
+    <tr *ngIf="userDetail">
       <td class="text-left">
         +91 9894192798
       </td>
@@ -113,366 +144,79 @@
         Opt Out
       </td>
       <td>
-        <button>Block</button>
+        <button type="button" data-toggle="modal" data-target="#myModal">
+          Block
+        </button>
       </td>
       <td>
         Lost
-      </td>
-      <td>
-        1234&nbsp;5625&nbsp;4985
-      </td>
-    </tr>
-    <tr>
-      <td class="text-left">
-        +91 9894192798
-      </td>
-      <td>
-        Yes
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td>
-        SMS
-      </td>
-      <td>
-        Yes
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td>
-        SMS
-      </td>
-      <td>
-        RQ32426299
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td class="text-left">
-        Santhosh Kumar
-      </td>
-      <td>
-        Blocked
-      </td>
-      <td>
-        <button>Block</button>
-      </td>
-      <td>
-        Changed
-      </td>
-      <td>
-        1234&nbsp;5625&nbsp;4985
-      </td>
-    </tr>
-    <tr>
-      <td class="text-left">
-        +91 9894192798
-      </td>
-      <td>
-        Yes
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td>
-        SMS
-      </td>
-      <td>
-        Yes
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td>
-        SMS
-      </td>
-      <td>
-        RQ32426299
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td class="text-left">
-        Banumathi
-      </td>
-      <td>
-        Opt Out
-      </td>
-      <td>
-        <button>Block</button>
-      </td>
-      <td>
-        DOD
-      </td>
-      <td>
-        1234&nbsp;5625&nbsp;4985
-      </td>
-    </tr>
-    <tr>
-      <td class="text-left">
-        +91 9894192798
-      </td>
-      <td>
-        Yes
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td>
-        SMS
-      </td>
-      <td>
-        Yes
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td>
-        SMS
-      </td>
-      <td>
-        RQ32426299
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td class="text-left">
-        Charlesh Paul Jr
-      </td>
-      <td>
-        Blocked
-      </td>
-      <td>
-        <button>Block</button>
-      </td>
-      <td>
-        DOD
-      </td>
-      <td>
-        1234&nbsp;5625&nbsp;4985
-      </td>
-    </tr>
-    <tr>
-      <td class="text-left">
-        +91 9894192798
-      </td>
-      <td>
-        Yes
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td>
-        SMS
-      </td>
-      <td>
-        Yes
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td>
-        SMS
-      </td>
-      <td>
-        RQ32426299
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td class="text-left">
-        Giri Babu Yerradla
-      </td>
-      <td>
-        Opt Out
-      </td>
-      <td>
-        <button>Block</button>
-      </td>
-      <td>
-        Lost
-      </td>
-      <td>
-        1234&nbsp;5625&nbsp;4985
-      </td>
-    </tr>
-    <tr>
-      <td class="text-left">
-        +91 9894192798
-      </td>
-      <td>
-        Yes
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td>
-        SMS
-      </td>
-      <td>
-        Yes
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td>
-        SMS
-      </td>
-      <td>
-        RQ32426299
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td class="text-left">
-        Jaya Krishnan
-      </td>
-      <td>
-        Blocked
-      </td>
-      <td>
-        <button>Block</button>
-      </td>
-      <td>
-        Changed
-      </td>
-      <td>
-        1234&nbsp;5625&nbsp;4985
-      </td>
-    </tr>
-    <tr>
-      <td class="text-left">
-        +91 9894192798
-      </td>
-      <td>
-        Yes
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td>
-        SMS
-      </td>
-      <td>
-        Yes
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td>
-        SMS
-      </td>
-      <td>
-        RQ32426299
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td class="text-left">
-        Sandhya
-      </td>
-      <td>
-        Opt Out
-      </td>
-      <td>
-        <button>Block</button>
-      </td>
-      <td>
-        DOD
-      </td>
-      <td>
-        1234&nbsp;5625&nbsp;4985
-      </td>
-    </tr>
-    <tr>
-      <td class="text-left">
-        +91 9894192798
-      </td>
-      <td>
-        Yes
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td>
-        SMS
-      </td>
-      <td>
-        Yes
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td>
-        SMS
-      </td>
-      <td>
-        RQ32426299
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td class="text-left">
-        Maruthu Pandian
-      </td>
-      <td>
-        Blocked
-      </td>
-      <td>
-        <button>Block</button>
-      </td>
-      <td>
-        Changed
-      </td>
-      <td>
-        1234&nbsp;5625&nbsp;4985
-      </td>
-    </tr>
-    <tr>
-      <td class="text-left">
-        +91 9894192798
-      </td>
-      <td>
-        Yes
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td>
-        SMS
-      </td>
-      <td>
-        Yes
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td>
-        SMS
-      </td>
-      <td>
-        RQ32426299
-      </td>
-      <td>
-        04/05/2020
-      </td>
-      <td class="text-left">
-        Ashok
-      </td>
-      <td>
-        Blocked
-      </td>
-      <td>
-        <button>Block</button>
-      </td>
-      <td>
-        Changed
       </td>
       <td>
         1234&nbsp;5625&nbsp;4985
       </td>
     </tr>
   </table>
+</div>
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4
+          class="modal-title"
+          style="width: 552px; font-size: x-large; color: #ff2182;"
+        >
+          Do you wish to Block ?
+        </h4>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          style="display: contents;"
+        >
+          &times;
+        </button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6">
+            <label for="usr" style="font-size: unset; color: #97144d;"
+              >SR No:</label
+            >
+            <input type="text" class="form-control" id="usr" />
+          </div>
+          <div class="col-md-6">
+            <label for="sel1" style="font-size: unset; color: #97144d;"
+              >Reason</label
+            >
+            <!-- <select class="form-control" id="sel1">
+  <option>Lost</option>
+  <option>Changed</option>
+</select> -->
+            <input
+              type="text"
+              maxlength="10"
+              type="text"
+              class="form-control"
+              id="Reason"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button
+          type="button"
+          style="color: white; background-color: #97144d;"
+          mx-auto
+          data-dismiss="modal"
+        >
+          SUBMIT
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

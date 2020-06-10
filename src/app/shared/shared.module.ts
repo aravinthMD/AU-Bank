@@ -1,12 +1,10 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ToastrModule } from 'ngx-toastr';
-import { SidenavComponent } from './components/sidenav/sidenav.component';
-import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { ToastrModule } from "ngx-toastr";
+import { SidenavComponent } from "./components/sidenav/sidenav.component";
+import { RouterModule } from "@angular/router";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [SidenavComponent],
@@ -18,12 +16,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     BrowserAnimationsModule,
     ToastrModule.forRoot({
       timeOut: 2500,
-      positionClass: 'toast-top-center',
+      positionClass: "toast-top-center",
       preventDuplicates: true,
-    })
+    }),
   ],
-  exports: [SidenavComponent,
-  FormsModule,
-ReactiveFormsModule]
+  exports: [
+    SidenavComponent,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
 })
-export class SharedModule { }
+export class SharedModule {}

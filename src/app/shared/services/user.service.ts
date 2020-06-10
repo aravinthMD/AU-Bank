@@ -94,11 +94,10 @@ export class UserService {
       email : JSON.stringify(email),
       password: JSON.stringify(password),
     };
-
     const formData = new HttpParams({fromObject : body});
 
     return this.http
-      .post(`http://178.128.125.44/appiyo/account/login`, formData)
+      .post(`${environment.host}/account/login`, formData)
       .subscribe((response) => {
         console.log(response);
       });
@@ -122,7 +121,7 @@ export class UserService {
 
     return this.http
       .post<Response>(
-        `${environment.host}ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+        `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
         formData
       )
       .pipe(
@@ -167,7 +166,7 @@ export class UserService {
     const formData = new HttpParams({ fromObject: body });
 
     return this.http.post<Response>(
-      `${environment.host}ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
       formData
     );
   }
@@ -195,7 +194,7 @@ export class UserService {
     const formData = new HttpParams({ fromObject: body });
 
     return this.http.post<Response>(
-      `${environment.host}ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
       formData
     );
   }
@@ -228,7 +227,7 @@ export class UserService {
     const formData = new HttpParams({ fromObject: body });
 
     return this.http.post<Response>(
-      `${environment.host}ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
       formData
     );
   }
@@ -256,7 +255,7 @@ export class UserService {
     const formData = new HttpParams({ fromObject: body });
 
     return this.http.post<Response>(
-      `${environment.host}ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
       formData
     );
   }
@@ -282,7 +281,7 @@ export class UserService {
     const formData = new HttpParams({ fromObject: body });
 
     return this.http.post<UserResponse>(
-      `${environment.host}ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
       formData
     );
   }
@@ -310,7 +309,7 @@ export class UserService {
     const formData = new HttpParams({ fromObject: body });
 
     return this.http.post(
-      `${environment.host}ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
       formData
     );
   }

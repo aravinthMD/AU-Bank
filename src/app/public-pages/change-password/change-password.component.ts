@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'src/app/shared/services/user.service';
-import { BUTTON_TEXTS, TOASTER_MESSAGES, PAGES } from 'src/app/shared/utils/constant';
+import { BUTTON_TEXTS, TOASTER_MESSAGES } from 'src/app/shared/utils/constant';
 import { ToasterService } from 'src/app/shared/services/toastr.service';
 import { Router } from '@angular/router';
 import { ProcessVariables } from 'src/app/shared/models/user.model';
@@ -41,7 +41,7 @@ export class ChangePasswordComponent implements OnInit {
     const newPassword = fieldControls.newPassword.value;
     const confirmPassword = fieldControls.confirmPassword.value;
 
-    const {dbPassword, userId, userName} = this.userService.currentUserValue;
+    const {dbPassword, userId} = this.userService.currentUserValue;
 
     if (dbPassword === currentPassword && newPassword === confirmPassword) {
       this.userService.changePassword(currentPassword, newPassword, confirmPassword, Number(userId)).subscribe(() => {
