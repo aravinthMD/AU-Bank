@@ -8,6 +8,7 @@ import { ToasterService } from 'src/app/shared/services/toastr.service';
 @Component({
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
+  styleUrls: ["./forgot-password.component.scss"]
 })
 export class ForgotPasswordComponent implements OnInit {
   submitButtonText = BUTTON_TEXTS.SUBMIT_BUTTON_TEXT;

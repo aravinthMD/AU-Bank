@@ -3,7 +3,8 @@ export enum BUTTON_TEXTS {
   SUBMIT_BUTTON_TEXT = 'Submit',
   RESET_PASSWORD_BUTTON_TEXT = 'Reset Password',
   CHANGE_PASSWORD_BUTTON_TEXT = 'Change Password',
-  DISABLE_USER_BUTTON_TEXT = 'Disable User'
+  DISABLE_USER_BUTTON_TEXT = 'Disable User',
+  SEARCH_BUTTON_TEXT = 'Search'
 }
 
 export enum ROLES {

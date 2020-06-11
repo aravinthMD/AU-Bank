@@ -13,6 +13,7 @@ import { ToasterService } from "src/app/shared/services/toastr.service";
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
   loginButtonText = BUTTON_TEXTS.LOGIN_BUTTON_TEXT;

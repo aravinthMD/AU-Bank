@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { BUTTON_TEXTS, TOASTER_MESSAGES } from 'src/app/shared/utils/constant';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { environment } from 'src/environments/environment';
-import { UserService } from 'src/app/shared/services/user.service';
-import { ToasterService } from 'src/app/shared/services/toastr.service';
-import { UserProcessVariables } from 'src/app/shared/models/user.model';
+import { Component, OnInit } from "@angular/core";
+import { BUTTON_TEXTS, TOASTER_MESSAGES } from "src/app/shared/utils/constant";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { environment } from "src/environments/environment";
+import { UserService } from "src/app/shared/services/user.service";
+import { ToasterService } from "src/app/shared/services/toastr.service";
+import { UserProcessVariables } from "src/app/shared/models/user.model";
 
 @Component({
-  selector: 'app-block-existing-user',
-  templateUrl: './block-existing-user.component.html',
+  selector: "app-block-existing-user",
+  templateUrl: "./block-existing-user.component.html",
+  styleUrls: ["./block-existing-user.component.scss"],
 })
 export class BlockExistingUserComponent implements OnInit {
   submitButtontext = BUTTON_TEXTS.SUBMIT_BUTTON_TEXT;
@@ -34,7 +35,7 @@ export class BlockExistingUserComponent implements OnInit {
       : /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+\.)([a-zA-Z]){2,5}$/;
 
     this.form = this.formBuilder.group({
-      emailId: ['', [Validators.required, Validators.pattern(emailRegExp)]],
+      emailId: ["", [Validators.required, Validators.pattern(emailRegExp)]],
     });
   }
 
@@ -43,7 +44,7 @@ export class BlockExistingUserComponent implements OnInit {
   fetchUser(): void {
     this.fetchUserLoading = true;
 
-    const emailId = this.form.get('emailId').value;
+    const emailId = this.form.get("emailId").value;
     const { userId } = this.userService.currentUserValue;
 
     this.userService
