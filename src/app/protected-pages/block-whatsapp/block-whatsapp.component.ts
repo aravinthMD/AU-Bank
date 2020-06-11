@@ -1,5 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { IAngularMyDpOptions } from "angular-mydatepicker";
+import { addDays, subDays } from "date-fns";
+import { BUTTON_TEXTS } from "src/app/shared/utils/constant";
 
 @Component({
   selector: "app-block-whatsapp",
@@ -7,41 +10,29 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
   styleUrls: ["./block-whatsapp.component.scss"],
 })
 export class BlockWhatsappComponent implements OnInit {
+  searchButtonText = BUTTON_TEXTS.SEARCH_BUTTON_TEXT;
+  submitButtontext = BUTTON_TEXTS.SUBMIT_BUTTON_TEXT;
+
   filterOptions = ["All", "Blocked", "Unblocked"];
 
   phoneNumber: string;
   form: FormGroup;
   userDetail: any;
 
-  Searchloading = false;
+  searchLoading = false;
   reportLoading = false;
   validSearch = false;
 
-  today = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
+  today = new Date();
 
-  maxDate = {
-    year: new Date().getFullYear(),
-    month: new Date().getMonth() + 1,
-    day: new Date().getDate(),
-  };
+  fromMinDate: any;
+  fromMaxDate: any;
+  toMinDate: any;
+  toMaxDate: any;
 
-  fromMinDate = {
-  };
+  fromDateOptions: IAngularMyDpOptions;
+  toDateOptions: IAngularMyDpOptions;
 
-  fromMaxDate = {
-    year: new Date().getFullYear(),
-    month: new Date().getMonth() + 1,
-    day: new Date().getDate(),
-  };
-
-  toMinDate = {
-  };
-
-  toMaxDate =  {
-    year: new Date().getFullYear(),
-    month: new Date().getMonth() + 1,
-    day: new Date().getDate(),
-  };
   titleModel = "";
   showModal;
   UserId: string;
@@ -53,21 +44,77 @@ export class BlockWhatsappComponent implements OnInit {
     this.form = this.formBuilder.group({
       fromDate: [null, Validators.required],
       toDate: [null, Validators.required],
-      filterType: [null, Validators.required],
+      filterType: ["All", Validators.required],
     });
+    this.setValidators();
+    this.setDatePickerOptions();
   }
 
-  ngOnInit(): void {
-    this.form.setValue({
-      fromDate: this.today,
-      toDate: this.today,
-      filterType: "All",
-    });
+  ngOnInit(): void {}
+
+  setValidators(): void {
+    const date = addDays(this.today, 1);
+    this.fromMinDate = {
+      year: 0,
+      month: 0,
+      day: 0,
+    };
+
+    this.fromMaxDate = {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+    };
+
+    this.toMinDate = {
+      year: 0,
+      month: 0,
+      day: 0,
+    };
+
+    this.toMaxDate = {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+    };
   }
 
-  onFromDateChange(event: any) {
+  setDatePickerOptions(): void {
+    this.fromDateOptions = {
+      dateRange: false,
+      dateFormat: "dd/mm/yyyy",
+      disableUntil: this.fromMinDate,
+      disableSince: this.fromMaxDate,
+    };
 
-    this.toMinDate = event;
+    this.toDateOptions = {
+      dateRange: false,
+      dateFormat: "dd/mm/yyyy",
+      disableUntil: this.toMinDate,
+      disableSince: this.toMaxDate,
+    };
+  }
+
+  onFromDateChange(event: any): void {
+    const { jsDate } = event.singleDate;
+    const date = subDays(jsDate, 1);
+    this.toMinDate = {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+    };
+    this.setDatePickerOptions();
+  }
+
+  onToDateChange(event: any): void {
+    const { jsDate } = event.singleDate;
+    const date = addDays(jsDate, 1);
+    this.fromMaxDate = {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+    };
+    this.setDatePickerOptions();
   }
 
   validate(input: HTMLInputElement) {
@@ -75,9 +122,10 @@ export class BlockWhatsappComponent implements OnInit {
     this.validSearch = value.length === 10 ? true : false;
   }
 
-  fetchUser() {
-    console.log(this.phoneNumber);
+  fetchUser(): void {
+    this.searchLoading = true;
     this.userDetail = {};
+    this.searchLoading = false;
   }
 
   onSubmit(): void {

@@ -3,6 +3,7 @@ import { CommonModule } from "@angular/common";
 import { BlockWhatsappComponent } from "./block-whatsapp.component";
 import { BlockWhatsappRoutingModule } from "./block-whatsapp.routing.module";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { AngularMyDatePickerModule } from 'angular-mydatepicker';
 
 @NgModule({
   declarations: [BlockWhatsappComponent],
@@ -10,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    AngularMyDatePickerModule,
     BlockWhatsappRoutingModule,
   ],
 })

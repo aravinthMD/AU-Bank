@@ -15,39 +15,74 @@
       </div>
     </div>
     <div class="search_btn col-md-3-fluid">
-      <button [disabled]="!validSearch || Searchloading" (click)="fetchUser()">
-        search
+      <button [disabled]="!validSearch || searchLoading" (click)="fetchUser()">
+        <span
+          *ngIf="searchLoading"
+          class="spinner-border"
+          style="width: 1.5rem; height: 1.5rem;"
+          aria-hidden="true"
+        >
+        </span>
+        <span *ngIf="!searchLoading">{{ searchButtonText }}</span>
       </button>
     </div>
     <form [formGroup]="form" class="mx-auto">
       <div class="form-row">
         <div class="col">
-          <div class="form-group">
-            <div class="input-group">
-              <input
-                class="form-control"
-                type="date"
-                placeholder="From Date"
-                name="dp"
-              />
+          <div class="input-group calendar-fa-fa">
+            <input
+              class="form-control"
+              name="mydate"
+              placeholder="From Date"
+              angular-mydatepicker
+              #dp="angular-mydatepicker"
+              formControlName="fromDate"
+              [options]="fromDateOptions"
+              (dateChanged)="onFromDateChange($event)"
+              readonly
+            />
+            <div class="input-group-append">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="dp.toggleCalendar()"
+              >
+                <i class="fa fa-calendar-o"></i>
+              </button>
             </div>
           </div>
         </div>
         <div class="col">
-          <div class="form-group">
-            <div class="input-group">
-              <input
-              type="date"
-                class="form-control"
-                placeholder="To Date"
-                name="dp"
-                formControlName="toDate"
-              />
+          <div class="input-group calendar-fa-fa">
+            <input
+              class="form-control"
+              name="mydate"
+              placeholder="To Date"
+              angular-mydatepicker
+              #toDate="angular-mydatepicker"
+              formControlName="toDate"
+              [options]="toDateOptions"
+              (dateChanged)="onToDateChange($event)"
+              readonly
+            />
+            <div class="input-group-append">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="toDate.toggleCalendar()"
+              >
+                <i class="fa fa-calendar-o"></i>
+              </button>
             </div>
           </div>
         </div>
         <div class="col">
-          <select class="custom-select" formControlName="filterType" id="role">
+          <select
+            class="custom-select"
+            formControlName="filterType"
+            title="Filter Type"
+            id="role"
+          >
             <option *ngFor="let option of filterOptions" [value]="option">{{
               option | uppercase
             }}</option>
@@ -58,7 +93,7 @@
             (click)="onSubmit()"
             [disabled]="form.invalid || reportLoading"
           >
-            Submit
+            {{ submitButtontext }}
           </button>
         </div>
       </div>
@@ -66,7 +101,7 @@
   </div>
   <table>
     <tr>
-      <th class="text-left">
+      <th>
         Customer Mobile Number
       </th>
       <th>
@@ -93,7 +128,7 @@
       <th>
         Block Date
       </th>
-      <th class="text-left">
+      <th>
         Blocking User
       </th>
       <th>
@@ -110,7 +145,7 @@
       </th>
     </tr>
     <tr *ngIf="userDetail">
-      <td class="text-left">
+      <td>
         +91 9894192798
       </td>
       <td>
@@ -137,7 +172,7 @@
       <td>
         04/05/2020
       </td>
-      <td class="text-left">
+      <td>
         Arun
       </td>
       <td>
@@ -191,10 +226,6 @@
             <label for="sel1" style="font-size: unset; color: #97144d;"
               >Reason</label
             >
-            <!-- <select class="form-control" id="sel1">
-  <option>Lost</option>
-  <option>Changed</option>
-</select> -->
             <input
               type="text"
               maxlength="10"
@@ -214,7 +245,7 @@
           mx-auto
           data-dismiss="modal"
         >
-          SUBMIT
+          {{ submitButtontext }}
         </button>
       </div>
     </div>
