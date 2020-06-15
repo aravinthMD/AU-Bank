@@ -1,0 +1,33 @@
+<div class="sidenav">
+  <div *ngFor="let menuItem of parentMenu">
+    <a
+      *ngIf="!menuItem.hasSubMenu"
+      [routerLink]="[menuItem.routerLink]"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >{{ menuItem.title }}</a
+    >
+
+    <a
+      *ngIf="menuItem.hasSubMenu"
+      class="nav-link dropdown-toggle"
+      href="#"
+      id="navbarDropdown"
+      role="button"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+      >{{ menuItem.title }}</a
+    >
+    <div
+      *ngIf="menuItem.hasSubMenu"
+      class="dropdown-menu"
+      aria-labelledby="navbarDropdown"
+    >
+      <app-vertical-menu
+        [menuItems]="menuItems"
+        [menuParentId]="menuItem.id"
+      ></app-vertical-menu>
+    </div>
+  </div>
+</div>

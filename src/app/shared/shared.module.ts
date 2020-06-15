@@ -5,9 +5,10 @@ import { ToastrModule } from "ngx-toastr";
 import { SidenavComponent } from "./components/sidenav/sidenav.component";
 import { RouterModule } from "@angular/router";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { VerticalMenuComponent } from './components/vertical-menu/vertical-menu.component';
 
 @NgModule({
-  declarations: [SidenavComponent],
+  declarations: [SidenavComponent, VerticalMenuComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -22,6 +23,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
   ],
   exports: [
     SidenavComponent,
+    VerticalMenuComponent,
     FormsModule,
     ReactiveFormsModule,
   ],

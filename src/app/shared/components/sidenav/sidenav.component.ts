@@ -15,7 +15,6 @@ import { ToasterService } from "../../services/toastr.service";
 export class SidenavComponent implements OnInit {
   menuItems: Menu[];
   userName: string;
-  currentYear = new Date().getFullYear();
 
   constructor(
     private menuService: MenuService,
