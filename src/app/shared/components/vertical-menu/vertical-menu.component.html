@@ -22,11 +22,13 @@
     <div
       *ngIf="menuItem.hasSubMenu"
       class="dropdown-menu"
-      aria-labelledby="navbarDropdown"
+      aria-labelledby="navbarDropdown" 
+      style="height:150px; background-color:inherit;border-radius:0px;"
     >
       <app-vertical-menu
         [menuItems]="menuItems"
         [menuParentId]="menuItem.id"
+        style="height:150px;display:hover"
       ></app-vertical-menu>
     </div>
   </div>
