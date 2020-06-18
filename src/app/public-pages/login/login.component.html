@@ -18,7 +18,7 @@
         required
       />
       <small id="emailHelp" class="form-text text-muted"
-        >Enter a valid email with axis bank domain</small
+        >Enter a valid email</small
       >
     </div>
     <div class="form-group">
@@ -34,10 +34,9 @@
         required
       />
       <small id="passwordHelp" class="form-text text-muted"
-        >Enter a valid password with miminum of 8 characters</small
+        >Enter a valid password</small
       >
     </div>
-    <a routerLink="/public/forgot-password">Forgot Password?</a>
     <button [disabled]="loginForm.invalid || loading">
       <span
         *ngIf="loading"

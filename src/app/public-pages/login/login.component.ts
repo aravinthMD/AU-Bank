@@ -1,11 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import {
-  BUTTON_TEXTS,
-  TOASTER_MESSAGES,
-  PAGES,
-} from "src/app/shared/utils/constant";
+import { BUTTON_TEXTS, TOASTER_MESSAGES } from "src/app/shared/utils/constant";
 import { environment } from "src/environments/environment";
 import { UserService } from "src/app/shared/services/user.service";
 import { ToasterService } from "src/app/shared/services/toastr.service";
@@ -13,7 +9,7 @@ import { ToasterService } from "src/app/shared/services/toastr.service";
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
-  styleUrls: ['./login.component.scss']
+  styleUrls: ["./login.component.scss"],
 })
 export class LoginComponent implements OnInit {
   loginButtonText = BUTTON_TEXTS.LOGIN_BUTTON_TEXT;
@@ -69,20 +65,16 @@ export class LoginComponent implements OnInit {
 
     // this.userService.generateAuthenticationToken(emailId, password);
 
-    this.userService.login(emailId, password).subscribe(response => {
-      if (!response.message && response.isFirstLogin === 'false') {
-        const currentHome = this.userService.currentHomeValue;
-        this.toasterService.showSuccess(TOASTER_MESSAGES.LOGIN_SUCCESS);
-        this.loading = false;
-        this.router.navigate([currentHome]);
-      } else if (!response.message && response.isFirstLogin === 'true') {
-        this.toasterService.showWarning(TOASTER_MESSAGES.CHANGE_PASSWORD_WARNING);
-        this.loading = false;
-        this.router.navigate([PAGES.PUBLIC_CHANGE_PASSWORD]);
-      } else {
-        this.toasterService.showError(response.message.value);
-        this.loading = false;
-      }
+    this.userService.login(emailId, password).subscribe((response) => {
+      const currentHome = this.userService.currentHomeValue;
+      this.toasterService.showSuccess(TOASTER_MESSAGES.LOGIN_SUCCESS);
+      this.loading = false;
+      this.router.navigate([currentHome]);
+
+      // else {
+      //   this.toasterService.showError(response.message.value);
+      //   this.loading = false;
+      // }
     });
   }
 }

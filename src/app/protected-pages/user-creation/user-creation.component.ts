@@ -4,7 +4,7 @@ import { UserService } from "src/app/shared/services/user.service";
 import { ToasterService } from "src/app/shared/services/toastr.service";
 import { environment } from "src/environments/environment";
 import { BUTTON_TEXTS, TOASTER_MESSAGES } from "src/app/shared/utils/constant";
-import { Response } from "src/app/shared/models/user.model";
+import { LoginResponse } from "src/app/shared/models/user.model";
 
 @Component({
   selector: "app-user-creation",
@@ -49,15 +49,16 @@ export class UserCreationComponent implements OnInit {
     this.userService
       .createUser(emailId, role, Number(userId))
       .subscribe((response) => {
-        const { ProcessVariables }: Response = response;
+        const { ProcessVariables }: LoginResponse = response;
         if (!ProcessVariables.message) {
           this.toasterService.showSuccess(TOASTER_MESSAGES.CREATE_USER_SUCCESS);
           this.createUserForm.get("emailId").reset();
           this.loading = false;
-        } else {
-          this.toasterService.showError(ProcessVariables.message.value);
-          this.loading = false;
         }
+        // else {
+        //   this.toasterService.showError(ProcessVariables.message.value);
+        //   this.loading = false;
+        // }
       });
   }
 }

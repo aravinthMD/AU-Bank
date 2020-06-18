@@ -1,58 +1,59 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { PublicHomeComponent } from './public-pages/public-home.component';
-import { ProtectedHomeComponent } from './protected-pages/protected-home.component';
-import { AuthenticationGuard } from './shared/guards/authentication.guard';
-import { LoginComponent } from './public-pages/login/login.component';
-import { ForgotPasswordComponent } from './public-pages/forgot-password/forgot-password.component';
-import { ResetPasswordComponent } from './public-pages/reset-password/reset-password.component';
-import { ChangePasswordComponent } from './public-pages/change-password/change-password.component';
+import { NgModule } from "@angular/core";
+import { Routes, RouterModule } from "@angular/router";
+import { PublicHomeComponent } from "./public-pages/public-home.component";
+import { ProtectedHomeComponent } from "./protected-pages/protected-home.component";
+import { AuthenticationGuard } from "./shared/guards/authentication.guard";
+import { LoginComponent } from "./public-pages/login/login.component";
 
 const routes: Routes = [
   {
-    path: '',
+    path: "",
     component: ProtectedHomeComponent,
     canActivate: [AuthenticationGuard],
     children: [
       {
-        path: 'user-creation',
+        path: "user-creation",
         loadChildren: () =>
-          import('./protected-pages/user-creation/user-creation.module').then(
+          import("./protected-pages/user-creation/user-creation.module").then(
             (m) => m.UserCreationModule
           ),
       },
       {
-        path: 'block-whatsapp',
+        path: "view-whatsapp",
         loadChildren: () =>
-          import('./protected-pages/block-whatsapp/block-whatsapp.module').then(
+          import("./protected-pages/block-whatsapp/block-whatsapp.module").then(
             (m) => m.BlockWhatsappModule
           ),
       },
       {
-        path: 'design-template',
+        path: "block-whatsapp",
+        loadChildren: () =>
+          import("./protected-pages/block-whatsapp/block-whatsapp.module").then(
+            (m) => m.BlockWhatsappModule
+          ),
+      },
+      {
+        path: "marketing-maker",
         loadChildren: () =>
           import(
-            './protected-pages/design-template/design-template.module'
+            "./protected-pages/design-template/design-template.module"
           ).then((m) => m.DesignTemplateModule),
       },
       {
-        path: 'change-password',
+        path: "marketing-checker",
         loadChildren: () =>
           import(
-            './protected-pages/change-password/change-password.module'
-          ).then((m) => m.ChangePasswordModule),
+            "./protected-pages/design-template/design-template.module"
+          ).then((m) => m.DesignTemplateModule),
       },
     ],
   },
   {
-    path: 'public',
+    path: "public",
     component: PublicHomeComponent,
     children: [
-      { path: '', component: LoginComponent },
-      { path: 'login', component: LoginComponent },
-      { path: 'forgot-password', component: ForgotPasswordComponent },
-      { path: 'reset-password/:id' , component: ResetPasswordComponent },
-      { path: 'change-password' , component: ChangePasswordComponent },
+      { path: "", component: LoginComponent },
+      { path: "login", component: LoginComponent },
     ],
   },
 ];

@@ -1,48 +1,49 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
-import { Response, ProcessVariables, UserResponse } from '../models/user.model';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { BehaviorSubject, Observable } from "rxjs";
+import { map } from "rxjs/operators";
+import { environment } from "../../../environments/environment";
+import {
+  LoginResponse,
+  LoginProcessVariables,
+  UserResponse,
+} from "../models/user.model";
 import {
   Menu,
   ADMIN_MENU_ITEMS,
-  CALL_CENTER_ADMIN_MENU_ITEMS,
-  MARKETING_ADMIN_MENU_ITEMS,
-} from '../models/menu.model';
-import { ROLES, PAGES } from '../utils/constant';
-import { RequestEntity } from '../models/entity-request';
+  SUPER_ADMIN_MENU_ITEMS,
+} from "../models/menu.model";
+import { ROLES, PAGES } from "../utils/constant";
+import { RequestEntity } from "../models/entity-request";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class UserService {
-  public currentUser: Observable<ProcessVariables>;
+  public currentUser: Observable<LoginProcessVariables>;
   public currentHome: Observable<string>;
   public currentMenu: Observable<Menu[]>;
 
-  private currentUserSubject: BehaviorSubject<ProcessVariables>;
+  private currentUserSubject: BehaviorSubject<LoginProcessVariables>;
   private currentHomeSubject: BehaviorSubject<string>;
   private currentMenuSubject: BehaviorSubject<Menu[]>;
 
-  private API_PATH = '/users';
-
   constructor(private http: HttpClient) {
-    this.currentUserSubject = new BehaviorSubject<ProcessVariables>(
-      JSON.parse(localStorage.getItem('currentUser'))
+    this.currentUserSubject = new BehaviorSubject<LoginProcessVariables>(
+      JSON.parse(localStorage.getItem("currentUser"))
     );
     this.currentUser = this.currentUserSubject.asObservable();
     this.currentHomeSubject = new BehaviorSubject<string>(
-      JSON.parse(localStorage.getItem('currentHome'))
+      JSON.parse(localStorage.getItem("currentHome"))
     );
     this.currentHome = this.currentHomeSubject.asObservable();
     this.currentMenuSubject = new BehaviorSubject<Menu[]>(
-      JSON.parse(localStorage.getItem('currentMenu'))
+      JSON.parse(localStorage.getItem("currentMenu"))
     );
     this.currentMenu = this.currentMenuSubject.asObservable();
   }
 
-  public get currentUserValue(): ProcessVariables {
+  public get currentUserValue(): LoginProcessVariables {
     return this.currentUserSubject.value;
   }
 
@@ -54,47 +55,48 @@ export class UserService {
     return this.currentMenuSubject.value;
   }
 
-  public setCurrentUserSubject(response: ProcessVariables) {
-    localStorage.setItem('currentUser', JSON.stringify(response));
+  public setCurrentUserSubject(response: LoginProcessVariables) {
+    localStorage.setItem("currentUser", JSON.stringify(response));
     this.currentUserSubject.next(response);
   }
 
-  setHomeAndMenu(data: ProcessVariables): void {
-    if (data.role === ROLES.ADMIN) {
+  setHomeAndMenu(data: LoginProcessVariables): void {
+    if (data.role === ROLES.SUPER_ADMIN) {
+      this.currentMenuSubject.next(SUPER_ADMIN_MENU_ITEMS);
+      this.currentHomeSubject.next(PAGES.USER_CREATION);
+      localStorage.setItem("currentHome", JSON.stringify(PAGES.USER_CREATION));
+      localStorage.setItem(
+        "currentMenu",
+        JSON.stringify(SUPER_ADMIN_MENU_ITEMS)
+      );
+    } else if (data.role === ROLES.ADMIN) {
       this.currentMenuSubject.next(ADMIN_MENU_ITEMS);
       this.currentHomeSubject.next(PAGES.USER_CREATION);
-      localStorage.setItem('currentHome', JSON.stringify(PAGES.USER_CREATION));
-      localStorage.setItem('currentMenu', JSON.stringify(ADMIN_MENU_ITEMS));
-    } else if (data.role === ROLES.CALL_CENTER_ADMIN) {
-      this.currentMenuSubject.next(CALL_CENTER_ADMIN_MENU_ITEMS);
-      this.currentHomeSubject.next(PAGES.BLOCK_WHATSAPP);
-      localStorage.setItem('currentHome', JSON.stringify(PAGES.BLOCK_WHATSAPP));
-      localStorage.setItem(
-        'currentMenu',
-        JSON.stringify(CALL_CENTER_ADMIN_MENU_ITEMS)
-      );
+      localStorage.setItem("currentHome", JSON.stringify(PAGES.USER_CREATION));
+      localStorage.setItem("currentMenu", JSON.stringify(ADMIN_MENU_ITEMS));
     } else {
-      this.currentMenuSubject.next(MARKETING_ADMIN_MENU_ITEMS);
-      this.currentHomeSubject.next(PAGES.DESIGN_TEMPLATE);
+      const { menus } = data;
+      const USER_MENU_ITEMS = menus.map((menu, index) => {
+        return new Menu(index, menu.name, menu.path, false, 0);
+      });
+      this.currentMenuSubject.next(USER_MENU_ITEMS);
+      this.currentHomeSubject.next(USER_MENU_ITEMS[0].routerLink);
       localStorage.setItem(
-        'currentHome',
-        JSON.stringify(PAGES.DESIGN_TEMPLATE)
+        "currentHome",
+        JSON.stringify(USER_MENU_ITEMS[0].routerLink)
       );
-      localStorage.setItem(
-        'currentMenu',
-        JSON.stringify(MARKETING_ADMIN_MENU_ITEMS)
-      );
+      localStorage.setItem("currentMenu", JSON.stringify(USER_MENU_ITEMS));
     }
   }
 
   generateAuthenticationToken(email: string, password: string) {
-    const data = {email, password };
+    const data = { email, password };
 
     const body = {
-      email : JSON.stringify(email),
+      email: JSON.stringify(email),
       password: JSON.stringify(password),
     };
-    const formData = new HttpParams({fromObject : body});
+    const formData = new HttpParams({ fromObject: body });
 
     return this.http
       .post(`${environment.host}/account/login`, formData)
@@ -120,17 +122,107 @@ export class UserService {
     const formData = new HttpParams({ fromObject: body });
 
     return this.http
-      .post<Response>(
+      .post<LoginResponse>(
         `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
         formData
       )
       .pipe(
         map((response) => {
+          const users = [
+            {
+              ProcessVariables: {
+                dbPassword: "password",
+                dbUserName: "SuperAdmin",
+                password: "password",
+                role: "Super Admin",
+                userId: "1",
+                userName: "super.admin@gmail.com",
+                message: {},
+              },
+            },
+            {
+              ProcessVariables: {
+                dbPassword: "password",
+                dbUserName: "Admin",
+                password: "password",
+                role: "Admin",
+                userId: "2",
+                userName: "admin@gmail.com",
+                message: {},
+              },
+            },
+            {
+              ProcessVariables: {
+                dbPassword: "password",
+                dbUserName: "User1",
+                password: "password",
+                role: "User",
+                userId: "3",
+                userName: "user1@gmail.com",
+                message: {},
+                menus: [{ name: "View Whatsapp", path: "/view-whatsapp" }],
+              },
+            },
+            {
+              ProcessVariables: {
+                dbPassword: "password",
+                dbUserName: "User2",
+                password: "password",
+                role: "User",
+                userId: "4",
+                userName: "user2@gmail.com",
+                message: {},
+                menus: [
+                  { name: "View Whatsapp", path: "/view-whatsapp" },
+                  { name: "Block Whatsapp", path: "/block-whatsapp" },
+                ],
+              },
+            },
+
+            {
+              ProcessVariables: {
+                dbPassword: "password",
+                dbUserName: "User3",
+                password: "password",
+                role: "User",
+                userId: "5",
+                userName: "user3@gmail.com",
+                message: {},
+                menus: [
+                  { name: "View Whatsapp", path: "/view-whatsapp" },
+                  { name: "Block Whatsapp", path: "/block-whatsapp" },
+                  { name: "Marketing Maker", path: "/marketing-maker" },
+                ],
+              },
+            },
+
+            {
+              ProcessVariables: {
+                dbPassword: "password",
+                dbUserName: "User4",
+                password: "password",
+                role: "User",
+                userId: "6",
+                userName: "user4@gmail.com",
+                message: {},
+                menus: [
+                  { name: "View Whatsapp", path: "/view-whatsapp" },
+                  { name: "Block Whatsapp", path: "/block-whatsapp" },
+                  { name: "Marketing Checker", path: "/marketing-checker" },
+                ],
+              },
+            },
+          ];
+          const randomUserResponse =
+            users[Math.ceil(Math.random() * 5)].ProcessVariables;
           const userResponse = response.ProcessVariables;
-          localStorage.setItem('currentUser', JSON.stringify(userResponse));
-          this.currentUserSubject.next(userResponse);
-          this.setHomeAndMenu(userResponse);
-          return userResponse;
+          localStorage.setItem(
+            "currentUser",
+            JSON.stringify(randomUserResponse)
+          );
+          this.currentUserSubject.next(randomUserResponse);
+          this.setHomeAndMenu(randomUserResponse);
+          return randomUserResponse;
         })
       );
   }
@@ -141,95 +233,12 @@ export class UserService {
 
   clear() {
     // remove user from local storage to log user out
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('currentHome');
-    localStorage.removeItem('currentMenu');
+    localStorage.removeItem("currentUser");
+    localStorage.removeItem("currentHome");
+    localStorage.removeItem("currentMenu");
     this.currentUserSubject.next(null);
     this.currentHomeSubject.next(null);
     this.currentMenuSubject.next(null);
-  }
-
-  forgotPassword(emailId: string) {
-    const { processId, workflowId } = environment.api.getForgetDetails;
-    const { projectId } = environment;
-    const data = { emailId };
-    const requestEntity: RequestEntity = {
-      processId,
-      ProcessVariables: data,
-      workflowId,
-      projectId,
-    };
-
-    const body = {
-      processVariables: JSON.stringify(requestEntity),
-    };
-    const formData = new HttpParams({ fromObject: body });
-
-    return this.http.post<Response>(
-      `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-      formData
-    );
-  }
-
-  resetPassword(password: string, confirmPassword: string, userId: number) {
-    const data = {
-      password,
-      confirmPassword,
-      userId,
-    };
-
-    const { processId, workflowId } = environment.api.resetUserPassword;
-    const { projectId } = environment;
-    const resetpasswordEntity: RequestEntity = {
-      processId,
-      ProcessVariables: data,
-      workflowId,
-      projectId,
-    };
-
-    const body = {
-      processVariables: JSON.stringify(resetpasswordEntity),
-    };
-
-    const formData = new HttpParams({ fromObject: body });
-
-    return this.http.post<Response>(
-      `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-      formData
-    );
-  }
-
-  changePassword(
-    currentPassword: string,
-    newPassword: string,
-    confirmNewPassword: string,
-    userId: number
-  ) {
-    const data = {
-      currentPassword,
-      newPassword,
-      confirmNewPassword,
-      userId,
-    };
-
-    const { processId, workflowId } = environment.api.changeUserPassword;
-    const { projectId } = environment;
-    const requestEntity: RequestEntity = {
-      processId,
-      ProcessVariables: data,
-      workflowId,
-      projectId,
-    };
-
-    const body = {
-      processVariables: JSON.stringify(requestEntity),
-    };
-    const formData = new HttpParams({ fromObject: body });
-
-    return this.http.post<Response>(
-      `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-      formData
-    );
   }
 
   createUser(emailId: string, role: string, userId: number) {
@@ -254,7 +263,7 @@ export class UserService {
 
     const formData = new HttpParams({ fromObject: body });
 
-    return this.http.post<Response>(
+    return this.http.post<LoginResponse>(
       `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
       formData
     );
