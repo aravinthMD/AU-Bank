@@ -21,30 +21,30 @@ const routes: Routes = [
       {
         path: "view-whatsapp",
         loadChildren: () =>
-          import("./protected-pages/block-whatsapp/block-whatsapp.module").then(
-            (m) => m.BlockWhatsappModule
+          import("./protected-pages/whatsapp/whatsapp.module").then(
+            (m) => m.WhatsappModule
           ),
       },
       {
         path: "block-whatsapp",
         loadChildren: () =>
-          import("./protected-pages/block-whatsapp/block-whatsapp.module").then(
-            (m) => m.BlockWhatsappModule
+          import("./protected-pages/whatsapp/whatsapp.module").then(
+            (m) => m.WhatsappModule
           ),
       },
       {
         path: "marketing-maker",
         loadChildren: () =>
           import(
-            "./protected-pages/design-template/design-template.module"
-          ).then((m) => m.DesignTemplateModule),
+            "./protected-pages/marketing-checker/marketing-checker.module"
+          ).then((m) => m.MarketingCheckerModule),
       },
       {
         path: "marketing-checker",
         loadChildren: () =>
           import(
-            "./protected-pages/design-template/design-template.module"
-          ).then((m) => m.DesignTemplateModule),
+            "./protected-pages/marketing-checker/marketing-checker.module"
+          ).then((m) => m.MarketingCheckerModule),
       },
     ],
   },

@@ -1,84 +1,8 @@
 <div class="main">
-  <h2>User Creation</h2>
+  <h2>Admin / User Creation</h2>
   <div class="container">
     <div class="user">
-      <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
-        <li class="nav-item">
-          <a
-            class="nav-link active"
-            id="newuser-tab"
-            data-toggle="tab"
-            href="#newuser"
-            role="tab"
-            aria-controls="new user"
-            aria-selected="true"
-            >Create New User</a
-          >
-        </li>
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            id="blockuser-tab"
-            data-toggle="tab"
-            href="#blockuser"
-            role="tab"
-            aria-controls="blocked user"
-            aria-selected="false"
-            >Block Existing User</a
-          >
-        </li>
-      </ul>
-      <div class="tab-content" id="myTabContent">
-        <div
-          class="tab-pane fade show active form-new"
-          id="newuser"
-          role="tabpanel"
-          aria-labelledby="newuser-tab"
-        >
-          <div class="p-40 newuser">
-            <form [formGroup]="createUserForm" (ngSubmit)="createUser()">
-              <div class="form-group">
-                <label for="emailId">Email ID</label>
-                <input
-                  type="email"
-                  formControlName="emailId"
-                  id="emailId"
-                  placeholder="Eg: user@axisbank.com"
-                  class="form-control"
-                  autocomplete="off"
-                  autofocus
-                />
-              </div>
-              <div class="form-group">
-                <label for="role">Role</label>
-                <select class="custom-select" formControlName="role" id="role">
-                  <option *ngFor="let role of roles" [value]="role">{{
-                    role | uppercase
-                  }}</option>
-                </select>
-              </div>
-              <button [disabled]="createUserForm.invalid || loading">
-                <span
-                  *ngIf="loading"
-                  class="spinner-border"
-                  style="width: 2rem; height: 2rem;"
-                  aria-hidden="true"
-                >
-                </span>
-                <span *ngIf="!loading">{{ submitButtonText }}</span>
-              </button>
-            </form>
-          </div>
-        </div>
-        <div
-          class="tab-pane fade show form-new"
-          id="blockuser"
-          role="tabpanel"
-          aria-labelledby="blockuser-tab"
-        >
-          <app-block-existing-user></app-block-existing-user>
-        </div>
-      </div>
+      Admin/ User creation form will appear here
     </div>
   </div>
 </div>

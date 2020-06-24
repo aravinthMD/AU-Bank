@@ -1,4 +1,4 @@
-<div class="login mx-auto my-auto">
+<div class="login shadow-sm">
   <div class="admin_img">
     <img src="../../assets/axis_admin_logo.png" alt="" srcset="" />
   </div>
@@ -37,7 +37,7 @@
         >Enter a valid password</small
       >
     </div>
-    <button [disabled]="loginForm.invalid || loading">
+    <button class="shadow" [disabled]="loginForm.invalid || loading">
       <span
         *ngIf="loading"
         class="spinner-border"

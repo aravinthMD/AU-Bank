@@ -1,11 +1,11 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
-import { UserCreationComponent } from "./user-creation.component";
+import { WhatsappComponent } from "./whatsapp.component";
 
 const routes: Routes = [
   {
     path: "",
-    component: UserCreationComponent,
+    component: WhatsappComponent,
     pathMatch: "full",
   },
 ];
@@ -15,4 +15,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class UserCreationRoutingModule {}
+export class WhatsappRoutingModule {}

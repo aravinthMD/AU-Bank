@@ -2,18 +2,25 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { IAngularMyDpOptions } from "angular-mydatepicker";
 import { addDays, subDays } from "date-fns";
-import { BUTTON_TEXTS } from "src/app/shared/utils/constant";
+import {
+  BUTTON_TEXTS,
+  PAGES,
+  DATE_FORMATS,
+} from "src/app/shared/utils/constant";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: "app-block-whatsapp",
-  templateUrl: "./block-whatsapp.component.html",
-  styleUrls: ["./block-whatsapp.component.scss"],
+  selector: "app-whatsapp",
+  templateUrl: "./whatsapp.component.html",
+  styleUrls: ["./whatsapp.component.scss"],
 })
-export class BlockWhatsappComponent implements OnInit {
+export class WhatsappComponent implements OnInit {
   searchButtonText = BUTTON_TEXTS.SEARCH_BUTTON_TEXT;
   submitButtontext = BUTTON_TEXTS.SUBMIT_BUTTON_TEXT;
 
   filterOptions = ["All", "Blocked", "Unblocked"];
+
+  isViewOnly = false;
 
   phoneNumber: string;
   form: FormGroup;
@@ -40,12 +47,18 @@ export class BlockWhatsappComponent implements OnInit {
   Lastname: string;
   Email: string;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private router: Router) {
     this.form = this.formBuilder.group({
       fromDate: [null, Validators.required],
       toDate: [null, Validators.required],
       filterType: ["All", Validators.required],
     });
+    const { url } = this.router;
+    if (url === PAGES.VIEW_WHATSAPP) {
+      this.isViewOnly = true;
+    } else {
+      this.isViewOnly = false;
+    }
     this.setValidators();
     this.setDatePickerOptions();
   }
@@ -82,14 +95,14 @@ export class BlockWhatsappComponent implements OnInit {
   setDatePickerOptions(): void {
     this.fromDateOptions = {
       dateRange: false,
-      dateFormat: "dd/mm/yyyy",
+      dateFormat: DATE_FORMATS.DD_MM_YYYY,
       disableUntil: this.fromMinDate,
       disableSince: this.fromMaxDate,
     };
 
     this.toDateOptions = {
       dateRange: false,
-      dateFormat: "dd/mm/yyyy",
+      dateFormat: DATE_FORMATS.DD_MM_YYYY,
       disableUntil: this.toMinDate,
       disableSince: this.toMaxDate,
     };
@@ -119,7 +132,10 @@ export class BlockWhatsappComponent implements OnInit {
 
   validate(input: HTMLInputElement) {
     const value = input.value;
-    this.validSearch = value.length === 10 ? true : false;
+    this.validSearch = value.length === 10;
+    if (this.validSearch) {
+      this.fetchUser();
+    }
   }
 
   fetchUser(): void {
