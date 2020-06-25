@@ -135,6 +135,8 @@ export class WhatsappComponent implements OnInit {
     this.validSearch = value.length === 10;
     if (this.validSearch) {
       this.fetchUser();
+    } else {
+      this.userDetail = null;
     }
   }
 

@@ -17,7 +17,8 @@ export enum PAGES {
   USER_CREATION = "/user-creation",
   VIEW_WHATSAPP = "/view-whatsapp",
   BLOCK_WHATSAPP = "/block-whatsapp",
-  DESIGN_TEMPLATE = "/design-template",
+  MARKETING_MAKER = "/marketing-maker",
+  MARKETING_CHECKER = "/marketing-checker",
 }
 
 export enum TOASTER_MESSAGES {
@@ -30,4 +31,11 @@ export enum TOASTER_MESSAGES {
 
 export enum DATE_FORMATS {
   DD_MM_YYYY = "dd/mm/yyyy",
+}
+
+export enum MENU_TITLES {
+  VIEW_WHATSAPP = "View Whatsapp",
+  BLOCK_WHATSAPP = "Block Whatsapp",
+  MARKETING_CHECKER = "Marketing Checker",
+  MARKETING_MAKER = "Marketing Maker",
 }

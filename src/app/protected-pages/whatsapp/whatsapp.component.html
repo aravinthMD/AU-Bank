@@ -4,7 +4,7 @@
   <div class="p-2"></div>
   <div class="row">
     <div class="col">
-      <div class="p-1 bg-light rounded rounded-pill shadow-sm mb-4">
+      <div class="bg-search p-1 rounded rounded-pill shadow-sm mb-4">
         <div class="input-group">
           <div class="input-group-prepend">
             <button
@@ -16,10 +16,10 @@
             </button>
           </div>
           <input
-            type="search"
+            type="mobile"
             placeholder="Type phone number to search"
             aria-describedby="button-addon2"
-            class="form-control border-0 bg-light"
+            class="form-control border-0 bg-search"
             #searchInput
             (keyup)="validate(searchInput)"
             autofocus
@@ -28,7 +28,7 @@
       </div>
     </div>
     <form [formGroup]="form" class="mx-auto" *ngIf="!isViewOnly">
-      <div class="form-row">
+      <div class="form-row mt-1">
         <div class="col">
           <div class="input-group calendar-fa-fa">
             <input
@@ -89,7 +89,7 @@
             }}</option>
           </select>
         </div>
-        <div class="search_btn col-md-3-fluid">
+        <div class="search_btn col-md-3-fluid mr-2">
           <button
             (click)="onSubmit()"
             [disabled]="form.invalid || reportLoading"

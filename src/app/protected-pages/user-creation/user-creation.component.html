@@ -1,8 +1,141 @@
 <div class="main">
-  <h2>Admin / User Creation</h2>
+  <h2 *ngIf="currentUserRole === 'Super Admin'">Admin / User Creation</h2>
+  <h2 *ngIf="currentUserRole === 'Admin'">User Creation</h2>
   <div class="container">
-    <div class="user">
-      Admin/ User creation form will appear here
+    <div class="user shadow" *ngIf="currentUserRole === 'Super Admin'">
+      <div class="card-header text-center">
+        Admin / User Creation
+      </div>
+      <div class="p-4">
+        <form
+          class="form"
+          [formGroup]="superAdminForm"
+          (ngSubmit)="createUser()"
+        >
+          <div class="form-group">
+            <label for="userId">USER ID</label>
+            <input
+              type="text"
+              formControlName="userId"
+              id="userId"
+              placeholder="Eg: USER0001"
+              class="form-control"
+              aria-describedby="userIdHelp"
+              autocomplete="off"
+              appAutofocus
+            />
+          </div>
+          <div class="form-group" *ngIf="currentUserRole === 'Super Admin'">
+            <label for="role">ROLE</label>
+            <select
+              class="custom-select"
+              formControlName="userRole"
+              id="role"
+              (change)="onRoleChanged()"
+            >
+              <option *ngFor="let option of userRoles" [value]="option">{{
+                option | uppercase
+              }}</option>
+            </select>
+          </div>
+          <label *ngIf="superAdminFieldControls.userRole.value === 'User'"
+            >ACCESS CONTROLS</label
+          >
+          <div
+            class="row d-flex"
+            *ngIf="superAdminFieldControls.userRole.value === 'User'"
+          >
+            <label
+              class="col-6 checkbox-inline"
+              *ngFor="let option of userOptions"
+            >
+              <input
+                class="mx-1"
+                type="checkbox"
+                [id]="option.title"
+                [value]="option.routerPath"
+                formControlName="accessMenus"
+                (change)="onChange($event, option)"
+              /><span class="checkbox-title">{{ option.title }}</span>
+            </label>
+          </div>
+
+          <button
+            class="shadow"
+            [disabled]="
+              superAdminForm.invalid ||
+              (superAdminFieldControls.userRole.value === 'User' &&
+                selectedMenuList.length === 0) ||
+              loading
+            "
+          >
+            <span
+              *ngIf="loading"
+              class="spinner-border"
+              style="width: 2rem; height: 2rem;"
+              aria-hidden="true"
+            >
+            </span>
+            <span>{{ submitButtonText }}</span>
+          </button>
+        </form>
+      </div>
+    </div>
+    <div class="user shadow" *ngIf="currentUserRole === 'Admin'">
+      <div class="card-header text-center">
+        User Creation
+      </div>
+      <div class="p-4">
+        <form class="form" [formGroup]="adminForm" (ngSubmit)="createUser()">
+          <div class="form-group">
+            <label for="userId">USER ID</label>
+            <input
+              type="text"
+              formControlName="userId"
+              id="userId"
+              placeholder="Eg: USER0001"
+              class="form-control"
+              aria-describedby="userIdHelp"
+              autocomplete="off"
+              autofocus
+            />
+            <small id="userIdHelp" class="form-text text-muted"
+              >Enter a valid user Id</small
+            >
+          </div>
+          <label>ACCESS CONTROLS</label>
+          <div class="row d-flex">
+            <label
+              class="col-6 checkbox-inline"
+              *ngFor="let option of userOptions"
+            >
+              <input
+                class="mx-1"
+                type="checkbox"
+                [id]="option.title"
+                formControlName="accessMenus"
+                (change)="onChange($event, option)"
+              /><span class="checkbox-title">{{ option.title }}</span>
+            </label>
+          </div>
+
+          <button
+            class="shadow"
+            [disabled]="
+              adminForm.invalid || selectedMenuList.length === 0 || loading
+            "
+          >
+            <span
+              *ngIf="loading"
+              class="spinner-border"
+              style="width: 2rem; height: 2rem;"
+              aria-hidden="true"
+            >
+            </span>
+            <span>{{ submitButtonText }}</span>
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 </div>
