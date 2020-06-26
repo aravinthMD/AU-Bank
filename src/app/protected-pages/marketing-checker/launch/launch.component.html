@@ -6,7 +6,7 @@
         <div class="col">
           <div class="input-group calendar-fa-fa shadow-sm">
             <input
-              class="form-control"
+              class="form-control bg-search"
               name="mydate"
               placeholder="From Date"
               angular-mydatepicker
@@ -30,7 +30,7 @@
         <div class="col">
           <div class="input-group calendar-fa-fa">
             <input
-              class="form-control"
+              class="form-control bg-search"
               name="mydate"
               placeholder="To Date"
               angular-mydatepicker
@@ -72,25 +72,18 @@
   <table class="table">
     <thead class="thead-light">
       <tr>
-        <th scope="col">Template ID</th>
-        <th scope="col">Created On</th>
-        <th scope="col">Template</th>
-        <th scope="col">No of Dynamic Paramenters</th>
-        <th scope="col">Campaign End Date</th>
-        <th scope="col">Action</th>
+        <th scope="col" *ngFor="let header of tableHeaders">{{ header }}</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>T00000001</td>
-        <td>23/06/2020, 3:10PM</td>
+      <tr *ngFor="let template of templates">
+        <td>{{ template.templateId }}</td>
+        <td>{{ template.createdOn }}</td>
         <td>
-          Chennai Example bank offers life time free credit card. Initial limit
-          is P1. Visit https://www.chennaiexamplebank.com and fill your details
-          today.
+          {{ template.template }}
         </td>
-        <td>1</td>
-        <td>23/07/2020, 11:59PM</td>
+        <td>{{ template.dynamicParameters }}</td>
+        <td>{{ template.campaignEndDate }}</td>
         <td>
           <button type="button" class="btn shadow">
             {{ launchButtonText }}

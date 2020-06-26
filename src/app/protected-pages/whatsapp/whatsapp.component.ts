@@ -15,10 +15,11 @@ import { Router } from "@angular/router";
   styleUrls: ["./whatsapp.component.scss"],
 })
 export class WhatsappComponent implements OnInit {
-  searchButtonText = BUTTON_TEXTS.SEARCH_BUTTON_TEXT;
-  submitButtontext = BUTTON_TEXTS.SUBMIT_BUTTON_TEXT;
+  blockButtonText = BUTTON_TEXTS.BLOCK_BUTTON_TEXT;
+  submitButtonText = BUTTON_TEXTS.SUBMIT_BUTTON_TEXT;
 
   filterOptions = ["All", "Blocked", "Unblocked"];
+  tableHeaders: string[] = [];
 
   isViewOnly = false;
 
@@ -56,8 +57,39 @@ export class WhatsappComponent implements OnInit {
     const { url } = this.router;
     if (url === PAGES.VIEW_WHATSAPP) {
       this.isViewOnly = true;
+      this.tableHeaders = [
+        "Customer Mobile Number",
+        "Opt In",
+        "Date Of Opt In",
+        "Opt In Channel",
+        "Opt Out",
+        "Date Of Opt Out",
+        "Opt Out Channel",
+        "Request Id if blocked earlier",
+        'Block Date',
+        "Blocking User",
+        "Status",
+        "Reason",
+        "SR No",
+      ];
     } else {
       this.isViewOnly = false;
+      this.tableHeaders = [
+        "Customer Mobile Number",
+        "Opt In",
+        "Date Of Opt In",
+        "Opt In Channel",
+        "Opt Out",
+        "Date Of Opt Out",
+        "Opt Out Channel",
+        "Request Id if blocked earlier",
+        'Block Date',
+        "Blocking User",
+        "Status",
+        "Block Customer",
+        "Reason",
+        "SR No",
+      ];
     }
     this.setValidators();
     this.setDatePickerOptions();
@@ -142,7 +174,21 @@ export class WhatsappComponent implements OnInit {
 
   fetchUser(): void {
     this.searchLoading = true;
-    this.userDetail = {};
+    this.userDetail = {
+      mobileNumber: "+91 9894192798",
+      optInStatus: "Opt In",
+      optInDate: "26/06/2020",
+      optInChannel: "SMS",
+      optOutStatus: "Opt In",
+      optOutDate: "26/06/2020",
+      optOutChannel: "SMS",
+      requestId: "RQ32426299",
+      blockDate: "26/06/2020",
+      userName: "DURGA",
+      status: "OPT IN",
+      reason: "",
+      srNumber: "",
+    };
     this.searchLoading = false;
   }
 
@@ -155,8 +201,6 @@ export class WhatsappComponent implements OnInit {
 
     console.log(fromDate, toDate, filterType);
   }
-
-  onDateChanged(e) {}
 
   onClick(event) {
     this.showModal = true; // Show-Hide Modal Check

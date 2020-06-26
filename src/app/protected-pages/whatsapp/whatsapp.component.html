@@ -2,7 +2,7 @@
   <h2 *ngIf="isViewOnly">View Whatsapp</h2>
   <h2 *ngIf="!isViewOnly">Block Whatsapp</h2>
   <div class="p-2"></div>
-  <div class="row">
+  <div class="row justify-content-between">
     <div class="col">
       <div class="bg-search p-1 rounded rounded-pill shadow-sm mb-4">
         <div class="input-group">
@@ -27,12 +27,12 @@
         </div>
       </div>
     </div>
-    <form [formGroup]="form" class="mx-auto" *ngIf="!isViewOnly">
+    <form [formGroup]="form" *ngIf="!isViewOnly">
       <div class="form-row mt-1">
         <div class="col">
           <div class="input-group calendar-fa-fa">
             <input
-              class="form-control"
+              class="form-control bg-search"
               name="mydate"
               placeholder="From Date"
               angular-mydatepicker
@@ -56,7 +56,7 @@
         <div class="col">
           <div class="input-group calendar-fa-fa">
             <input
-              class="form-control"
+              class="form-control bg-search"
               name="mydate"
               placeholder="To Date"
               angular-mydatepicker
@@ -94,7 +94,7 @@
             (click)="onSubmit()"
             [disabled]="form.invalid || reportLoading"
           >
-            {{ submitButtontext }}
+            {{ submitButtonText }}
           </button>
         </div>
       </div>
@@ -102,100 +102,72 @@
   </div>
   <table class="shadow">
     <tr>
-      <th>
-        Customer Mobile Number
-      </th>
-      <th>
-        Opt In
-      </th>
-      <th>
-        Date of Opt In
-      </th>
-      <th>
-        Opt In Channel
-      </th>
-      <th>
-        Opt Out
-      </th>
-      <th>
-        Date of Opt Out
-      </th>
-      <th>
-        Opt Out Channel
-      </th>
-      <th>
-        Request ID if blocked earlier
-      </th>
-      <th>
-        Block Date
-      </th>
-      <th>
-        Blocking User
-      </th>
-      <th>
-        Status
-      </th>
-      <th *ngIf="!isViewOnly">
-        Block Customer
-      </th>
-      <th>
-        Reason
-      </th>
-      <th>
-        SR No
+      <th *ngFor="let header of tableHeaders">
+        {{ header }}
       </th>
     </tr>
     <tr *ngIf="userDetail">
       <td>
-        +91 9894192798
+        {{ userDetail.mobileNumber }}
       </td>
       <td>
         <i
+          *ngIf="userDetail.optInStatus === 'Opt In'"
           class="fa fa-check-circle-o fa-2x text-success"
+          aria-hidden="true"
+        ></i>
+        <i
+          *ngIf="userDetail.optInStatus !== 'Opt In'"
+          class="fa fa-times-circle-o fa-2x text-daner"
           aria-hidden="true"
         ></i>
       </td>
       <td>
-        04/05/2020
+        {{ userDetail.optInDate }}
       </td>
       <td>
-        SMS
+        {{ userDetail.optInChannel }}
       </td>
       <td>
         <i
+          *ngIf="userDetail.optOutStatus === 'Opt Out'"
+          class="fa fa-check-circle-o fa-2x text-success"
+          aria-hidden="true"
+        ></i>
+        <i
+          *ngIf="userDetail.optOutStatus !== 'Opt Out'"
           class="fa fa-times-circle-o fa-2x text-danger"
           aria-hidden="true"
         ></i>
       </td>
       <td>
-        04/05/2020
+        {{ userDetail.optOutDate }}
       </td>
       <td>
-        SMS
+        {{ userDetail.optOutChannel }}
       </td>
       <td>
-        RQ32426299
+        {{ userDetail.requestId }}
       </td>
       <td>
-        04/05/2020
+        {{ userDetail.blockDate }}
       </td>
       <td>
-        Arun
+        {{ userDetail.userName }}
       </td>
       <td>
-        <i class="fa fa-sign-in fa-2x text-success" aria-hidden="true"></i>
-        <i class="fa fa-sign-out fa-2x text-danger" aria-hidden="true"></i>
+        {{ userDetail.status }}
       </td>
       <td *ngIf="!isViewOnly">
         <button type="button" data-toggle="modal" data-target="#myModal">
-          Block
+          {{ blockButtonText }}
         </button>
       </td>
       <td>
-        Lost
+        {{ userDetail.reason ? userDetail.reason : "NA" }}
       </td>
       <td>
-        1234&nbsp;5625&nbsp;4985
+        {{ userDetail.srNumber ? userDetail.srNumber : "NA" }}
       </td>
     </tr>
   </table>
@@ -253,7 +225,7 @@
           mx-auto
           data-dismiss="modal"
         >
-          {{ submitButtontext }}
+          {{ submitButtonText }}
         </button>
       </div>
     </div>

@@ -4,6 +4,7 @@ export enum BUTTON_TEXTS {
   DISABLE_USER_BUTTON_TEXT = "Disable User",
   SEARCH_BUTTON_TEXT = "Search",
   LAUNCH_BUTTON_TEXT = "Launch",
+  BLOCK_BUTTON_TEXT = 'Block'
 }
 
 export enum ROLES {

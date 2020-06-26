@@ -12,6 +12,16 @@ import { DATE_FORMATS, BUTTON_TEXTS } from "src/app/shared/utils/constant";
 export class LaunchComponent implements OnInit {
   launchButtonText = BUTTON_TEXTS.LAUNCH_BUTTON_TEXT;
   form: FormGroup;
+  templates = [];
+
+  tableHeaders = [
+    "Template Id",
+    "Created On",
+    "Template",
+    "No of Dynamic Parameters",
+    "Campaign End Date",
+    "Action",
+  ];
 
   filterOptions = ["All", "Blocked", "Unblocked"];
 
@@ -35,7 +45,19 @@ export class LaunchComponent implements OnInit {
     this.setDatePickerOptions();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.templates = [
+      {
+        templateId: "T00000001",
+        createdOn: "26/06/2020, 12:00PM",
+        template:
+          // tslint:disable-next-line: max-line-length
+          "Chennai Example bank offers life time free credit card. Initial limit is P1. Visit https://www.chennaiexamplebank.com and fill your details today.",
+        dynamicParameters: "2",
+        campaignEndDate: "26/07/2020, 12:00PM",
+      },
+    ];
+  }
 
   setValidators(): void {
     const date = addDays(this.today, 1);
