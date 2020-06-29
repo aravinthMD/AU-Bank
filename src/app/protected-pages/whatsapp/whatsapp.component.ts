@@ -1,12 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { IAngularMyDpOptions } from "angular-mydatepicker";
-import { addDays, subDays } from "date-fns";
-import {
-  BUTTON_TEXTS,
-  PAGES,
-  DATE_FORMATS,
-} from "src/app/shared/utils/constant";
+import { BUTTON_TEXTS, PAGES } from "src/app/shared/utils/constant";
 import { Router } from "@angular/router";
 import { NgbDate, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { BlockWhatsappDialogComponent } from "./block-whatsapp-dialog.component";

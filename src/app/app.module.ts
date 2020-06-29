@@ -9,6 +9,7 @@ import { LoginComponent } from "./public-pages/login/login.component";
 import { SharedModule } from "./shared/shared.module";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { JwtInterceptor } from "./shared/interceptors/jwt.interceptor";
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { JwtInterceptor } from "./shared/interceptors/jwt.interceptor";
     HttpClientModule,
     AppRoutingModule,
     SharedModule,
+    NgbModule,
   ],
   providers: [
     {

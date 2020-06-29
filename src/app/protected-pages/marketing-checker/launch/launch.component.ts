@@ -1,8 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { IAngularMyDpOptions } from "angular-mydatepicker";
-import { addDays, subDays } from "date-fns";
-import { DATE_FORMATS, BUTTON_TEXTS } from "src/app/shared/utils/constant";
+import {  BUTTON_TEXTS } from "src/app/shared/utils/constant";
 import { NgbDate } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({

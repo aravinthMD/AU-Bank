@@ -1,12 +1,11 @@
-import { Injectable, TemplateRef } from "@angular/core";
-import { ToastrService } from "ngx-toastr";
+import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 
 @Injectable({
   providedIn: "root",
 })
 export class ToasterService {
-  constructor(private toastr: ToastrService) {}
+  constructor() {}
 
   private toastsSubject = new BehaviorSubject([]);
   toasts = this.toastsSubject.asObservable();
@@ -17,17 +16,5 @@ export class ToasterService {
 
   remove() {
     this.toastsSubject.next(null);
-  }
-
-  showSuccess(message: string) {
-    this.toastr.success(message);
-  }
-
-  showError(message: string) {
-    this.toastr.error(message);
-  }
-
-  showWarning(message: string) {
-    this.toastr.warning(message);
   }
 }
