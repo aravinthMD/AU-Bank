@@ -1,8 +1,10 @@
+@import "../../shared/styles/variables.scss";
+
 button {
   width: -webkit-fill-available;
-  color: #fff;
-  background-color: #97144d;
-  border: 1px solid #97144d;
+  color: $white-color;
+  background-color: $maroon-color;
+  border: 1px solid $maroon-color;
   padding: 10px;
   margin-top: 10px;
   font-size: 18px;

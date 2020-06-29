@@ -1,0 +1,14 @@
+@import "../../shared/styles/variables.scss";
+
+.block-btn {
+  background-color: $maroon-color;
+  color: $white-color;
+}
+
+.block-btn:hover {
+  color: $white-color;
+}
+
+.text-message {
+  color: $maroon-color;
+}

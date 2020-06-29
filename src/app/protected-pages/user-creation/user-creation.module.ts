@@ -2,14 +2,9 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { UserCreationComponent } from "./user-creation.component";
 import { UserCreationRoutingModule } from "./user-creation.routing.module";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { SharedModule } from "src/app/shared/shared.module";
 @NgModule({
   declarations: [UserCreationComponent],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    UserCreationRoutingModule,
-  ],
+  imports: [CommonModule, SharedModule, UserCreationRoutingModule],
 })
 export class UserCreationModule {}

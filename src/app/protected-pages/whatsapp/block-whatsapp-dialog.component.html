@@ -1,0 +1,58 @@
+<div class="modal-header">
+  <h4 class="modal-title">Do you wish to block {{ userName | uppercase }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="form">
+    <div class="form-row">
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="srNumber">SR NO</label>
+            <input
+              type="text"
+              formControlName="srNumber"
+              id="srNumber"
+              placeholder="Eg: SR001"
+              class="form-control"
+              autocomplete="off"
+              ngbAutofocus
+            />
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="reason">REASON</label>
+            <input
+              type="text"
+              formControlName="reason"
+              id="reason"
+              placeholder="Eg: Lost Mobile"
+              class="form-control"
+              autocomplete="off"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <span class="text-message"
+    >Blocking will disable {{ mobileNumber }} access to whatsapp
+    banking.</span
+  >
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    [disabled]="form.invalid || loading"
+    (click)="blockWhatsapp()"
+    class="btn block-btn shadow"
+  >
+    {{ blockButtonText }}
+  </button>
+  <button type="button" class="btn btn-danger shadow" (click)="close()">
+    {{ cancelButtonText }}
+  </button>
+</div>

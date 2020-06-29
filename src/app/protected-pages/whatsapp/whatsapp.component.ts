@@ -8,6 +8,8 @@ import {
   DATE_FORMATS,
 } from "src/app/shared/utils/constant";
 import { Router } from "@angular/router";
+import { NgbDate, NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { BlockWhatsappDialogComponent } from "./block-whatsapp-dialog.component";
 
 @Component({
   selector: "app-whatsapp",
@@ -23,7 +25,6 @@ export class WhatsappComponent implements OnInit {
 
   isViewOnly = false;
 
-  phoneNumber: string;
   form: FormGroup;
   userDetail: any;
 
@@ -38,17 +39,11 @@ export class WhatsappComponent implements OnInit {
   toMinDate: any;
   toMaxDate: any;
 
-  fromDateOptions: IAngularMyDpOptions;
-  toDateOptions: IAngularMyDpOptions;
-
-  titleModel = "";
-  showModal;
-  UserId: string;
-  Firstname: string;
-  Lastname: string;
-  Email: string;
-
-  constructor(private formBuilder: FormBuilder, private router: Router) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private ngbDialog: NgbModal
+  ) {
     this.form = this.formBuilder.group({
       fromDate: [null, Validators.required],
       toDate: [null, Validators.required],
@@ -66,7 +61,7 @@ export class WhatsappComponent implements OnInit {
         "Date Of Opt Out",
         "Opt Out Channel",
         "Request Id if blocked earlier",
-        'Block Date',
+        "Block Date",
         "Blocking User",
         "Status",
         "Reason",
@@ -83,7 +78,7 @@ export class WhatsappComponent implements OnInit {
         "Date Of Opt Out",
         "Opt Out Channel",
         "Request Id if blocked earlier",
-        'Block Date',
+        "Block Date",
         "Blocking User",
         "Status",
         "Block Customer",
@@ -92,18 +87,13 @@ export class WhatsappComponent implements OnInit {
       ];
     }
     this.setValidators();
-    this.setDatePickerOptions();
   }
 
   ngOnInit(): void {}
 
   setValidators(): void {
-    const date = addDays(this.today, 1);
-    this.fromMinDate = {
-      year: 0,
-      month: 0,
-      day: 0,
-    };
+    const date = new Date();
+    this.fromMinDate = { year: 0, month: 0, day: 0 };
 
     this.fromMaxDate = {
       year: date.getFullYear(),
@@ -111,11 +101,7 @@ export class WhatsappComponent implements OnInit {
       day: date.getDate(),
     };
 
-    this.toMinDate = {
-      year: 0,
-      month: 0,
-      day: 0,
-    };
+    this.toMinDate = { year: 0, month: 0, day: 0 };
 
     this.toMaxDate = {
       year: date.getFullYear(),
@@ -124,42 +110,14 @@ export class WhatsappComponent implements OnInit {
     };
   }
 
-  setDatePickerOptions(): void {
-    this.fromDateOptions = {
-      dateRange: false,
-      dateFormat: DATE_FORMATS.DD_MM_YYYY,
-      disableUntil: this.fromMinDate,
-      disableSince: this.fromMaxDate,
-    };
-
-    this.toDateOptions = {
-      dateRange: false,
-      dateFormat: DATE_FORMATS.DD_MM_YYYY,
-      disableUntil: this.toMinDate,
-      disableSince: this.toMaxDate,
-    };
+  onFromDateChange(event: NgbDate): void {
+    const { year, month, day } = event;
+    this.toMinDate = { year, month, day };
   }
 
-  onFromDateChange(event: any): void {
-    const { jsDate } = event.singleDate;
-    const date = subDays(jsDate, 1);
-    this.toMinDate = {
-      year: date.getFullYear(),
-      month: date.getMonth() + 1,
-      day: date.getDate(),
-    };
-    this.setDatePickerOptions();
-  }
-
-  onToDateChange(event: any): void {
-    const { jsDate } = event.singleDate;
-    const date = addDays(jsDate, 1);
-    this.fromMaxDate = {
-      year: date.getFullYear(),
-      month: date.getMonth() + 1,
-      day: date.getDate(),
-    };
-    this.setDatePickerOptions();
+  onToDateChange(event: NgbDate): void {
+    const { year, month, day } = event;
+    this.fromMaxDate = { year, month, day };
   }
 
   validate(input: HTMLInputElement) {
@@ -202,17 +160,11 @@ export class WhatsappComponent implements OnInit {
     console.log(fromDate, toDate, filterType);
   }
 
-  onClick(event) {
-    this.showModal = true; // Show-Hide Modal Check
-    this.UserId = event.target.id;
-    this.Firstname = document.getElementById(
-      "firstname" + this.UserId
-    ).innerHTML;
-    this.Lastname = document.getElementById("lastname" + this.UserId).innerHTML;
-    this.Email = document.getElementById("email" + this.UserId).innerHTML;
-  }
-
-  hide() {
-    this.showModal = false;
+  openBlockWhatsappDialog({ userName, mobileNumber }): void {
+    const dialog = this.ngbDialog.open(BlockWhatsappDialogComponent, {
+      centered: true,
+    });
+    dialog.componentInstance.userName = userName;
+    dialog.componentInstance.mobileNumber = mobileNumber;
   }
 }

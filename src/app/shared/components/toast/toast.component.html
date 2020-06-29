@@ -1,0 +1,11 @@
+<div class="d-flex align-items-center justify-content-center">
+  <ngb-toast
+    *ngFor="let toast of toasts"
+    [class]="toast.classname"
+    [autohide]="true"
+    [delay]="2000"
+    (hide)="remove()"
+  >
+    {{ toast.message }}
+  </ngb-toast>
+</div>

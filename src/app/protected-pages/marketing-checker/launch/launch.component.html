@@ -4,23 +4,24 @@
     <form [formGroup]="form">
       <div class="form-row">
         <div class="col">
-          <div class="input-group calendar-fa-fa shadow-sm">
+          <div class="input-group">
             <input
-              class="form-control bg-search"
-              name="mydate"
+              class="form-control bg-search btn-outline-secondary"
               placeholder="From Date"
-              angular-mydatepicker
-              #dp="angular-mydatepicker"
+              name="fromDate"
               formControlName="fromDate"
-              [options]="fromDateOptions"
-              (dateChanged)="onFromDateChange($event)"
+              (dateSelect)="onFromDateChange($event)"
+              ngbDatepicker
+              [maxDate]="fromMaxDate"
+              [minDate]="fromMinDate"
               readonly
+              #fromDate="ngbDatepicker"
             />
             <div class="input-group-append">
               <button
+                class="btn btn-outline-secondary"
+                (click)="fromDate.toggle()"
                 type="button"
-                class="btn btn-secondary"
-                (click)="dp.toggleCalendar()"
               >
                 <i class="fa fa-calendar-o"></i>
               </button>
@@ -28,23 +29,24 @@
           </div>
         </div>
         <div class="col">
-          <div class="input-group calendar-fa-fa">
+          <div class="input-group">
             <input
-              class="form-control bg-search"
-              name="mydate"
+              class="form-control bg-search btn-outline-secondary"
               placeholder="To Date"
-              angular-mydatepicker
-              #toDate="angular-mydatepicker"
+              name="toDate"
               formControlName="toDate"
-              [options]="toDateOptions"
-              (dateChanged)="onToDateChange($event)"
+              (dateSelect)="onToDateChange($event)"
+              ngbDatepicker
               readonly
+              [maxDate]="toMaxDate"
+              [minDate]="toMinDate"
+              #toDate="ngbDatepicker"
             />
             <div class="input-group-append">
               <button
+                class="btn btn-outline-secondary"
+                (click)="toDate.toggle()"
                 type="button"
-                class="btn btn-secondary"
-                (click)="toDate.toggleCalendar()"
               >
                 <i class="fa fa-calendar-o"></i>
               </button>

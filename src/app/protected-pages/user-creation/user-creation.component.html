@@ -47,7 +47,7 @@
             >ACCESS CONTROLS</label
           >
           <div
-            class="row d-flex"
+            class="row d-flex checkbox-container"
             *ngIf="superAdminFieldControls.userRole.value === 'User'"
           >
             <label
@@ -61,7 +61,9 @@
                 [value]="option.routerPath"
                 formControlName="accessMenus"
                 (change)="onChange($event, option)"
-              /><span class="checkbox-title">{{ option.title }}</span>
+              />
+              <span class="checkmark"></span>
+              <span class="checkbox-title">{{ option.title }}</span>
             </label>
           </div>
 
@@ -111,16 +113,18 @@
           <label>ACCESS CONTROLS</label>
           <div class="row d-flex">
             <label
-              class="col-6 checkbox-inline"
+              class="col-6 checkbox-inline container-checkbox"
               *ngFor="let option of userOptions"
             >
               <input
-                class="mx-1"
+                class="mx-1 checkbox-input"
                 type="checkbox"
                 [id]="option.title"
                 formControlName="accessMenus"
                 (change)="onChange($event, option)"
-              /><span class="checkbox-title">{{ option.title }}</span>
+              />
+              <span class="checkmark"></span>
+              <span class="checkbox-title">{{ option.title }}</span>
             </label>
           </div>
 

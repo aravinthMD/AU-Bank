@@ -2,9 +2,11 @@
   <h2 *ngIf="isViewOnly">View Whatsapp</h2>
   <h2 *ngIf="!isViewOnly">Block Whatsapp</h2>
   <div class="p-2"></div>
-  <div class="row justify-content-between">
+  <div class="row">
     <div class="col">
-      <div class="bg-search p-1 rounded rounded-pill shadow-sm mb-4">
+      <div
+        class="border border-secondary p-1 bg-search rounded-pill shadow-sm mb-4"
+      >
         <div class="input-group">
           <div class="input-group-prepend">
             <button
@@ -16,7 +18,7 @@
             </button>
           </div>
           <input
-            type="mobile"
+            type="number"
             placeholder="Type phone number to search"
             aria-describedby="button-addon2"
             class="form-control border-0 bg-search"
@@ -27,78 +29,153 @@
         </div>
       </div>
     </div>
-    <form [formGroup]="form" *ngIf="!isViewOnly">
-      <div class="form-row mt-1">
-        <div class="col">
-          <div class="input-group calendar-fa-fa">
-            <input
-              class="form-control bg-search"
-              name="mydate"
-              placeholder="From Date"
-              angular-mydatepicker
-              #dp="angular-mydatepicker"
-              formControlName="fromDate"
-              [options]="fromDateOptions"
-              (dateChanged)="onFromDateChange($event)"
-              readonly
-            />
-            <div class="input-group-append">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                (click)="dp.toggleCalendar()"
-              >
-                <i class="fa fa-calendar-o"></i>
-              </button>
+    <div class="col-8" *ngIf="!isViewOnly">
+      <form [formGroup]="form">
+        <div class="form-row mt-1">
+          <div class="col">
+            <div class="input-group">
+              <input
+                class="form-control bg-search btn-outline-secondary"
+                placeholder="From Date"
+                name="fromDate"
+                formControlName="fromDate"
+                (dateSelect)="onFromDateChange($event)"
+                ngbDatepicker
+                [maxDate]="fromMaxDate"
+                [minDate]="fromMinDate"
+                readonly
+                #fromDate="ngbDatepicker"
+              />
+              <div class="input-group-append">
+                <button
+                  class="btn btn-outline-secondary"
+                  (click)="fromDate.toggle()"
+                  type="button"
+                >
+                  <i class="fa fa-calendar-o"></i>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col">
-          <div class="input-group calendar-fa-fa">
-            <input
-              class="form-control bg-search"
-              name="mydate"
-              placeholder="To Date"
-              angular-mydatepicker
-              #toDate="angular-mydatepicker"
-              formControlName="toDate"
-              [options]="toDateOptions"
-              (dateChanged)="onToDateChange($event)"
-              readonly
-            />
-            <div class="input-group-append">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                (click)="toDate.toggleCalendar()"
-              >
-                <i class="fa fa-calendar-o"></i>
-              </button>
+          <div class="col">
+            <div class="input-group">
+              <input
+                class="form-control bg-search btn-outline-secondary"
+                placeholder="To Date"
+                name="toDate"
+                formControlName="toDate"
+                (dateSelect)="onToDateChange($event)"
+                ngbDatepicker
+                readonly
+                [maxDate]="toMaxDate"
+                [minDate]="toMinDate"
+                #toDate="ngbDatepicker"
+              />
+              <div class="input-group-append">
+                <button
+                  class="btn btn-outline-secondary"
+                  (click)="toDate.toggle()"
+                  type="button"
+                >
+                  <i class="fa fa-calendar-o"></i>
+                </button>
+              </div>
             </div>
           </div>
+          <div class="col">
+            <select
+              class="custom-select"
+              formControlName="filterType"
+              title="Filter Type"
+              id="role"
+            >
+              <option *ngFor="let option of filterOptions" [value]="option">{{
+                option | uppercase
+              }}</option>
+            </select>
+          </div>
+          <div class="col search_btn">
+            <button
+              class="shadow"
+              (click)="onSubmit()"
+              [disabled]="form.invalid || reportLoading"
+            >
+              {{ submitButtonText }}
+            </button>
+          </div>
         </div>
-        <div class="col">
-          <select
-            class="custom-select"
-            formControlName="filterType"
-            title="Filter Type"
-            id="role"
-          >
-            <option *ngFor="let option of filterOptions" [value]="option">{{
-              option | uppercase
-            }}</option>
-          </select>
-        </div>
-        <div class="search_btn col-md-3-fluid mr-2">
-          <button
-            (click)="onSubmit()"
-            [disabled]="form.invalid || reportLoading"
-          >
-            {{ submitButtonText }}
-          </button>
-        </div>
-      </div>
-    </form>
+        <!-- <div class="col">
+            <div class="input-group">
+              <input
+                class="form-control bg-search"
+                placeholder="From Date"
+                name="fromDate"
+                formControlName="fromDate"
+                (dateSelect)="onFromDateChange($event)"
+                ngbDatepicker
+                [maxDate]="fromMaxDate"
+                [minDate]="fromMinDate"
+                readonly
+                #fromDate="ngbDatepicker"
+              />
+              <div class="input-group-append">
+                <button
+                  class="btn btn-outline-secondary"
+                  (click)="fromDate.toggle()"
+                  type="button"
+                >
+                  <i class="fa fa-calendar-o"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="input-group">
+              <input
+                class="form-control bg-search"
+                placeholder="To Date"
+                name="toDate"
+                formControlName="toDate"
+                (dateSelect)="onToDateChange($event)"
+                ngbDatepicker
+                readonly
+                [maxDate]="toMaxDate"
+                [minDate]="toMinDate"
+                #toDate="ngbDatepicker"
+              />
+              <div class="input-group-append">
+                <button
+                  class="btn btn-outline-secondary"
+                  (click)="toDate.toggle()"
+                  type="button"
+                >
+                  <i class="fa fa-calendar-o"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <select
+              class="custom-select"
+              formControlName="filterType"
+              title="Filter Type"
+              id="role"
+            >
+              <option *ngFor="let option of filterOptions" [value]="option">{{
+                option | uppercase
+              }}</option>
+            </select>
+          </div>
+          <div class="col search_btn">
+            <button
+              (click)="onSubmit()"
+              [disabled]="form.invalid || reportLoading"
+            >
+              {{ submitButtonText }}
+            </button>
+          </div> -->
+      </form>
+    </div>
   </div>
   <table class="shadow">
     <tr>
@@ -159,7 +236,7 @@
         {{ userDetail.status }}
       </td>
       <td *ngIf="!isViewOnly">
-        <button type="button" data-toggle="modal" data-target="#myModal">
+        <button type="button" class="shadow" (click)="openBlockWhatsappDialog(userDetail)">
           {{ blockButtonText }}
         </button>
       </td>
@@ -171,63 +248,4 @@
       </td>
     </tr>
   </table>
-</div>
-<div class="modal" id="myModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4
-          class="modal-title"
-          style="width: 552px; font-size: x-large; color: #ff2182;"
-        >
-          Do you wish to Block ?
-        </h4>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          style="display: contents;"
-        >
-          &times;
-        </button>
-      </div>
-
-      <!-- Modal body -->
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-6">
-            <label for="usr" style="font-size: unset; color: #97144d;"
-              >SR No:</label
-            >
-            <input type="text" class="form-control" id="usr" />
-          </div>
-          <div class="col-md-6">
-            <label for="sel1" style="font-size: unset; color: #97144d;"
-              >Reason</label
-            >
-            <input
-              type="text"
-              maxlength="10"
-              type="text"
-              class="form-control"
-              id="Reason"
-            />
-          </div>
-        </div>
-      </div>
-
-      <!-- Modal footer -->
-      <div class="modal-footer">
-        <button
-          type="button"
-          style="color: white; background-color: #97144d;"
-          mx-auto
-          data-dismiss="modal"
-        >
-          {{ submitButtonText }}
-        </button>
-      </div>
-    </div>
-  </div>
 </div>

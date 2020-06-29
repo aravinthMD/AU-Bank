@@ -1,19 +1,21 @@
+@import "../../../shared/styles/variables.scss";
+
 tr {
   td {
     vertical-align: middle;
     font-size: 14px;
     button {
       width: -webkit-fill-available;
-      color: #fff;
-      background-color: #97144d;
-      border: 1px solid #97144d;
+      color: $white-color;
+      background-color: $maroon-color;
+      border: 1px solid $maroon-color;
       font-size: 12px;
     }
   }
 
   th {
     vertical-align: middle;
-    color: #97144d !important;
+    color: $maroon-color !important;
   }
 }
 table {
@@ -22,9 +24,11 @@ table {
 
 select,
 option {
-  background-color: #f8f9fa !important;
+  background-color: $white-color !important;
+  border-color: #6c757d;
 }
 
 .bg-search {
-  background-color: #f8f9fa;
+  background-color: $white-color !important;
+  color: #6c757d;
 }

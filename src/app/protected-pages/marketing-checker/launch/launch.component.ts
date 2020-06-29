@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { IAngularMyDpOptions } from "angular-mydatepicker";
 import { addDays, subDays } from "date-fns";
 import { DATE_FORMATS, BUTTON_TEXTS } from "src/app/shared/utils/constant";
+import { NgbDate } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-launch",
@@ -32,9 +33,6 @@ export class LaunchComponent implements OnInit {
   toMinDate: any;
   toMaxDate: any;
 
-  fromDateOptions: IAngularMyDpOptions;
-  toDateOptions: IAngularMyDpOptions;
-
   constructor(private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
       fromDate: [null, Validators.required],
@@ -42,7 +40,6 @@ export class LaunchComponent implements OnInit {
       filterType: ["All", Validators.required],
     });
     this.setValidators();
-    this.setDatePickerOptions();
   }
 
   ngOnInit(): void {
@@ -60,12 +57,8 @@ export class LaunchComponent implements OnInit {
   }
 
   setValidators(): void {
-    const date = addDays(this.today, 1);
-    this.fromMinDate = {
-      year: 0,
-      month: 0,
-      day: 0,
-    };
+    const date = new Date();
+    this.fromMinDate = { year: 0, month: 0, day: 0 };
 
     this.fromMaxDate = {
       year: date.getFullYear(),
@@ -73,11 +66,7 @@ export class LaunchComponent implements OnInit {
       day: date.getDate(),
     };
 
-    this.toMinDate = {
-      year: 0,
-      month: 0,
-      day: 0,
-    };
+    this.toMinDate = { year: 0, month: 0, day: 0 };
 
     this.toMaxDate = {
       year: date.getFullYear(),
@@ -86,41 +75,13 @@ export class LaunchComponent implements OnInit {
     };
   }
 
-  setDatePickerOptions(): void {
-    this.fromDateOptions = {
-      dateRange: false,
-      dateFormat: DATE_FORMATS.DD_MM_YYYY,
-      disableUntil: this.fromMinDate,
-      disableSince: this.fromMaxDate,
-    };
-
-    this.toDateOptions = {
-      dateRange: false,
-      dateFormat: DATE_FORMATS.DD_MM_YYYY,
-      disableUntil: this.toMinDate,
-      disableSince: this.toMaxDate,
-    };
+  onFromDateChange(event: NgbDate): void {
+    const { year, month, day } = event;
+    this.toMinDate = { year, month, day };
   }
 
-  onFromDateChange(event: any): void {
-    const { jsDate } = event.singleDate;
-    const date = subDays(jsDate, 1);
-    this.toMinDate = {
-      year: date.getFullYear(),
-      month: date.getMonth() + 1,
-      day: date.getDate(),
-    };
-    this.setDatePickerOptions();
-  }
-
-  onToDateChange(event: any): void {
-    const { jsDate } = event.singleDate;
-    const date = addDays(jsDate, 1);
-    this.fromMaxDate = {
-      year: date.getFullYear(),
-      month: date.getMonth() + 1,
-      day: date.getDate(),
-    };
-    this.setDatePickerOptions();
+  onToDateChange(event: NgbDate): void {
+    const { year, month, day } = event;
+    this.fromMaxDate = { year, month, day };
   }
 }

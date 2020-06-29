@@ -67,7 +67,9 @@ export class LoginComponent implements OnInit {
 
     this.userService.login(emailId, password).subscribe((response) => {
       const currentHome = this.userService.currentHomeValue;
-      this.toasterService.showSuccess(TOASTER_MESSAGES.LOGIN_SUCCESS);
+      this.toasterService.show(TOASTER_MESSAGES.LOGIN_SUCCESS, {
+        classname: "bg-success text-light",
+      });
       this.loading = false;
       this.router.navigate([currentHome]);
 

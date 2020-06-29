@@ -1,9 +1,27 @@
 <div class="main">
   <!-- <h2>Design Template</h2> -->
   <div class="container">
-    <div class="row">
+    <div class="row pt-4">
       <div class="col card shadow p-0">
-        <nav>
+        <ngb-tabset justify="justified">
+          <ngb-tab>
+            <ng-template ngbTabTitle
+              ><span class="tab-title">Launch</span></ng-template
+            >
+            <ng-template ngbTabContent>
+              <app-launch></app-launch>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab>
+            <ng-template ngbTabTitle
+              ><span class="tab-title">Launch Dashboard</span></ng-template
+            >
+            <ng-template ngbTabContent
+              ><app-launch-dashboard></app-launch-dashboard>
+            </ng-template>
+          </ngb-tab>
+        </ngb-tabset>
+        <!-- <nav>
           <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
             <a
               class="nav-item nav-link active shadow"
@@ -44,7 +62,7 @@
           >
             <app-launch-dashboard></app-launch-dashboard>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

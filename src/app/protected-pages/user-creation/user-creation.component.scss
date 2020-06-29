@@ -1,16 +1,18 @@
+@import "../../shared/styles/variables.scss";
+
 button {
   width: -webkit-fill-available;
-  color: #fff;
-  background-color: #97144d;
-  border: 1px solid #97144d;
+  color: $white-color;
+  background-color: $maroon-color;
+  border: 1px solid $maroon-color;
   padding: 10px;
   margin-top: 10px;
   font-size: 18px;
 }
 
 .card-header {
-  background-color: #97144d;
-  color: #fff;
+  background-color: $maroon-color;
+  color: $white-color;
   padding: 0.75rem !important;
 }
 
@@ -18,3 +20,61 @@ button {
   font-size: 16px;
   color: #212529;
 }
+
+input[type="checkbox"] {
+  cursor: pointer;
+}
+
+// .container-checkbox {
+//   display: flex;
+//   position: relative;
+//   padding-left: 35px;
+//   margin-bottom: 12px;
+//   cursor: pointer;
+//   font-size: 15px;
+//   -webkit-user-select: none;
+//   -moz-user-select: none;
+//   -ms-user-select: none;
+//   user-select: none;
+// }
+
+// /* Hide the browser's default checkbox */
+// .container-checkbox input {
+//   position: absolute;
+//   opacity: 0;
+//   cursor: pointer;
+//   height: 0;
+//   width: 0;
+// }
+
+// /* Create a custom checkbox */
+// .checkmark {
+//   position: absolute;
+//   top: 5px;
+//   left: 18px;
+//   height: 15px;
+//   width: 15px;
+//   background-color: $maroon-color;
+// }
+
+// /* Create the checkmark/indicator (hidden when not checked) */
+// .checkmark:after {
+//   content: "";
+//   position: absolute;
+//   display: none;
+// }
+
+// /* Show the checkmark when checked */
+// .container-checkbox input:checked ~ .checkmark:after {
+//   display: block;
+// }
+
+// .container-checkbox .checkmark:after {
+//   left: 5px;
+//   top: 0px;
+//   width: 6px;
+//   height: 12px;
+//   border: solid white;
+//   border-width: 0 3px 3px 0;
+//   transform: rotate(45deg);
+// }
