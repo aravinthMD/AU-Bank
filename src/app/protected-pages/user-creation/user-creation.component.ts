@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { UserService } from "src/app/shared/services/user.service";
-import { ToasterService } from "src/app/shared/services/toastr.service";
+import { ToasterService } from "src/app/shared/services/toaster.service";
 import {
   BUTTON_TEXTS,
   ROLES,

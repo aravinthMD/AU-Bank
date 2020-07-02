@@ -3,7 +3,7 @@ import { BUTTON_TEXTS, TOASTER_MESSAGES } from "src/app/shared/utils/constant";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { environment } from "src/environments/environment";
 import { UserService } from "src/app/shared/services/user.service";
-import { ToasterService } from "src/app/shared/services/toastr.service";
+import { ToasterService } from "src/app/shared/services/toaster.service";
 import { UserProcessVariables } from "src/app/shared/models/user.model";
 
 @Component({
@@ -52,11 +52,11 @@ export class BlockExistingUserComponent implements OnInit {
       .subscribe((response) => {
         const { ProcessVariables } = response;
         if (!ProcessVariables.message) {
-          this.toasterService.showSuccess(TOASTER_MESSAGES.FETCH_USER_SUCCESS);
+          this.toasterService.show(TOASTER_MESSAGES.FETCH_USER_SUCCESS);
           this.userDetail = ProcessVariables;
           this.fetchUserLoading = false;
         } else {
-          this.toasterService.showError(ProcessVariables.message.value);
+          // this.toasterService.show(ProcessVariables.message.value);
           this.fetchUserLoading = false;
         }
       });
@@ -68,7 +68,7 @@ export class BlockExistingUserComponent implements OnInit {
     this.userService
       .disableUserById(this.userDetail.newUserId, Number(userId))
       .subscribe((response) => {
-        this.toasterService.showSuccess(TOASTER_MESSAGES.DISABLE_USER_SUCCESS);
+        this.toasterService.show(TOASTER_MESSAGES.DISABLE_USER_SUCCESS);
         this.userDetail = null;
         this.form.reset();
         this.disableUserLoading = false;

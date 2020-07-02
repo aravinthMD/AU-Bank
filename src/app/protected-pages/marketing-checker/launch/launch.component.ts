@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import {  BUTTON_TEXTS } from "src/app/shared/utils/constant";
-import { NgbDate } from "@ng-bootstrap/ng-bootstrap";
+import { BUTTON_TEXTS } from "src/app/shared/utils/constant";
+import { NgbDate, NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { PreviewTemplateDialogComponent } from "./preview-template-dialog.component";
 
 @Component({
   selector: "app-launch",
@@ -31,7 +32,7 @@ export class LaunchComponent implements OnInit {
   toMinDate: any;
   toMaxDate: any;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private ngbModal: NgbModal) {
     this.form = this.formBuilder.group({
       fromDate: [null, Validators.required],
       toDate: [null, Validators.required],
@@ -81,5 +82,9 @@ export class LaunchComponent implements OnInit {
   onToDateChange(event: NgbDate): void {
     const { year, month, day } = event;
     this.fromMaxDate = { year, month, day };
+  }
+
+  openPreviewTemplateDialog(): void {
+    this.ngbModal.open(PreviewTemplateDialogComponent, { centered: true });
   }
 }

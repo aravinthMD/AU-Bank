@@ -21,7 +21,7 @@ export class BlockWhatsappDialogComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private ngbDialogRef: NgbActiveModal
+    private ngbActiveModal: NgbActiveModal
   ) {
     this.form = this.formBuilder.group({
       srNumber: [null, Validators.required],
@@ -41,6 +41,6 @@ export class BlockWhatsappDialogComponent implements OnInit {
   }
 
   close(): void {
-    this.ngbDialogRef.close();
+    this.ngbActiveModal.close();
   }
 }

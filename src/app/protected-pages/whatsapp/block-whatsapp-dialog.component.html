@@ -39,8 +39,7 @@
     </div>
   </form>
   <span class="text-message"
-    >Blocking will disable {{ mobileNumber }} access to whatsapp
-    banking.</span
+    >Blocking will disable {{ mobileNumber }} access to whatsapp banking.</span
   >
 </div>
 <div class="modal-footer">
@@ -48,7 +47,7 @@
     type="button"
     [disabled]="form.invalid || loading"
     (click)="blockWhatsapp()"
-    class="btn block-btn shadow"
+    class="btn btn-confirm shadow"
   >
     {{ blockButtonText }}
   </button>

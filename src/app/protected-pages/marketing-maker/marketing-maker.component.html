@@ -1,0 +1,35 @@
+<div class="main">
+  <!-- <h2>Design Template</h2> -->
+  <div class="container">
+    <div class="row pt-4">
+      <div class="col card shadow p-0">
+        <ngb-tabset justify="justified">
+          <ngb-tab>
+            <ng-template ngbTabTitle
+              ><span class="tab-title">Dashboard</span></ng-template
+            >
+            <ng-template ngbTabContent>
+              <app-dashboard></app-dashboard>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab>
+            <ng-template ngbTabTitle
+              ><span class="tab-title">Message Template</span></ng-template
+            >
+            <ng-template ngbTabContent
+              ><app-message-template></app-message-template>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab>
+            <ng-template ngbTabTitle
+              ><span class="tab-title">Promotional Template</span></ng-template
+            >
+            <ng-template ngbTabContent
+              ><app-promotional-template></app-promotional-template>
+            </ng-template>
+          </ngb-tab>
+        </ngb-tabset>
+      </div>
+    </div>
+  </div>
+</div>

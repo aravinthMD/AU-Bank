@@ -1,10 +1,15 @@
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  TemplateRef,
+} from "@angular/core";
 import { UserService } from "../../services/user.service";
 import { MenuService } from "../../services/menu.service";
 import { Menu } from "../../models/menu.model";
 import { Router } from "@angular/router";
 import { PAGES, TOASTER_MESSAGES, BUTTON_TEXTS } from "../../utils/constant";
-import { ToasterService } from "../../services/toastr.service";
+import { ToasterService } from "../../services/toaster.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
@@ -23,7 +28,7 @@ export class SidenavComponent implements OnInit {
   constructor(
     private menuService: MenuService,
     private userService: UserService,
-    private modalService: NgbModal,
+    private ngbModal: NgbModal,
     private toasterService: ToasterService,
     private router: Router
   ) {}
@@ -33,16 +38,16 @@ export class SidenavComponent implements OnInit {
     this.userName = this.userService.currentUserValue.userName;
   }
 
-  open(content) {
-    this.modalService.open(content, {
+  open(content: TemplateRef<string>): void {
+    this.ngbModal.open(content, {
       ariaLabelledBy: "modal-basic-title",
       centered: true,
     });
   }
 
-  logout() {
+  logout(): void {
     this.userService.logout();
-    this.modalService.dismissAll();
+    this.ngbModal.dismissAll();
     this.userService.clear();
     this.toasterService.show(TOASTER_MESSAGES.LOGOUT_SUCCESS, {
       classname: "bg-success text-light",

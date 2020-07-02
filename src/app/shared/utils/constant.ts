@@ -7,6 +7,10 @@ export enum BUTTON_TEXTS {
   BLOCK_BUTTON_TEXT = "Block",
   CONFIRM_BUTTON_TEXT = "Confirm",
   CANCEL_BUTTON_TEXT = "Cancel",
+  CLOSE_BUTTON_TEXT = "Close",
+  VIEW_BUTTON_TEXT = "View",
+  ACTIVATE_BUTTON_TEXT = "Activate",
+  DEACTIVATE_BUTTON_TEXT = "Deactivate",
 }
 
 export enum ROLES {

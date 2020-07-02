@@ -1,0 +1,17 @@
+@import "../../../shared/styles/variables.scss";
+form {
+  width: 50%;
+  margin: auto;
+  text-align: left;
+}
+
+select,
+option {
+  background-color: $white-color !important;
+  border-color: #6c757d;
+}
+
+.bg-search {
+  background-color: $white-color !important;
+  color: #6c757d;
+}

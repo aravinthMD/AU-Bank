@@ -1,0 +1,10 @@
+@import "../../../shared/styles/variables.scss";
+
+.bg-primary {
+  background-color: $maroon-color;
+}
+
+li,
+li ~ span {
+  font-size: 20px;
+}

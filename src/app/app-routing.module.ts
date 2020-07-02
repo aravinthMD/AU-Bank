@@ -36,8 +36,8 @@ const routes: Routes = [
         path: "marketing-maker",
         loadChildren: () =>
           import(
-            "./protected-pages/marketing-checker/marketing-checker.module"
-          ).then((m) => m.MarketingCheckerModule),
+            "./protected-pages/marketing-maker/marketing-maker.module"
+          ).then((m) => m.MarketingMakerModule),
       },
       {
         path: "marketing-checker",

@@ -87,7 +87,11 @@
         <td>{{ template.dynamicParameters }}</td>
         <td>{{ template.campaignEndDate }}</td>
         <td>
-          <button type="button" class="btn shadow">
+          <button
+            type="button"
+            class="btn shadow"
+            (click)="openPreviewTemplateDialog()"
+          >
             {{ launchButtonText }}
           </button>
         </td>

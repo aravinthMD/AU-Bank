@@ -1,0 +1,29 @@
+@import "../../../shared/styles/variables.scss";
+
+tr {
+  td {
+    vertical-align: middle;
+    font-size: 14px;
+    a {
+      cursor: pointer;
+      color: $maroon-color;
+      font-size: 14px;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  }
+
+  th {
+    vertical-align: middle;
+    color: $maroon-color !important;
+  }
+}
+table {
+  margin-bottom: 0rem !important;
+}
+
+.bg-maroon {
+  background-color: $maroon-color;
+  color: $white-color;
+}

@@ -326,6 +326,14 @@ table button {
   border-radius: 50px;
   border-style: dashed;
 }
+
+.modal-footer {
+  .btn-confirm,
+  .btn-confirm:hover {
+    background-color: $maroon-color;
+    color: $white-color;
+  }
+}
 /* block list style end  */
 
 /* Importing Bootstrap SCSS file. */

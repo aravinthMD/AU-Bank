@@ -1,7 +1,15 @@
+// :host {
+//   margin: auto !important;
+//   position: static;
+//   transform: translate(-50%, -50%);
+//   z-index: 9999;
+//   top: -27rem;
+// }
+
 :host {
-  margin: auto !important;
-  position: relative;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-  top: -27rem;
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 0.5em;
+  z-index: 1200;
 }
