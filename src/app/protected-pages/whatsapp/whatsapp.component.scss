@@ -7,12 +7,6 @@ table button {
   border: 1px solid $maroon-color;
 }
 
-select,
-option {
-  background-color: $white-color !important;
-  border-color: #6c757d !important;
-}
-
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;

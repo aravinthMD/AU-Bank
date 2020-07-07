@@ -19,6 +19,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: "external-user-creation",
+        loadChildren: () =>
+          import(
+            "./protected-pages/external-user-creation/external-user-creation.module"
+          ).then((m) => m.ExternalUserCreationModule),
+      },
+      {
         path: "view-whatsapp",
         loadChildren: () =>
           import("./protected-pages/whatsapp/whatsapp.module").then(
@@ -59,7 +66,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, {
+      scrollPositionRestoration: "top",
+    }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

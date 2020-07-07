@@ -38,20 +38,5 @@ export class SidenavComponent implements OnInit {
     this.userName = this.userService.currentUserValue.userName;
   }
 
-  open(content: TemplateRef<string>): void {
-    this.ngbModal.open(content, {
-      ariaLabelledBy: "modal-basic-title",
-      centered: true,
-    });
-  }
 
-  logout(): void {
-    this.userService.logout();
-    this.ngbModal.dismissAll();
-    this.userService.clear();
-    this.toasterService.show(TOASTER_MESSAGES.LOGOUT_SUCCESS, {
-      classname: "bg-success text-light",
-    });
-    this.router.navigate([PAGES.PUBLIC]);
-  }
 }

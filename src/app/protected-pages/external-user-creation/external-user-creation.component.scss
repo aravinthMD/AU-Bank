@@ -1,0 +1,19 @@
+@import "../../shared/styles/variables.scss";
+
+button {
+  width: -webkit-fill-available;
+  color: $white-color;
+  background-color: $maroon-color;
+  border: 1px solid $maroon-color;
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.card-header {
+  background-color: $maroon-color;
+  color: $white-color;
+  padding: 0.75rem !important;
+  border-top-left-radius: unset;
+  border-top-right-radius: unset;
+}

@@ -46,3 +46,4 @@ export enum MENU_TITLES {
   MARKETING_CHECKER = "Marketing Checker",
   MARKETING_MAKER = "Marketing Maker",
 }
+

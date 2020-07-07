@@ -1,17 +1,18 @@
 <div class="main text-center mx-auto">
   <div class="container">
-    <form class="p-4">
+    <form [formGroup]="form">
       <div class="form-group">
         <label for="template">Template</label>
         <textarea
-          class="form-control btn-outline-secondary"
+          class="form-control"
+          formControlName="template"
           id="template"
           rows="3"
         ></textarea>
       </div>
       <div class="form-group">
         <label>No Of Dynamic Parameters</label>
-        <select class="custom-select">
+        <select class="custom-select" formControlName="noOfDynamicParameters">
           <option *ngFor="let item of [0, 1, 2, 3, 4, 5]" [value]="item">{{
             item
           }}</option>
@@ -23,6 +24,7 @@
           <input
             class="form-control bg-search btn-outline-secondary"
             placeholder="Campaign Start Date"
+            formControlName="campaignStartDate"
             name="fromDate"
             ngbDatepicker
             readonly
@@ -34,10 +36,19 @@
               (click)="fromDate.toggle()"
               type="button"
             >
-              <i class="fa fa-calendar-o"></i>
+              <i class="fa fa-calendar-check-o"></i>
             </button>
           </div>
         </div>
+      </div>
+
+      <div class="form-group">
+        <label>Trigger Time</label>
+        <ngb-timepicker
+          formControlName="triggerTime"
+          [meridian]="false"
+          [spinners]="false"
+        ></ngb-timepicker>
       </div>
       <div class="form-group">
         <label>Campaign End Date</label>
@@ -46,6 +57,7 @@
             class="form-control bg-search btn-outline-secondary"
             placeholder="Campaign End Date"
             name="endDate"
+            formControlName="campaignEndDate"
             ngbDatepicker
             readonly
             #endDate="ngbDatepicker"
@@ -56,12 +68,38 @@
               (click)="endDate.toggle()"
               type="button"
             >
-              <i class="fa fa-calendar-o"></i>
+              <i class="fa fa-calendar-check-o"></i>
             </button>
           </div>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <h4 class="text-message">Data File</h4>
+      <div class="form-group">
+        <label>Customer Base</label>
+        <select class="custom-select" formControlName="customerBase">
+          <option *ngFor="let item of customerBaseoptions" [value]="item">{{
+            item
+          }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Choose File</label>
+        <div class="input-group">
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" id="inputGroupFile" formControlName="importFile"  (change)="onFileChange($event.target.files)">
+            <label class="custom-file-label" for="inputGroupFile" #labelImport>Choose file</label>
+          </div>
+        </div>
+      </div>
+      <button
+        type="button"
+        [disabled]="form.invalid || loading"
+        class="btn submit-btn shadow"
+        (click)="onSubmit()"
+      >
+        {{ submitButtonText }}
+      </button>
     </form>
   </div>
 </div>

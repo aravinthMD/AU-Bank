@@ -1,3 +1,10 @@
-.username {
-  font-size: 18px;
+@import "../../app/shared/styles/variables.scss";
+
+.logout-btn {
+  background-color: $maroon-color;
+  color: $white-color;
+}
+
+.logout-btn:hover {
+  color: $white-color;
 }

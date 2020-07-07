@@ -1,16 +1,16 @@
-<div class="login shadow-sm">
+<div class="login shadow-lg p-4">
   <div class="admin_img">
     <img src="../../assets/axis_admin_logo.png" alt="" srcset="" />
   </div>
 
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
-      <label for="email">Email ID</label>
+      <label for="email">User ID</label>
       <input
         type="email"
         formControlName="emailId"
         id="email"
-        placeholder="Eg: user@axisbank.com"
+        placeholder="Eg: user0001"
         aria-describedby="emailHelp"
         autocomplete="off"
         class="form-control"
@@ -18,7 +18,7 @@
         required
       />
       <small id="emailHelp" class="form-text text-muted"
-        >Enter a valid email</small
+        >Enter a valid user id</small
       >
     </div>
     <div class="form-group">

@@ -33,10 +33,7 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const isProductionMode: boolean = environment.production;
-    const emailRegExp = isProductionMode
-      ? /^(([a-zA-Z0-9_\-\.]+)@)+axisbank.com$/
-      : /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+\.)([a-zA-Z]){2,5}$/;
+    const emailRegExp = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+\.)([a-zA-Z]){2,5}$/;
     const paswordRegExp = /^([a-zA-Z,0-9,~!@#$%&*()_+-]){8,}$/;
 
     this.loginForm = this.formBuilder.group({

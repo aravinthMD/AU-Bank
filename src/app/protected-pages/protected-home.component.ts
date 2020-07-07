@@ -1,7 +1,15 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef } from "@angular/core";
 import { Menu } from "../shared/models/menu.model";
 import { MenuService } from "../shared/services/menu.service";
 import { UserService } from "../shared/services/user.service";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import {
+  TOASTER_MESSAGES,
+  PAGES,
+  BUTTON_TEXTS,
+} from "../shared/utils/constant";
+import { ToasterService } from "../shared/services/toaster.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-protected-home",
@@ -9,13 +17,19 @@ import { UserService } from "../shared/services/user.service";
   styleUrls: ["./protected-home.component.scss"],
 })
 export class ProtectedHomeComponent implements OnInit {
+  confirmButtonText = BUTTON_TEXTS.CONFIRM_BUTTON_TEXT;
+  cancelButtonText = BUTTON_TEXTS.CANCEL_BUTTON_TEXT;
+
   menuItems: Menu[];
   userName: string;
   currentYear = new Date().getFullYear();
 
   constructor(
     private menuService: MenuService,
-    private userService: UserService
+    private userService: UserService,
+    private ngbModal: NgbModal,
+    private toasterService: ToasterService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -23,5 +37,20 @@ export class ProtectedHomeComponent implements OnInit {
     this.userName = this.userService.currentUserValue.userName;
   }
 
-  logout() {}
+  open(content?: TemplateRef<string>): void {
+    this.ngbModal.open(content, {
+      ariaLabelledBy: "modal-basic-title",
+      centered: true,
+    });
+  }
+
+  logout(): void {
+    this.userService.logout();
+    this.ngbModal.dismissAll();
+    this.userService.clear();
+    this.toasterService.show(TOASTER_MESSAGES.LOGOUT_SUCCESS, {
+      classname: "bg-success text-light",
+    });
+    this.router.navigate([PAGES.PUBLIC]);
+  }
 }
