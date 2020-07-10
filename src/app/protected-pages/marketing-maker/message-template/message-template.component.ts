@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { BUTTON_TEXTS } from "src/app/shared/utils/constant";
+import { NgbDate } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-message-template",
@@ -15,6 +16,11 @@ export class MessageTemplateComponent implements OnInit {
 
   form: FormGroup;
   fileToUpload: File = null;
+
+  fromMinDate: any;
+  fromMaxDate: any;
+  toMinDate: any;
+  toMaxDate: any;
 
   loading = false;
 
@@ -32,7 +38,38 @@ export class MessageTemplateComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.setValidators();
+  }
+
+  setValidators(): void {
+    const date = new Date();
+    this.fromMinDate = { year: 0, month: 0, day: 0 };
+
+    this.fromMaxDate = {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+    };
+
+    this.toMinDate = { year: 0, month: 0, day: 0 };
+
+    this.toMaxDate = {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+    };
+  }
+
+  onFromDateChange(event: NgbDate): void {
+    const { year, month, day } = event;
+    this.toMinDate = { year, month, day };
+  }
+
+  onToDateChange(event: NgbDate): void {
+    const { year, month, day } = event;
+    this.fromMaxDate = { year, month, day };
+  }
 
   onFileChange(files: FileList) {
     this.labelImport.nativeElement.innerText = Array.from(files)

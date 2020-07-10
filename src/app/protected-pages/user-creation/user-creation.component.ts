@@ -18,6 +18,7 @@ export class UserCreationComponent implements OnInit {
   submitButtonText = BUTTON_TEXTS.SUBMIT_BUTTON_TEXT;
 
   loading = false;
+  userLoading = false;
 
   superAdminForm: FormGroup;
   adminForm: FormGroup;
@@ -83,6 +84,19 @@ export class UserCreationComponent implements OnInit {
 
   get adminFieldControls() {
     return this.adminForm.controls;
+  }
+
+  onUserIdChange(event: any): void {
+    const userId = event.target.value;
+    this.userLoading = true;
+    console.log(userId);
+
+    setTimeout(() => {
+      this.toasterService.show("User not found", {
+        classname: "bg-danger text-light",
+      });
+      this.userLoading = false;
+    }, 2000);
   }
 
   createUser(): void {

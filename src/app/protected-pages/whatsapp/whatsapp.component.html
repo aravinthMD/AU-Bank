@@ -104,76 +104,6 @@
             </button>
           </div>
         </div>
-        <!-- <div class="col">
-            <div class="input-group">
-              <input
-                class="form-control bg-search"
-                placeholder="From Date"
-                name="fromDate"
-                formControlName="fromDate"
-                (dateSelect)="onFromDateChange($event)"
-                ngbDatepicker
-                [maxDate]="fromMaxDate"
-                [minDate]="fromMinDate"
-                readonly
-                #fromDate="ngbDatepicker"
-              />
-              <div class="input-group-append">
-                <button
-                  class="btn btn-outline-secondary"
-                  (click)="fromDate.toggle()"
-                  type="button"
-                >
-                  <i class="fa fa-calendar-check-o"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="input-group">
-              <input
-                class="form-control bg-search"
-                placeholder="To Date"
-                name="toDate"
-                formControlName="toDate"
-                (dateSelect)="onToDateChange($event)"
-                ngbDatepicker
-                readonly
-                [maxDate]="toMaxDate"
-                [minDate]="toMinDate"
-                #toDate="ngbDatepicker"
-              />
-              <div class="input-group-append">
-                <button
-                  class="btn btn-outline-secondary"
-                  (click)="toDate.toggle()"
-                  type="button"
-                >
-                  <i class="fa fa-calendar-check-o"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <select
-              class="custom-select"
-              formControlName="filterType"
-              title="Filter Type"
-              id="role"
-            >
-              <option *ngFor="let option of filterOptions" [value]="option">{{
-                option | uppercase
-              }}</option>
-            </select>
-          </div>
-          <div class="col search_btn">
-            <button
-              (click)="onSubmit()"
-              [disabled]="form.invalid || reportLoading"
-            >
-              {{ submitButtonText }}
-            </button>
-          </div> -->
       </form>
     </div>
   </div>
@@ -236,7 +166,11 @@
         {{ userDetail.status }}
       </td>
       <td *ngIf="!isViewOnly">
-        <button type="button" class="shadow" (click)="openBlockWhatsappDialog(userDetail)">
+        <button
+          type="button"
+          class="shadow"
+          (click)="openBlockWhatsappDialog(userDetail)"
+        >
           {{ blockButtonText }}
         </button>
       </td>

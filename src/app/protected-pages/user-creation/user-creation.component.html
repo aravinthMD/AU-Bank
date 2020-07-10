@@ -19,18 +19,28 @@
         >
           <div class="form-group">
             <label for="userId">USER ID</label>
-            <input
-              type="text"
-              formControlName="userId"
-              id="userId"
-              placeholder="Eg: USER0001"
-              class="form-control"
-              aria-describedby="userIdHelp"
-              autocomplete="off"
-              autofocus
-            />
+            <div class="input-group">
+              <input
+                type="text"
+                formControlName="userId"
+                id="userId"
+                placeholder="Eg: USER0001"
+                (keyup)="onUserIdChange($event)"
+                class="form-control"
+                autocomplete="off"
+                autofocus
+              />
+              <div *ngIf="userLoading">
+                <span
+                  class="spinner-border ml-2"
+                  style="width: 2rem; height: 2rem;"
+                  aria-hidden="true"
+                >
+                </span>
+              </div>
+            </div>
           </div>
-          <div class="form-group" *ngIf="currentUserRole === 'Super Admin'">
+          <div class="form-group">
             <label for="role">ROLE</label>
             <select
               class="custom-select"
@@ -62,7 +72,6 @@
                 formControlName="accessMenus"
                 (change)="onChange($event, option)"
               />
-              <span class="checkmark"></span>
               <span class="checkbox-title">{{ option.title }}</span>
             </label>
           </div>
@@ -83,7 +92,7 @@
               aria-hidden="true"
             >
             </span>
-            <span>{{ submitButtonText }}</span>
+            <span *ngIf="!loading">{{ submitButtonText }}</span>
           </button>
         </form>
       </div>
@@ -96,19 +105,26 @@
         <form class="form" [formGroup]="adminForm" (ngSubmit)="createUser()">
           <div class="form-group">
             <label for="userId">USER ID</label>
-            <input
-              type="text"
-              formControlName="userId"
-              id="userId"
-              placeholder="Eg: USER0001"
-              class="form-control"
-              aria-describedby="userIdHelp"
-              autocomplete="off"
-              autofocus
-            />
-            <small id="userIdHelp" class="form-text text-muted"
-              >Enter a valid user Id</small
-            >
+            <div class="input-group">
+              <input
+                type="text"
+                formControlName="userId"
+                id="userId"
+                placeholder="Eg: USER0001"
+                class="form-control"
+                autocomplete="off"
+                (keyup)="onUserIdChange($event)"
+                autofocus
+              />
+              <div *ngIf="userLoading">
+                <span
+                  class="spinner-border ml-2"
+                  style="width: 2rem; height: 2rem;"
+                  aria-hidden="true"
+                >
+                </span>
+              </div>
+            </div>
           </div>
           <label>ACCESS CONTROLS</label>
           <div class="row d-flex">
@@ -123,7 +139,6 @@
                 formControlName="accessMenus"
                 (change)="onChange($event, option)"
               />
-              <span class="checkmark"></span>
               <span class="checkbox-title">{{ option.title }}</span>
             </label>
           </div>
@@ -141,7 +156,7 @@
               aria-hidden="true"
             >
             </span>
-            <span>{{ submitButtonText }}</span>
+            <span *ngIf="!loading">{{ submitButtonText }}</span>
           </button>
         </form>
       </div>
