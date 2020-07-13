@@ -37,6 +37,17 @@
         >Enter a valid password</small
       >
     </div>
+    <div class="form-check">
+      <input
+        type="checkbox"
+        class="form-check-input"
+        formControlName="isExternalUser"
+        id="externalUserCheck"
+      />
+      <label class="form-check-label" for="externalUserCheck"
+        >External User</label
+      >
+    </div>
     <button class="shadow" [disabled]="loginForm.invalid || loading">
       <span
         *ngIf="loading"

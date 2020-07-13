@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       emailId: ["", [Validators.required, Validators.pattern(emailRegExp)]],
       password: ["", [Validators.required, Validators.pattern(paswordRegExp)]],
+      isExternalUser: [false],
     });
 
     // If user already logged in and redirect to home page
@@ -58,6 +59,7 @@ export class LoginComponent implements OnInit {
     const fieldControls = this.loginForm.controls;
     const emailId = fieldControls.emailId.value;
     const password = fieldControls.password.value;
+    const isExternalUser = fieldControls.isExternalUser.value;
 
     // this.userService.generateAuthenticationToken(emailId, password);
 

@@ -213,7 +213,7 @@ export class UserService {
               },
             },
           ];
-          const randomUserResponse = users[3].ProcessVariables;
+          const randomUserResponse = users[0].ProcessVariables;
           const userResponse = response.ProcessVariables;
           localStorage.setItem(
             "currentUser",

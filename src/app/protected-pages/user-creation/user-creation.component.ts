@@ -24,15 +24,25 @@ export class UserCreationComponent implements OnInit {
   currentUserRole: string;
   userRoles: string[] = [ROLES.ADMIN, ROLES.USER];
   userOptions = [
-    { title: MENU_TITLES.VIEW_WHATSAPP, routerPath: PAGES.VIEW_WHATSAPP },
+    {
+      title: MENU_TITLES.VIEW_WHATSAPP,
+      routerPath: PAGES.VIEW_WHATSAPP,
+      value: 1,
+    },
     {
       title: MENU_TITLES.BLOCK_WHATSAPP,
       routerPath: PAGES.BLOCK_WHATSAPP,
+      value: 2,
     },
-    { title: MENU_TITLES.MARKETING_MAKER, routerPath: PAGES.MARKETING_MAKER },
+    {
+      title: MENU_TITLES.MARKETING_MAKER,
+      routerPath: PAGES.MARKETING_MAKER,
+      value: 3,
+    },
     {
       title: MENU_TITLES.MARKETING_CHECKER,
       routerPath: PAGES.MARKETING_CHECKER,
+      value: 4,
     },
   ];
 
@@ -84,6 +94,36 @@ export class UserCreationComponent implements OnInit {
     return this.adminForm.controls;
   }
 
+  onChange(event: any, option: any): void {
+    const isChecked = event.target.checked;
+    if (isChecked) {
+      this.selectedMenuList.push(option.value);
+    } else {
+      const index = this.selectedMenuList.findIndex(
+        (menuValue) => menuValue === option.value
+      );
+      this.selectedMenuList.splice(index, 1);
+    }
+    this.validate();
+  }
+
+  validate(): void {
+    const maker = this.selectedMenuList.find((item) => item === 3);
+    const checker = this.selectedMenuList.find((item) => item === 4);
+    const makerElement = document.getElementById(MENU_TITLES.MARKETING_MAKER);
+    const checkerElement = document.getElementById(
+      MENU_TITLES.MARKETING_CHECKER
+    );
+    if (maker && !checker) {
+      checkerElement.setAttribute("disabled", "true");
+    } else if (checker && !maker) {
+      makerElement.setAttribute("disabled", "true");
+    } else {
+      makerElement.removeAttribute("disabled");
+      checkerElement.removeAttribute("disabled");
+    }
+  }
+
   createUser(): void {
     this.loading = true;
     if (this.currentUserRole === ROLES.SUPER_ADMIN) {
@@ -100,41 +140,6 @@ export class UserCreationComponent implements OnInit {
       const userRole = this.adminFieldControls.userRole.value;
       console.log(userId, userRole, this.selectedMenuList);
       this.loading = false;
-    }
-  }
-
-  onChange(event: any, option: any): void {
-    const isChecked = event.target.checked;
-    const selectedItem = option;
-    if (isChecked) {
-      this.selectedMenuList.push(selectedItem);
-    } else {
-      const index = this.selectedMenuList.findIndex(
-        (menu) => menu.title === option.title
-      );
-      this.selectedMenuList.splice(index, 1);
-    }
-    this.validate();
-  }
-
-  validate(): void {
-    const maker = this.selectedMenuList.find(
-      (item) => item.title === MENU_TITLES.MARKETING_MAKER
-    );
-    const checker = this.selectedMenuList.find(
-      (item) => item.title === MENU_TITLES.MARKETING_CHECKER
-    );
-    const makerElement = document.getElementById(MENU_TITLES.MARKETING_MAKER);
-    const checkerElement = document.getElementById(
-      MENU_TITLES.MARKETING_CHECKER
-    );
-    if (maker && !checker) {
-      checkerElement.setAttribute("disabled", "true");
-    } else if (checker && !maker) {
-      makerElement.setAttribute("disabled", "true");
-    } else {
-      makerElement.removeAttribute("disabled");
-      checkerElement.removeAttribute("disabled");
     }
   }
 }

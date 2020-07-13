@@ -11,6 +11,7 @@ export enum BUTTON_TEXTS {
   VIEW_BUTTON_TEXT = "View",
   ACTIVATE_BUTTON_TEXT = "Activate",
   DEACTIVATE_BUTTON_TEXT = "Deactivate",
+  CHANGE_PASSWORD_BUTTON_TEXT = "Change password"
 }
 
 export enum ROLES {

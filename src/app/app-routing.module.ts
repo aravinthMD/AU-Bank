@@ -4,6 +4,7 @@ import { PublicHomeComponent } from "./public-pages/public-home.component";
 import { ProtectedHomeComponent } from "./protected-pages/protected-home.component";
 import { AuthenticationGuard } from "./shared/guards/authentication.guard";
 import { LoginComponent } from "./public-pages/login/login.component";
+import { ChangePasswordComponent } from './public-pages/change-password/change-password.component';
 
 const routes: Routes = [
   {
@@ -17,13 +18,6 @@ const routes: Routes = [
           import("./protected-pages/user-creation/user-creation.module").then(
             (m) => m.UserCreationModule
           ),
-      },
-      {
-        path: "external-user-creation",
-        loadChildren: () =>
-          import(
-            "./protected-pages/external-user-creation/external-user-creation.module"
-          ).then((m) => m.ExternalUserCreationModule),
       },
       {
         path: "view-whatsapp",
@@ -61,6 +55,7 @@ const routes: Routes = [
     children: [
       { path: "", component: LoginComponent },
       { path: "login", component: LoginComponent },
+      { path: 'change-password' , component: ChangePasswordComponent },
     ],
   },
 ];

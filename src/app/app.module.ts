@@ -9,7 +9,8 @@ import { LoginComponent } from "./public-pages/login/login.component";
 import { SharedModule } from "./shared/shared.module";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { JwtInterceptor } from "./shared/interceptors/jwt.interceptor";
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { ChangePasswordComponent } from "./public-pages/change-password/change-password.component";
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ProtectedHomeComponent,
     PublicHomeComponent,
     LoginComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     BrowserModule,
