@@ -19,6 +19,25 @@
               ngbAutofocus
             />
           </div>
+
+          <label>ACCESS CONTROLS</label>
+          <div class="row d-flex checkbox-container">
+            <label
+              class="col-6 checkbox-inline"
+              *ngFor="let option of userOptions"
+            >
+              <input
+                class="mx-1"
+                type="checkbox"
+                [id]="option.title"
+                [value]="option.routerPath"
+                formControlName="accessMenus"
+                (change)="onChange($event, option)"
+              />
+              <span class="checkbox-title">{{ option.title }}</span>
+            </label>
+          </div>
+
           <button [disabled]="createUserForm.invalid || loading">
             <span
               *ngIf="loading"

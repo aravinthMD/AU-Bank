@@ -18,8 +18,6 @@ export class UserCreationComponent implements OnInit {
   submitButtonText = BUTTON_TEXTS.SUBMIT_BUTTON_TEXT;
 
   loading = false;
-  userLoading = false;
-
   superAdminForm: FormGroup;
   adminForm: FormGroup;
 
@@ -86,22 +84,9 @@ export class UserCreationComponent implements OnInit {
     return this.adminForm.controls;
   }
 
-  onUserIdChange(event: any): void {
-    const userId = event.target.value;
-    this.userLoading = true;
-    console.log(userId);
-
-    setTimeout(() => {
-      this.toasterService.show("User not found", {
-        classname: "bg-danger text-light",
-      });
-      this.userLoading = false;
-    }, 2000);
-  }
-
   createUser(): void {
+    this.loading = true;
     if (this.currentUserRole === ROLES.SUPER_ADMIN) {
-      this.loading = true;
       const userId = this.superAdminFieldControls.userId.value;
       const userRole = this.superAdminFieldControls.userRole.value;
       if (userRole === ROLES.USER) {
@@ -111,7 +96,6 @@ export class UserCreationComponent implements OnInit {
       }
       this.loading = false;
     } else {
-      this.loading = true;
       const userId = this.adminFieldControls.userId.value;
       const userRole = this.adminFieldControls.userRole.value;
       console.log(userId, userRole, this.selectedMenuList);

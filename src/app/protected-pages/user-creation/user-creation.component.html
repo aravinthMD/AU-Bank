@@ -25,19 +25,10 @@
                 formControlName="userId"
                 id="userId"
                 placeholder="Eg: USER0001"
-                (keyup)="onUserIdChange($event)"
                 class="form-control"
                 autocomplete="off"
                 autofocus
               />
-              <div *ngIf="userLoading">
-                <span
-                  class="spinner-border ml-2"
-                  style="width: 2rem; height: 2rem;"
-                  aria-hidden="true"
-                >
-                </span>
-              </div>
             </div>
           </div>
           <div class="form-group">
@@ -113,17 +104,8 @@
                 placeholder="Eg: USER0001"
                 class="form-control"
                 autocomplete="off"
-                (keyup)="onUserIdChange($event)"
                 autofocus
               />
-              <div *ngIf="userLoading">
-                <span
-                  class="spinner-border ml-2"
-                  style="width: 2rem; height: 2rem;"
-                  aria-hidden="true"
-                >
-                </span>
-              </div>
             </div>
           </div>
           <label>ACCESS CONTROLS</label>

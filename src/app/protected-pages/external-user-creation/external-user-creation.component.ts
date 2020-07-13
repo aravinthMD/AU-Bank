@@ -2,7 +2,13 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { UserService } from "src/app/shared/services/user.service";
 import { ToasterService } from "src/app/shared/services/toaster.service";
-import { BUTTON_TEXTS, TOASTER_MESSAGES } from "src/app/shared/utils/constant";
+import {
+  BUTTON_TEXTS,
+  TOASTER_MESSAGES,
+  MENU_TITLES,
+  PAGES,
+  ROLES,
+} from "src/app/shared/utils/constant";
 
 @Component({
   selector: "app-external-user-creation",
@@ -12,13 +18,26 @@ import { BUTTON_TEXTS, TOASTER_MESSAGES } from "src/app/shared/utils/constant";
 export class UserCreationComponent implements OnInit {
   submitButtonText = BUTTON_TEXTS.SUBMIT_BUTTON_TEXT;
 
-  title = 'External User Creation';
+  title = "External User Creation";
 
   loading = false;
   createUserForm: FormGroup;
   disableUserForm: FormGroup;
 
-  roles = ["CallCenter", "Marketing"];
+  selectedMenuList: any[] = [];
+
+  userOptions = [
+    { title: MENU_TITLES.VIEW_WHATSAPP, routerPath: PAGES.VIEW_WHATSAPP },
+    {
+      title: MENU_TITLES.BLOCK_WHATSAPP,
+      routerPath: PAGES.BLOCK_WHATSAPP,
+    },
+    { title: MENU_TITLES.MARKETING_MAKER, routerPath: PAGES.MARKETING_MAKER },
+    {
+      title: MENU_TITLES.MARKETING_CHECKER,
+      routerPath: PAGES.MARKETING_CHECKER,
+    },
+  ];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,11 +46,25 @@ export class UserCreationComponent implements OnInit {
   ) {
     this.createUserForm = this.formBuilder.group({
       userId: ["", Validators.required],
-      role: ["CallCenter"],
+      userRole: [ROLES.USER],
+      accessMenus: ["", Validators.required],
     });
   }
 
   ngOnInit(): void {}
+
+  onChange(event: any, option: any): void {
+    const isChecked = event.target.checked;
+    const selectedItem = option;
+    if (isChecked) {
+      this.selectedMenuList.push(selectedItem);
+    } else {
+      const index = this.selectedMenuList.findIndex(
+        (menu) => menu.title === option.title
+      );
+      this.selectedMenuList.splice(index, 1);
+    }
+  }
 
   createUser(): void {
     const fieldcontrols = this.createUserForm.controls;
