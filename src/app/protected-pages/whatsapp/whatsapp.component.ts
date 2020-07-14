@@ -4,11 +4,14 @@ import {
   BUTTON_TEXTS,
   PAGES,
   REPORT_FILTER_TYPES,
+  TOASTER_MESSAGES,
 } from "src/app/shared/utils/constant";
 import { Router } from "@angular/router";
 import { NgbDate, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { BlockWhatsappDialogComponent } from "./block-whatsapp-dialog.component";
 import { ReferenceService } from "src/app/shared/services/reference.service";
+import { UserService } from "src/app/shared/services/user.service";
+import { ToasterService } from "src/app/shared/services/toaster.service";
 
 @Component({
   selector: "app-whatsapp",
@@ -42,6 +45,8 @@ export class WhatsappComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private referenceService: ReferenceService,
+    private userService: UserService,
+    private toasterService: ToasterService,
     private ngbDialog: NgbModal
   ) {
     this.form = this.formBuilder.group({
@@ -91,33 +96,34 @@ export class WhatsappComponent implements OnInit {
   }
 
   validate(input: HTMLInputElement) {
-    const value = input.value;
+    const { value } = input;
     this.validSearch = value.length === 10;
     if (this.validSearch) {
-      this.fetchUser();
+      this.fetchUserByMobileNumber(value);
     } else {
       this.userDetail = null;
     }
   }
 
-  fetchUser(): void {
+  fetchUserByMobileNumber(mobileNumber: string): void {
     this.searchLoading = true;
-    this.userDetail = {
-      mobileNumber: "+91 9894192798",
-      optInStatus: "Opt In",
-      optInDate: "26/06/2020",
-      optInChannel: "SMS",
-      optOutStatus: "Opt In",
-      optOutDate: "26/06/2020",
-      optOutChannel: "SMS",
-      requestId: "RQ32426299",
-      blockDate: "26/06/2020",
-      userName: "DURGA",
-      status: "OPT IN",
-      reason: "",
-      srNumber: "",
-    };
-    this.searchLoading = false;
+    this.userService
+      .fetchUserByMobileNumber(mobileNumber)
+      .subscribe((response) => {
+        const {
+          ProcessVariables: { blockLog },
+        } = response;
+        if (blockLog) {
+          const [data] = blockLog;
+          this.userDetail = data;
+          console.log(this.userDetail);
+        } else {
+          this.toasterService.show(TOASTER_MESSAGES.USER_NOT_FOUND, {
+            classname: "bg-danger text-light",
+          });
+        }
+        this.searchLoading = false;
+      });
   }
 
   onSubmit(): void {
@@ -130,11 +136,11 @@ export class WhatsappComponent implements OnInit {
     console.log(fromDate, toDate, filterType);
   }
 
-  openBlockWhatsappDialog({ userName, mobileNumber }): void {
+  openBlockWhatsappDialog({ mobile, optId }): void {
     const dialog = this.ngbDialog.open(BlockWhatsappDialogComponent, {
       centered: true,
     });
-    dialog.componentInstance.userName = userName;
-    dialog.componentInstance.mobileNumber = mobileNumber;
+    dialog.componentInstance.mobile = mobile;
+    dialog.componentInstance.optId = optId;
   }
 }

@@ -129,40 +129,40 @@
     </tr>
     <tr *ngIf="userDetail">
       <td>
-        {{ userDetail.mobileNumber }}
+        {{ userDetail.mobile }}
       </td>
       <td>
         <i
-          *ngIf="userDetail.optInStatus === 'Opt In'"
+          *ngIf="userDetail.isOptIn"
           class="fa fa-check-circle-o fa-2x text-success"
           aria-hidden="true"
         ></i>
         <i
-          *ngIf="userDetail.optInStatus !== 'Opt In'"
-          class="fa fa-times-circle-o fa-2x text-daner"
+          *ngIf="!userDetail.isOptIn"
+          class="fa fa-times-circle-o fa-2x text-danger"
           aria-hidden="true"
         ></i>
       </td>
       <td>
-        {{ userDetail.optInDate }}
+        {{ userDetail.optInDate | date: "dd/MM/yyyy" }}
       </td>
       <td>
         {{ userDetail.optInChannel }}
       </td>
       <td>
         <i
-          *ngIf="userDetail.optOutStatus === 'Opt Out'"
+          *ngIf="userDetail.isOptOut"
           class="fa fa-check-circle-o fa-2x text-success"
           aria-hidden="true"
         ></i>
         <i
-          *ngIf="userDetail.optOutStatus !== 'Opt Out'"
+          *ngIf="!userDetail.isOptOut"
           class="fa fa-times-circle-o fa-2x text-danger"
           aria-hidden="true"
         ></i>
       </td>
       <td>
-        {{ userDetail.optOutDate }}
+        {{ userDetail.optOutDate | date: "dd/MM/yyyy" }}
       </td>
       <td>
         {{ userDetail.optOutChannel }}
@@ -181,6 +181,7 @@
       </td>
       <td *ngIf="!isViewOnly">
         <button
+          [disabled]="userDetail.isBlocked"
           type="button"
           class="shadow"
           (click)="openBlockWhatsappDialog(userDetail)"
@@ -189,10 +190,10 @@
         </button>
       </td>
       <td>
-        {{ userDetail.reason ? userDetail.reason : "NA" }}
+        {{ userDetail.blockReason ? userDetail.blockReason : "NA" }}
       </td>
       <td>
-        {{ userDetail.srNumber ? userDetail.srNumber : "NA" }}
+        {{ userDetail.srNo ? userDetail.srNo : "NA" }}
       </td>
     </tr>
   </table>

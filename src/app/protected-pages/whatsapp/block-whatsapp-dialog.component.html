@@ -1,5 +1,8 @@
 <div class="modal-header">
-  <h4 class="modal-title">Do you wish to block {{ userName | uppercase }}</h4>
+  <h4 class="modal-title">
+    Do you wish to block <span>{{ mobile }}</span
+    >?
+  </h4>
   <button type="button" class="close" aria-label="Close" (click)="close()">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -39,7 +42,7 @@
     </div>
   </form>
   <span class="text-message"
-    >Blocking will disable {{ mobileNumber }} access to whatsapp banking.</span
+    >Blocking will disable {{ mobile }} access to whatsapp banking.</span
   >
 </div>
 <div class="modal-footer">

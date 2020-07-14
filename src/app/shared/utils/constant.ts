@@ -36,6 +36,7 @@ export enum TOASTER_MESSAGES {
   CREATE_USER_SUCCESS = "Create user successfull",
   FETCH_USER_SUCCESS = "User fetch successfull",
   DISABLE_USER_SUCCESS = "User disabled successfull",
+  USER_NOT_FOUND = "User not found"
 }
 
 export enum DATE_FORMATS {

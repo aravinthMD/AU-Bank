@@ -7,6 +7,7 @@ import {
   ROLES,
   PAGES,
   MENU_TITLES,
+  TOASTER_MESSAGES,
 } from "src/app/shared/utils/constant";
 import { ReferenceService } from "src/app/shared/services/reference.service";
 
@@ -49,7 +50,7 @@ export class UserCreationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentUserRole = this.userService.currentUserValue.role;
+    this.currentUserRole = this.userService.currentUserValue.roleName;
     this.accessControls = this.referenceService.getAvailableAccessControls();
   }
 
@@ -110,20 +111,42 @@ export class UserCreationComponent implements OnInit {
 
   createUser(): void {
     this.loading = true;
-    if (this.currentUserRole === ROLES.SUPER_ADMIN) {
-      const userId = this.superAdminFieldControls.userId.value;
-      const userRole = this.superAdminFieldControls.userRole.value;
-      if (userRole === ROLES.USER) {
-        console.log(userId, userRole, this.selectedMenuList);
-      } else {
-        console.log(userId, userRole);
-      }
-      this.loading = false;
-    } else {
-      const userId = this.adminFieldControls.userId.value;
-      const userRole = this.adminFieldControls.userRole.value;
-      console.log(userId, userRole, this.selectedMenuList);
-      this.loading = false;
-    }
+    const userId =
+      this.currentUserRole === ROLES.SUPER_ADMIN
+        ? this.superAdminFieldControls.userId.value
+        : this.adminFieldControls.userId.value;
+
+    const userRole =
+      this.currentUserRole === ROLES.SUPER_ADMIN
+        ? this.superAdminFieldControls.userRole.value
+        : this.adminFieldControls.userRole.value;
+
+    const currentUserId = this.userService.currentUserValue.userId;
+
+    this.userService
+      .createUser(
+        userId,
+        userRole,
+        Number(currentUserId),
+        this.selectedMenuList
+      )
+      .subscribe((response) => {
+        const {
+          ProcessVariables: { status },
+          ProcessVariables: { message = {} },
+        } = response;
+        if (status) {
+          this.toasterService.show(TOASTER_MESSAGES.CREATE_USER_SUCCESS, {
+            classname: "bg-success text-light",
+          });
+          this.superAdminForm.reset();
+          this.adminForm.reset();
+        } else {
+          this.toasterService.show(message.value, {
+            classname: "bg-danger text-light",
+          });
+        }
+        this.loading = false;
+      });
   }
 }

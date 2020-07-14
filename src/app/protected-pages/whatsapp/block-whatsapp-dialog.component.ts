@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from "@angular/core";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { BUTTON_TEXTS } from "src/app/shared/utils/constant";
+import { ToasterService } from "src/app/shared/services/toaster.service";
+import { UserService } from "src/app/shared/services/user.service";
 
 @Component({
   selector: "app-block-whatsapp-dialog",
@@ -9,8 +11,8 @@ import { BUTTON_TEXTS } from "src/app/shared/utils/constant";
   styleUrls: ["./block-whatsapp-dialog.component.scss"],
 })
 export class BlockWhatsappDialogComponent implements OnInit {
-  @Input() userName: string;
-  @Input() mobileNumber: string;
+  @Input() optId: string;
+  @Input() mobile: string;
 
   blockButtonText = BUTTON_TEXTS.BLOCK_BUTTON_TEXT;
   cancelButtonText = BUTTON_TEXTS.CANCEL_BUTTON_TEXT;
@@ -21,7 +23,9 @@ export class BlockWhatsappDialogComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private ngbActiveModal: NgbActiveModal
+    private ngbActiveModal: NgbActiveModal,
+    private userService: UserService,
+    private toasterService: ToasterService
   ) {
     this.form = this.formBuilder.group({
       srNumber: [null, Validators.required],
@@ -37,7 +41,16 @@ export class BlockWhatsappDialogComponent implements OnInit {
     const srNumber = fieldControls.srNumber.value;
     const reason = fieldControls.reason.value;
 
-    console.log(srNumber, reason);
+    this.userService
+      .blockUserWhatsappAccesss(
+        srNumber,
+        reason,
+        this.userService.currentUserValue.userId,
+        this.optId
+      )
+      .subscribe((response) => {
+        console.log(response);
+      });
   }
 
   close(): void {

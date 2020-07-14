@@ -14,12 +14,7 @@ import { UserService } from "../services/user.service";
   providedIn: "root",
 })
 export class JwtInterceptor implements HttpInterceptor {
-  jsonWebToken: string;
-  constructor(private userService: UserService) {
-    this.jsonWebToken = this.userService.tokenResponseValue
-      ? this.userService.tokenResponseValue.token
-      : "";
-  }
+  constructor(private userService: UserService) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -28,7 +23,9 @@ export class JwtInterceptor implements HttpInterceptor {
     request = request.clone({
       setHeaders: {
         "Content-Type": "application/x-www-form-urlencoded",
-        "authentication-token": this.jsonWebToken,
+        "authentication-token": this.userService.tokenResponseValue
+          ? this.userService.tokenResponseValue.token
+          : "",
       },
     });
     return next.handle(request).pipe(

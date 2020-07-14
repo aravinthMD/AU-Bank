@@ -23,6 +23,14 @@ export const environment = {
       workflowId: "27f4ad189dbc11eaa360c282e0885855",
       processId: "28148b6a9dbc11eaa360c282e0885855",
     },
+    fetchUserByMobileNumber: {
+      workflowId: "d2ab1974c4de11eab220727d5ac274b2",
+      processId: "b2374f7ac59f11eab220727d5ac274b2",
+    },
+    blockUserWhatsappAccess: {
+      workflowId: "d2ab1974c4de11eab220727d5ac274b2",
+      processId: "d2d6f080c4de11eab220727d5ac274b2",
+    },
     getdisableUser: {
       workflowId: "27f4ad189dbc11eaa360c282e0885855",
       processId: "34367f7a9dd011eaa360c282e0885855",

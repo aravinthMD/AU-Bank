@@ -52,20 +52,17 @@ export class LoginComponent implements OnInit {
   onSubmit(): void {
     this.loading = true;
     this.userService
-      .generateAuthenticationToken(
-        this.fieldControls.userId.value,
-        this.fieldControls.password.value
-      )
+      .login(this.fieldControls.userId.value, this.fieldControls.password.value)
       .subscribe((response) => {
         if (response.token) {
-          this.login();
+          this.getUserDetail();
         }
       });
   }
 
-  login() {
+  getUserDetail() {
     this.userService
-      .login(this.fieldControls.userId.value, this.fieldControls.password.value)
+      .getUserDetail(this.fieldControls.userId.value)
       .subscribe((response) => {
         const currentHome = this.userService.currentHomeValue;
         this.toasterService.show(TOASTER_MESSAGES.LOGIN_SUCCESS, {

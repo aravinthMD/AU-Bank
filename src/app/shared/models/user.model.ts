@@ -16,7 +16,9 @@ export interface LoginProcessVariables {
   isFirstLogin?: string;
   isInput?: boolean;
   password: string;
-  role: string;
+  role?: string;
+  roleName?: string;
+  activityList?: number[];
   status?: string;
   userId: string;
   userName: string;

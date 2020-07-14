@@ -14,7 +14,11 @@ import {
   SUPER_ADMIN_MENU_ITEMS,
 } from "../models/menu.model";
 import { ROLES, PAGES } from "../utils/constant";
-import { RequestEntity, TokenResponse } from "../models/entity-request";
+import {
+  RequestEntity,
+  TokenResponse,
+  EntityResponse,
+} from "../models/entity-request";
 
 @Injectable({
   providedIn: "root",
@@ -72,7 +76,7 @@ export class UserService {
   }
 
   setHomeAndMenu(data: LoginProcessVariables): void {
-    if (data.role === ROLES.SUPER_ADMIN) {
+    if (data.roleName === ROLES.SUPER_ADMIN) {
       this.currentMenuSubject.next(SUPER_ADMIN_MENU_ITEMS);
       this.currentHomeSubject.next(PAGES.USER_CREATION);
       localStorage.setItem("currentHome", JSON.stringify(PAGES.USER_CREATION));
@@ -80,16 +84,48 @@ export class UserService {
         "currentMenu",
         JSON.stringify(SUPER_ADMIN_MENU_ITEMS)
       );
-    } else if (data.role === ROLES.ADMIN) {
+    } else if (data.roleName === ROLES.ADMIN) {
       this.currentMenuSubject.next(ADMIN_MENU_ITEMS);
       this.currentHomeSubject.next(PAGES.USER_CREATION);
       localStorage.setItem("currentHome", JSON.stringify(PAGES.USER_CREATION));
       localStorage.setItem("currentMenu", JSON.stringify(ADMIN_MENU_ITEMS));
     } else {
-      const { menus } = data;
-      const USER_MENU_ITEMS = menus.map((menu, index) => {
-        return new Menu(index, menu.name, menu.path, false, 0);
-      });
+      const { activityList } = data;
+      const USER_MENU_ITEMS = [];
+
+      const isViewWhatsappControlAvailable = activityList.find(
+        (value) => value === 1
+      );
+      const isBlockWhatsappControlAvailable = activityList.find(
+        (value) => value === 2
+      );
+      const isMarketingMakerControlAvailable = activityList.find(
+        (value) => value === 3
+      );
+      const isMarketingCheckerControlAvailable = activityList.find(
+        (value) => value === 4
+      );
+      if (isViewWhatsappControlAvailable) {
+        USER_MENU_ITEMS.push(
+          new Menu(10, "View Whatsapp", "/view-whatsapp", false, 0)
+        );
+      }
+      if (isBlockWhatsappControlAvailable) {
+        USER_MENU_ITEMS.push(
+          new Menu(20, "Block Whatsapp", "/block-whatsapp", false, 0)
+        );
+      }
+      if (isMarketingMakerControlAvailable) {
+        USER_MENU_ITEMS.push(
+          new Menu(30, "Marketing Maker", "/marketing-maker", false, 0)
+        );
+      }
+      if (isMarketingCheckerControlAvailable) {
+        USER_MENU_ITEMS.push(
+          new Menu(40, "Marketing Checker", "/marketing-checker", false, 0)
+        );
+      }
+
       this.currentMenuSubject.next(USER_MENU_ITEMS);
       this.currentHomeSubject.next(USER_MENU_ITEMS[0].routerLink);
       localStorage.setItem(
@@ -100,7 +136,7 @@ export class UserService {
     }
   }
 
-  generateAuthenticationToken(email: string, password: string) {
+  login(email: string, password: string) {
     const body = `email=${email}&password=${password}`;
     return this.http
       .post<TokenResponse>(`${environment.host}/account/login`, body)
@@ -113,14 +149,14 @@ export class UserService {
       );
   }
 
-  login(email: string, password: string) {
+  getUserDetail(userName: string) {
     const {
       api: {
         getUserDetails: { processId, workflowId },
       },
       projectId,
     } = environment;
-    const data = { userName: email, password };
+    const data = { userName };
     const requestEntity: RequestEntity = {
       processId,
       workflowId,
@@ -140,103 +176,119 @@ export class UserService {
       )
       .pipe(
         map((response) => {
-          console.log(response);
-          const users = [
-            {
-              ProcessVariables: {
-                dbPassword: "password",
-                dbUserName: "SuperAdmin",
-                password: "password",
-                role: "Super Admin",
-                userId: "1",
-                userName: "super.admin@gmail.com",
-                message: {},
-              },
-            },
-            {
-              ProcessVariables: {
-                dbPassword: "password",
-                dbUserName: "Admin",
-                password: "password",
-                role: "Admin",
-                userId: "2",
-                userName: "admin@gmail.com",
-                message: {},
-              },
-            },
-            {
-              ProcessVariables: {
-                dbPassword: "password",
-                dbUserName: "User1",
-                password: "password",
-                role: "User",
-                userId: "3",
-                userName: "user1@gmail.com",
-                message: {},
-                menus: [{ name: "View Whatsapp", path: "/view-whatsapp" }],
-              },
-            },
-            {
-              ProcessVariables: {
-                dbPassword: "password",
-                dbUserName: "User2",
-                password: "password",
-                role: "User",
-                userId: "4",
-                userName: "user2@gmail.com",
-                message: {},
-                menus: [
-                  { name: "View Whatsapp", path: "/view-whatsapp" },
-                  { name: "Block Whatsapp", path: "/block-whatsapp" },
-                ],
-              },
-            },
-
-            {
-              ProcessVariables: {
-                dbPassword: "password",
-                dbUserName: "User3",
-                password: "password",
-                role: "User",
-                userId: "5",
-                userName: "user3@gmail.com",
-                message: {},
-                menus: [
-                  { name: "View Whatsapp", path: "/view-whatsapp" },
-                  { name: "Block Whatsapp", path: "/block-whatsapp" },
-                  { name: "Marketing Maker", path: "/marketing-maker" },
-                ],
-              },
-            },
-
-            {
-              ProcessVariables: {
-                dbPassword: "password",
-                dbUserName: "User4",
-                password: "password",
-                role: "User",
-                userId: "6",
-                userName: "user4@gmail.com",
-                message: {},
-                menus: [
-                  { name: "View Whatsapp", path: "/view-whatsapp" },
-                  { name: "Block Whatsapp", path: "/block-whatsapp" },
-                  { name: "Marketing Checker", path: "/marketing-checker" },
-                ],
-              },
-            },
-          ];
-          const randomUserResponse = users[0].ProcessVariables;
           const userResponse = response.ProcessVariables;
-          localStorage.setItem(
-            "currentUser",
-            JSON.stringify(randomUserResponse)
-          );
-          this.currentUserSubject.next(randomUserResponse);
-          this.setHomeAndMenu(randomUserResponse);
-          return randomUserResponse;
+          localStorage.setItem("currentUser", JSON.stringify(userResponse));
+          this.currentUserSubject.next(userResponse);
+          this.setHomeAndMenu(userResponse);
+          return userResponse;
         })
       );
+  }
+
+  createUser(
+    emailId: string,
+    roleName: string,
+    userId: number,
+    activityList: number[]
+  ) {
+    const {
+      api: {
+        createUser: { processId, workflowId },
+      },
+      projectId,
+    } = environment;
+    const data = {
+      emailId,
+      roleName,
+      userId,
+      activityList,
+    };
+
+    const requestEntity: RequestEntity = {
+      processId,
+      ProcessVariables: data,
+      workflowId,
+      projectId,
+    };
+
+    const body = {
+      processVariables: JSON.stringify(requestEntity),
+    };
+
+    const formData = new HttpParams({ fromObject: body });
+
+    return this.http.post<EntityResponse>(
+      `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
+  }
+
+  fetchUserByMobileNumber(mobileNumber: string) {
+    const {
+      api: {
+        fetchUserByMobileNumber: { processId, workflowId },
+      },
+      projectId,
+    } = environment;
+    const data = {
+      mobileNumber,
+    };
+
+    const requestEntity: RequestEntity = {
+      processId,
+      ProcessVariables: data,
+      workflowId,
+      projectId,
+    };
+
+    const body = {
+      processVariables: JSON.stringify(requestEntity),
+    };
+
+    const formData = new HttpParams({ fromObject: body });
+
+    return this.http.post<EntityResponse>(
+      `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
+  }
+
+  blockUserWhatsappAccesss(
+    srNo: string,
+    reason: string,
+    userId: string,
+    optId: string
+  ) {
+    const {
+      api: {
+        blockUserWhatsappAccess: { processId, workflowId },
+      },
+      projectId,
+    } = environment;
+    const data = {
+      srNo,
+      reason,
+      userId,
+      optId,
+    };
+
+    const requestEntity: RequestEntity = {
+      processId,
+      ProcessVariables: data,
+      workflowId,
+      projectId,
+    };
+
+    const body = {
+      processVariables: JSON.stringify(requestEntity),
+    };
+
+    const formData = new HttpParams({ fromObject: body });
+
+    return this.http.post<EntityResponse>(
+      `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
   }
 
   logout() {
@@ -253,87 +305,5 @@ export class UserService {
     this.currentHomeSubject.next(null);
     this.currentMenuSubject.next(null);
     this.tokenResponseSubject.next(null);
-  }
-
-  createUser(emailId: string, role: string, userId: number) {
-    const { processId, workflowId } = environment.api.createUser;
-    const { projectId } = environment;
-    const data = {
-      emailId,
-      role,
-      userId,
-    };
-
-    const requestEntity: RequestEntity = {
-      processId,
-      ProcessVariables: data,
-      workflowId,
-      projectId,
-    };
-
-    const body = {
-      processVariables: JSON.stringify(requestEntity),
-    };
-
-    const formData = new HttpParams({ fromObject: body });
-
-    return this.http.post<LoginResponse>(
-      `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-      formData
-    );
-  }
-
-  fetchUserByEmailId(emailId: string, userId: number) {
-    const data = {
-      emailId,
-      userId,
-    };
-    const { processId, workflowId } = environment.api.getdisableUser;
-    const { projectId } = environment;
-    const requestEntity: RequestEntity = {
-      processId,
-      ProcessVariables: data,
-      workflowId,
-      projectId,
-    };
-
-    const body = {
-      processVariables: JSON.stringify(requestEntity),
-    };
-
-    const formData = new HttpParams({ fromObject: body });
-
-    return this.http.post<UserResponse>(
-      `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-      formData
-    );
-  }
-
-  disableUserById(newUserId: number, userId: number) {
-    const data = {
-      newUserId,
-      userId,
-    };
-
-    const { processId, workflowId } = environment.api.disableUser;
-    const { projectId } = environment;
-
-    const requestEntity: RequestEntity = {
-      processId,
-      ProcessVariables: data,
-      workflowId,
-      projectId,
-    };
-
-    const body = {
-      processVariables: JSON.stringify(requestEntity),
-    };
-
-    const formData = new HttpParams({ fromObject: body });
-
-    return this.http.post(
-      `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-      formData
-    );
   }
 }
