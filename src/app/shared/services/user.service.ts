@@ -14,7 +14,7 @@ import {
   SUPER_ADMIN_MENU_ITEMS,
 } from "../models/menu.model";
 import { ROLES, PAGES } from "../utils/constant";
-import { RequestEntity } from "../models/entity-request";
+import { RequestEntity, TokenResponse } from "../models/entity-request";
 
 @Injectable({
   providedIn: "root",
@@ -23,12 +23,19 @@ export class UserService {
   public currentUser: Observable<LoginProcessVariables>;
   public currentHome: Observable<string>;
   public currentMenu: Observable<Menu[]>;
+  public tokenResponse: Observable<TokenResponse>;
 
   private currentUserSubject: BehaviorSubject<LoginProcessVariables>;
   private currentHomeSubject: BehaviorSubject<string>;
   private currentMenuSubject: BehaviorSubject<Menu[]>;
+  private tokenResponseSubject: BehaviorSubject<TokenResponse>;
 
   constructor(private http: HttpClient) {
+    this.tokenResponseSubject = new BehaviorSubject<TokenResponse>(
+      JSON.parse(localStorage.getItem("tokenResponse"))
+    );
+    this.tokenResponse = this.tokenResponseSubject.asObservable();
+
     this.currentUserSubject = new BehaviorSubject<LoginProcessVariables>(
       JSON.parse(localStorage.getItem("currentUser"))
     );
@@ -53,6 +60,10 @@ export class UserService {
 
   public get currentMenuValue(): Menu[] {
     return this.currentMenuSubject.value;
+  }
+
+  public get tokenResponseValue(): TokenResponse {
+    return this.tokenResponseSubject.value;
   }
 
   public setCurrentUserSubject(response: LoginProcessVariables) {
@@ -90,24 +101,25 @@ export class UserService {
   }
 
   generateAuthenticationToken(email: string, password: string) {
-    const data = { email, password };
-
-    const body = {
-      email: JSON.stringify(email),
-      password: JSON.stringify(password),
-    };
-    const formData = new HttpParams({ fromObject: body });
-
+    const body = `email=${email}&password=${password}`;
     return this.http
-      .post(`${environment.host}/account/login`, formData)
-      .subscribe((response) => {
-        console.log(response);
-      });
+      .post<TokenResponse>(`${environment.host}/account/login`, body)
+      .pipe(
+        map((response) => {
+          localStorage.setItem("tokenResponse", JSON.stringify(response));
+          this.tokenResponseSubject.next(response);
+          return response;
+        })
+      );
   }
 
   login(email: string, password: string) {
-    const { processId, workflowId } = environment.api.getUserDetails;
-    const { projectId } = environment;
+    const {
+      api: {
+        getUserDetails: { processId, workflowId },
+      },
+      projectId,
+    } = environment;
     const data = { userName: email, password };
     const requestEntity: RequestEntity = {
       processId,
@@ -128,6 +140,7 @@ export class UserService {
       )
       .pipe(
         map((response) => {
+          console.log(response);
           const users = [
             {
               ProcessVariables: {
@@ -235,9 +248,11 @@ export class UserService {
     localStorage.removeItem("currentUser");
     localStorage.removeItem("currentHome");
     localStorage.removeItem("currentMenu");
+    localStorage.removeItem("tokenResponse");
     this.currentUserSubject.next(null);
     this.currentHomeSubject.next(null);
     this.currentMenuSubject.next(null);
+    this.tokenResponseSubject.next(null);
   }
 
   createUser(emailId: string, role: string, userId: number) {

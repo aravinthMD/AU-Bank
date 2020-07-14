@@ -32,12 +32,9 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const emailRegExp = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+\.)([a-zA-Z]){2,5}$/;
-    const paswordRegExp = /^([a-zA-Z,0-9,~!@#$%&*()_+-]){8,}$/;
-
     this.loginForm = this.formBuilder.group({
-      emailId: ["", [Validators.required, Validators.pattern(emailRegExp)]],
-      password: ["", [Validators.required, Validators.pattern(paswordRegExp)]],
+      emailId: ["", Validators.required],
+      password: ["", Validators.required],
       isExternalUser: [false],
     });
 
@@ -53,28 +50,38 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  get fieldControls() {
+    return this.loginForm.controls;
+  }
+
   onSubmit(): void {
     this.loading = true;
-
-    const fieldControls = this.loginForm.controls;
-    const emailId = fieldControls.emailId.value;
-    const password = fieldControls.password.value;
-    const isExternalUser = fieldControls.isExternalUser.value;
-
-    // this.userService.generateAuthenticationToken(emailId, password);
-
-    this.userService.login(emailId, password).subscribe((response) => {
-      const currentHome = this.userService.currentHomeValue;
-      this.toasterService.show(TOASTER_MESSAGES.LOGIN_SUCCESS, {
-        classname: "bg-success text-light",
+    this.userService
+      .generateAuthenticationToken(
+        this.fieldControls.userId.value,
+        this.fieldControls.password.value
+      )
+      .subscribe((response) => {
+        if (response.token) {
+          this.login();
+        }
       });
-      this.loading = false;
-      this.router.navigate([currentHome]);
+  }
 
-      // else {
-      //   this.toasterService.showError(response.message.value);
-      //   this.loading = false;
-      // }
-    });
+  login() {
+    this.userService
+      .login(this.fieldControls.userId.value, this.fieldControls.password.value)
+      .subscribe((response) => {
+        const currentHome = this.userService.currentHomeValue;
+        this.toasterService.show(TOASTER_MESSAGES.LOGIN_SUCCESS, {
+          classname: "bg-success text-light",
+        });
+        this.loading = false;
+        this.router.navigate([currentHome]);
+        // else {
+        //   this.toasterService.showError(response.message.value);
+        //   this.loading = false;
+        // }
+      });
   }
 }
