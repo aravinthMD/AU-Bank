@@ -13,15 +13,10 @@ import { ToasterService } from "src/app/shared/services/toaster.service";
 export class LoginComponent implements OnInit {
   loginButtonText = BUTTON_TEXTS.LOGIN_BUTTON_TEXT;
 
-  loading = false;
-  errorMessage: any;
-
   loginForm: FormGroup;
 
+  loading = false;
   returnUrl: string;
-
-  submitted = false;
-  isFirstLogin: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,7 +28,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
-      emailId: ["", Validators.required],
+      userId: ["", Validators.required],
       password: ["", Validators.required],
       isExternalUser: [false],
     });

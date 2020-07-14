@@ -8,6 +8,7 @@ import {
   PAGES,
   MENU_TITLES,
 } from "src/app/shared/utils/constant";
+import { ReferenceService } from "src/app/shared/services/reference.service";
 
 @Component({
   selector: "app-user-creation",
@@ -17,40 +18,21 @@ import {
 export class UserCreationComponent implements OnInit {
   submitButtonText = BUTTON_TEXTS.SUBMIT_BUTTON_TEXT;
 
-  loading = false;
   superAdminForm: FormGroup;
   adminForm: FormGroup;
 
+  loading = false;
   currentUserRole: string;
-  userRoles: string[] = [ROLES.ADMIN, ROLES.USER];
-  userOptions = [
-    {
-      title: MENU_TITLES.VIEW_WHATSAPP,
-      routerPath: PAGES.VIEW_WHATSAPP,
-      value: 1,
-    },
-    {
-      title: MENU_TITLES.BLOCK_WHATSAPP,
-      routerPath: PAGES.BLOCK_WHATSAPP,
-      value: 2,
-    },
-    {
-      title: MENU_TITLES.MARKETING_MAKER,
-      routerPath: PAGES.MARKETING_MAKER,
-      value: 3,
-    },
-    {
-      title: MENU_TITLES.MARKETING_CHECKER,
-      routerPath: PAGES.MARKETING_CHECKER,
-      value: 4,
-    },
-  ];
-
+  userRoles: string[] = Object.values(ROLES).filter(
+    (role) => role !== ROLES.SUPER_ADMIN
+  );
+  accessControls = [];
   selectedMenuList = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
+    private referenceService: ReferenceService,
     private toasterService: ToasterService
   ) {
     this.superAdminForm = this.formBuilder.group({
@@ -64,10 +46,12 @@ export class UserCreationComponent implements OnInit {
       userRole: [ROLES.USER],
       accessMenus: ["", Validators.required],
     });
-    this.currentUserRole = this.userService.currentUserValue.role;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.currentUserRole = this.userService.currentUserValue.role;
+    this.accessControls = this.referenceService.getAvailableAccessControls();
+  }
 
   onRoleChanged(): void {
     const selectedRole = this.superAdminFieldControls.userRole.value;

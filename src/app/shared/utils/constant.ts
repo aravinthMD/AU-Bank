@@ -3,6 +3,7 @@ export enum BUTTON_TEXTS {
   SUBMIT_BUTTON_TEXT = "Submit",
   DISABLE_USER_BUTTON_TEXT = "Disable User",
   SEARCH_BUTTON_TEXT = "Search",
+  DOWNLOAD_BUTTON_TEXT = 'Download',
   LAUNCH_BUTTON_TEXT = "Launch",
   BLOCK_BUTTON_TEXT = "Block",
   CONFIRM_BUTTON_TEXT = "Confirm",
@@ -46,5 +47,10 @@ export enum MENU_TITLES {
   BLOCK_WHATSAPP = "Block Whatsapp",
   MARKETING_CHECKER = "Marketing Checker",
   MARKETING_MAKER = "Marketing Maker",
+}
+
+export enum REPORT_FILTER_TYPES {
+  ALL = 'All',
+  BLOCKED = 'Blocked'
 }
 

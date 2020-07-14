@@ -3,6 +3,7 @@ import { BUTTON_TEXTS } from "src/app/shared/utils/constant";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { NgbDate, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ViewTemplateHistoryDialogComponent } from "./view-template-history-dialog.component";
+import { ReferenceService } from "src/app/shared/services/reference.service";
 
 @Component({
   selector: "app-launch-dashboard",
@@ -37,7 +38,11 @@ export class LaunchDashboardComponent implements OnInit {
   toMinDate: any;
   toMaxDate: any;
 
-  constructor(private formBuilder: FormBuilder, private ngbModal: NgbModal) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private referenceService: ReferenceService,
+    private ngbModal: NgbModal
+  ) {
     this.form = this.formBuilder.group({
       fromDate: [null, Validators.required],
       toDate: [null, Validators.required],
@@ -68,24 +73,17 @@ export class LaunchDashboardComponent implements OnInit {
       },
     ];
   }
-
   setValidators(): void {
-    const date = new Date();
-    this.fromMinDate = { year: 0, month: 0, day: 0 };
+    const {
+      minDate,
+      maxDate,
+    } = this.referenceService.getDefaultDateValidators();
 
-    this.fromMaxDate = {
-      year: date.getFullYear(),
-      month: date.getMonth() + 1,
-      day: date.getDate(),
-    };
+    this.fromMinDate = minDate;
+    this.fromMaxDate = maxDate;
 
-    this.toMinDate = { year: 0, month: 0, day: 0 };
-
-    this.toMaxDate = {
-      year: date.getFullYear(),
-      month: date.getMonth() + 1,
-      day: date.getDate(),
-    };
+    this.toMinDate = minDate;
+    this.toMaxDate = maxDate;
   }
 
   onFromDateChange(event: NgbDate): void {

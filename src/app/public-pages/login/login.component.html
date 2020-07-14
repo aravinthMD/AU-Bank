@@ -5,19 +5,19 @@
 
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
-      <label for="email">USER ID</label>
+      <label for="userId">USER ID</label>
       <input
-        type="email"
-        formControlName="emailId"
-        id="email"
-        placeholder="Eg: user0001"
-        aria-describedby="emailHelp"
+        type="text"
+        formControlName="userId"
+        id="userId"
+        placeholder="Eg: USER0001"
+        aria-describedby="userIdHelp"
         autocomplete="off"
         class="form-control"
         autofocus
         required
       />
-      <small id="emailHelp" class="form-text text-muted"
+      <small id="userIdHelp" class="form-text text-muted"
         >Enter a valid user id</small
       >
     </div>

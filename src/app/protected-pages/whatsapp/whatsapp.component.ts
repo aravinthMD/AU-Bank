@@ -1,9 +1,14 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { BUTTON_TEXTS, PAGES } from "src/app/shared/utils/constant";
+import {
+  BUTTON_TEXTS,
+  PAGES,
+  REPORT_FILTER_TYPES,
+} from "src/app/shared/utils/constant";
 import { Router } from "@angular/router";
 import { NgbDate, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { BlockWhatsappDialogComponent } from "./block-whatsapp-dialog.component";
+import { ReferenceService } from "src/app/shared/services/reference.service";
 
 @Component({
   selector: "app-whatsapp",
@@ -12,9 +17,9 @@ import { BlockWhatsappDialogComponent } from "./block-whatsapp-dialog.component"
 })
 export class WhatsappComponent implements OnInit {
   blockButtonText = BUTTON_TEXTS.BLOCK_BUTTON_TEXT;
-  submitButtonText = BUTTON_TEXTS.SUBMIT_BUTTON_TEXT;
+  downloadButtonText = BUTTON_TEXTS.DOWNLOAD_BUTTON_TEXT;
 
-  filterOptions = ["All", "Blocked", "Unblocked"];
+  filterOptions = Object.values(REPORT_FILTER_TYPES);
   tableHeaders: string[] = [];
 
   isViewOnly = false;
@@ -36,49 +41,26 @@ export class WhatsappComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
+    private referenceService: ReferenceService,
     private ngbDialog: NgbModal
   ) {
     this.form = this.formBuilder.group({
       fromDate: [null, Validators.required],
       toDate: [null, Validators.required],
-      filterType: ["All", Validators.required],
+      filterType: [this.filterOptions[0], Validators.required],
     });
+
     const { url } = this.router;
+    const tableHeaders = this.referenceService.getWhatsappTableHeaders();
+
     if (url === PAGES.VIEW_WHATSAPP) {
       this.isViewOnly = true;
-      this.tableHeaders = [
-        "Customer Mobile Number",
-        "Opt In",
-        "Date Of Opt In",
-        "Opt In Channel",
-        "Opt Out",
-        "Date Of Opt Out",
-        "Opt Out Channel",
-        "Request Id if blocked earlier",
-        "Block Date",
-        "Blocking User",
-        "Status",
-        "Reason",
-        "SR No",
-      ];
+      this.tableHeaders = [...tableHeaders].filter(
+        (header) => header !== "Block Customer"
+      );
     } else {
       this.isViewOnly = false;
-      this.tableHeaders = [
-        "Customer Mobile Number",
-        "Opt In",
-        "Date Of Opt In",
-        "Opt In Channel",
-        "Opt Out",
-        "Date Of Opt Out",
-        "Opt Out Channel",
-        "Request Id if blocked earlier",
-        "Block Date",
-        "Blocking User",
-        "Status",
-        "Block Customer",
-        "Reason",
-        "SR No",
-      ];
+      this.tableHeaders = [...tableHeaders];
     }
     this.setValidators();
   }
@@ -86,22 +68,16 @@ export class WhatsappComponent implements OnInit {
   ngOnInit(): void {}
 
   setValidators(): void {
-    const date = new Date();
-    this.fromMinDate = { year: 0, month: 0, day: 0 };
+    const {
+      minDate,
+      maxDate,
+    } = this.referenceService.getDefaultDateValidators();
 
-    this.fromMaxDate = {
-      year: date.getFullYear(),
-      month: date.getMonth() + 1,
-      day: date.getDate(),
-    };
+    this.fromMinDate = minDate;
+    this.fromMaxDate = maxDate;
 
-    this.toMinDate = { year: 0, month: 0, day: 0 };
-
-    this.toMaxDate = {
-      year: date.getFullYear(),
-      month: date.getMonth() + 1,
-      day: date.getDate(),
-    };
+    this.toMinDate = minDate;
+    this.toMaxDate = maxDate;
   }
 
   onFromDateChange(event: NgbDate): void {
