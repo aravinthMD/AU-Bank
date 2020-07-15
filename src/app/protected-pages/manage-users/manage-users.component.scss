@@ -1,0 +1,9 @@
+@import "../../shared/styles/variables.scss";
+
+table button {
+  color: $white-color;
+  font-size: 14px;
+  background-color: $maroon-color;
+  border: 1px solid $maroon-color;
+}
+

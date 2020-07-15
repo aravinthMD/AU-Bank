@@ -4,7 +4,7 @@ import { PublicHomeComponent } from "./public-pages/public-home.component";
 import { ProtectedHomeComponent } from "./protected-pages/protected-home.component";
 import { AuthenticationGuard } from "./shared/guards/authentication.guard";
 import { LoginComponent } from "./public-pages/login/login.component";
-import { ChangePasswordComponent } from './public-pages/change-password/change-password.component';
+import { ChangePasswordComponent } from "./public-pages/change-password/change-password.component";
 
 const routes: Routes = [
   {
@@ -17,6 +17,13 @@ const routes: Routes = [
         loadChildren: () =>
           import("./protected-pages/user-creation/user-creation.module").then(
             (m) => m.UserCreationModule
+          ),
+      },
+      {
+        path: "manage-users",
+        loadChildren: () =>
+          import("./protected-pages/manage-users/manage-users.module").then(
+            (m) => m.ManageUsersModule
           ),
       },
       {
@@ -55,7 +62,7 @@ const routes: Routes = [
     children: [
       { path: "", component: LoginComponent },
       { path: "login", component: LoginComponent },
-      { path: 'change-password' , component: ChangePasswordComponent },
+      { path: "change-password", component: ChangePasswordComponent },
     ],
   },
 ];

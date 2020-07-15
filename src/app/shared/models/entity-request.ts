@@ -1,3 +1,5 @@
+import { User } from "./user.model";
+
 export interface EntityResponse {
   ApplicationId: string;
   Error: string;
@@ -7,6 +9,10 @@ export interface EntityResponse {
   ProcessInstanceId: string;
   ProcessName: string;
   ProcessVariables: {
+    usersList?: User[];
+    downloadContent?: string;
+    more?: boolean;
+    totalCount: number;
     activityList?: number[];
     blockLog?: [
       {
@@ -54,4 +60,32 @@ export interface TokenResponse {
   lastLoggedInDateTime: string;
   status: boolean;
   token: string;
+}
+
+export interface LoginResponse {
+  Error?: string;
+  ErrorCode?: string;
+  ErrorMessage?: string;
+  ProcessId?: string;
+  ProcessInstanceId?: string;
+  ProcessName?: string;
+  ProcessVariables: LoginProcessVariables;
+  Status?: string;
+  WorkflowId?: string;
+}
+
+export interface LoginProcessVariables {
+  dbPassword: string;
+  dbUserName: string;
+  isFirstLogin?: string;
+  isInput?: boolean;
+  password: string;
+  role?: string;
+  roleName?: string;
+  activityList?: number[];
+  status?: string;
+  userId: string;
+  userName: string;
+  message?: { type?: string; value?: string };
+  menus?: any;
 }

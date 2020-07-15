@@ -167,7 +167,7 @@ export class UserService {
       processVariables: JSON.stringify(requestEntity),
     };
 
-    const formData = new HttpParams({ fromObject: body });
+    const formData = this.transform(body);
 
     return this.http
       .post<LoginResponse>(
@@ -176,11 +176,13 @@ export class UserService {
       )
       .pipe(
         map((response) => {
-          const userResponse = response.ProcessVariables;
-          localStorage.setItem("currentUser", JSON.stringify(userResponse));
-          this.currentUserSubject.next(userResponse);
-          this.setHomeAndMenu(userResponse);
-          return userResponse;
+          if (response && response.ProcessVariables) {
+            const userResponse = response.ProcessVariables;
+            localStorage.setItem("currentUser", JSON.stringify(userResponse));
+            this.currentUserSubject.next(userResponse);
+            this.setHomeAndMenu(userResponse);
+            return userResponse;
+          }
         })
       );
   }
@@ -215,7 +217,7 @@ export class UserService {
       processVariables: JSON.stringify(requestEntity),
     };
 
-    const formData = new HttpParams({ fromObject: body });
+    const formData = this.transform(body);
 
     return this.http.post<EntityResponse>(
       `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
@@ -245,7 +247,7 @@ export class UserService {
       processVariables: JSON.stringify(requestEntity),
     };
 
-    const formData = new HttpParams({ fromObject: body });
+    const formData = this.transform(body);
 
     return this.http.post<EntityResponse>(
       `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
@@ -257,7 +259,10 @@ export class UserService {
     srNo: string,
     reason: string,
     userId: string,
-    optId: string
+    action: string,
+    cTime: string,
+    channel: string,
+    mobile: string
   ) {
     const {
       api: {
@@ -269,7 +274,10 @@ export class UserService {
       srNo,
       reason,
       userId,
-      optId,
+      action,
+      cTime,
+      channel,
+      mobile,
     };
 
     const requestEntity: RequestEntity = {
@@ -283,10 +291,197 @@ export class UserService {
       processVariables: JSON.stringify(requestEntity),
     };
 
-    const formData = new HttpParams({ fromObject: body });
+    const formData = this.transform(body);
 
     return this.http.post<EntityResponse>(
       `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
+  }
+
+  changePassword(
+    currentPassword: string,
+    newPassword: string,
+    confirmNewPassword: string,
+    userId: number
+  ) {
+    const data = {
+      currentPassword,
+      newPassword,
+      confirmNewPassword,
+      userId,
+    };
+
+    const {
+      api: {
+        changeUserPassword: { processId, workflowId },
+      },
+      projectId,
+    } = environment;
+    const requestEntity: RequestEntity = {
+      processId,
+      ProcessVariables: data,
+      workflowId,
+      projectId,
+    };
+
+    const body = {
+      processVariables: JSON.stringify(requestEntity),
+    };
+    const formData = new HttpParams({ fromObject: body });
+
+    return this.http.post<Response>(
+      `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
+  }
+
+  disableUserById(newUserId: number, userId: number) {
+    const data = {
+      newUserId,
+      userId,
+    };
+
+    const { processId, workflowId } = environment.api.disableUser;
+    const { projectId } = environment;
+
+    const requestEntity: RequestEntity = {
+      processId,
+      ProcessVariables: data,
+      workflowId,
+      projectId,
+    };
+
+    const body = {
+      processVariables: JSON.stringify(requestEntity),
+    };
+
+    const formData = this.transform(body);
+
+    return this.http.post<UserResponse>(
+      `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
+  }
+
+  fetchUsers(perPage: number, currentPage: number) {
+    const data = {
+      perPage,
+      currentPage,
+    };
+    const {
+      api: {
+        fetchUsers: { processId, workflowId },
+      },
+      projectId,
+    } = environment;
+    const requestEntity: RequestEntity = {
+      processId,
+      ProcessVariables: data,
+      workflowId,
+      projectId,
+    };
+
+    const body = {
+      processVariables: JSON.stringify(requestEntity),
+    };
+
+    const formData = this.transform(body);
+
+    return this.http.post<EntityResponse>(
+      `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
+  }
+
+  fetchUserActivityByUserId(userId: number) {
+    const data = {
+      userId,
+    };
+    const {
+      api: {
+        fetchUserActivityList: { processId, workflowId },
+      },
+      projectId,
+    } = environment;
+    const requestEntity: RequestEntity = {
+      processId,
+      ProcessVariables: data,
+      workflowId,
+      projectId,
+    };
+
+    const body = {
+      processVariables: JSON.stringify(requestEntity),
+    };
+
+    const formData = this.transform(body);
+
+    return this.http.post<EntityResponse>(
+      `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
+  }
+
+  updateUser(userId: number, activityList: number[], modifiedBy: number) {
+    const data = {
+      userId,
+      activityList,
+      modifiedBy,
+    };
+    const {
+      api: {
+        updateUser: { processId, workflowId },
+      },
+      projectId,
+    } = environment;
+    const requestEntity: RequestEntity = {
+      processId,
+      ProcessVariables: data,
+      workflowId,
+      projectId,
+    };
+
+    const body = {
+      processVariables: JSON.stringify(requestEntity),
+    };
+
+    const formData = this.transform(body);
+
+    return this.http.post<EntityResponse>(
+      `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
+  }
+
+  downloadReport(mobileNo: string, fromDate: string, toDate: string, isDownload: boolean) {
+    const data = {
+      mobileNo,
+      fromDate,
+      toDate,
+      isDownload
+    };
+    const {
+      api: {
+        whatsappReport: { processId, workflowId },
+      },
+      projectId,
+    } = environment;
+    const requestEntity: RequestEntity = {
+      processId,
+      ProcessVariables: data,
+      workflowId,
+      projectId,
+    };
+
+    const body = {
+      processVariables: JSON.stringify(requestEntity),
+    };
+
+    const formData = this.transform(body);
+
+    return this.http.post<EntityResponse>(
+      `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
       formData
     );
   }
@@ -305,5 +500,9 @@ export class UserService {
     this.currentHomeSubject.next(null);
     this.currentMenuSubject.next(null);
     this.tokenResponseSubject.next(null);
+  }
+
+  transform(data: any) {
+    return new HttpParams({ fromObject: data });
   }
 }

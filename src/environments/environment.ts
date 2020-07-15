@@ -31,13 +31,25 @@ export const environment = {
       workflowId: "d2ab1974c4de11eab220727d5ac274b2",
       processId: "d2d6f080c4de11eab220727d5ac274b2",
     },
-    getdisableUser: {
-      workflowId: "27f4ad189dbc11eaa360c282e0885855",
-      processId: "34367f7a9dd011eaa360c282e0885855",
+    fetchUsers: {
+      workflowId: "d2ab1974c4de11eab220727d5ac274b2",
+      processId: "3183021ec68211eab22b727d5ac274b2",
+    },
+    fetchUserActivityList: {
+      workflowId: "d2ab1974c4de11eab220727d5ac274b2",
+      processId: "a9790b38c69611eab22b727d5ac274b2",
+    },
+    updateUser: {
+      workflowId: "d2ab1974c4de11eab220727d5ac274b2",
+      processId: "570b5632c69911eab22b727d5ac274b2",
     },
     disableUser: {
       workflowId: "27f4ad189dbc11eaa360c282e0885855",
       processId: "31116bf29e5c11eaa360c282e0885855",
+    },
+    whatsappReport: {
+      workflowId: "54b48f28c6a511eab22b727d5ac274b2",
+      processId: "54d2fe86c6a511eab22b727d5ac274b2",
     },
   },
   host: "http://178.128.125.44/appiyo",

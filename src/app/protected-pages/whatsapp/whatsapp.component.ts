@@ -3,7 +3,6 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import {
   BUTTON_TEXTS,
   PAGES,
-  REPORT_FILTER_TYPES,
   TOASTER_MESSAGES,
 } from "src/app/shared/utils/constant";
 import { Router } from "@angular/router";
@@ -12,6 +11,7 @@ import { BlockWhatsappDialogComponent } from "./block-whatsapp-dialog.component"
 import { ReferenceService } from "src/app/shared/services/reference.service";
 import { UserService } from "src/app/shared/services/user.service";
 import { ToasterService } from "src/app/shared/services/toaster.service";
+import { saveAs } from "file-saver";
 
 @Component({
   selector: "app-whatsapp",
@@ -22,7 +22,7 @@ export class WhatsappComponent implements OnInit {
   blockButtonText = BUTTON_TEXTS.BLOCK_BUTTON_TEXT;
   downloadButtonText = BUTTON_TEXTS.DOWNLOAD_BUTTON_TEXT;
 
-  filterOptions = Object.values(REPORT_FILTER_TYPES);
+  filterOptions = ["BLOCKED"];
   tableHeaders: string[] = [];
 
   isViewOnly = false;
@@ -116,7 +116,6 @@ export class WhatsappComponent implements OnInit {
         if (blockLog) {
           const [data] = blockLog;
           this.userDetail = data;
-          console.log(this.userDetail);
         } else {
           this.toasterService.show(TOASTER_MESSAGES.USER_NOT_FOUND, {
             classname: "bg-danger text-light",
@@ -126,21 +125,62 @@ export class WhatsappComponent implements OnInit {
       });
   }
 
-  onSubmit(): void {
-    const fieldControls = this.form.controls;
-
-    const fromDate = fieldControls.fromDate.value;
-    const toDate = fieldControls.toDate.value;
-    const filterType = fieldControls.filterType.value;
-
-    console.log(fromDate, toDate, filterType);
+  get fieldControls() {
+    return this.form.controls;
   }
 
-  openBlockWhatsappDialog({ mobile, optId }): void {
+  downloadReport(): void {
+    const fromDate = this.fieldControls.fromDate.value;
+    const toDate = this.fieldControls.toDate.value;
+    const filterType = this.fieldControls.filterType.value;
+
+    const formattedFromDate = `${fromDate.year}-${fromDate.month}-${fromDate.day}`;
+    const formattedToDate = `${toDate.year}-${toDate.month}-${toDate.day}`;
+    this.userService
+      .downloadReport(
+        this.userDetail ? this.userDetail.mobile : -1,
+        formattedFromDate,
+        formattedToDate,
+        true
+      )
+      .subscribe((response) => {
+        const {
+          ProcessVariables: { status, downloadContent, more },
+        } = response;
+        if (status) {
+          this.download(downloadContent, "text/csv", more);
+        }
+      });
+  }
+
+  download(response, type, isMoreContentAvailable: boolean) {
+    const data = response;
+    const data1 = `${data} ${response}`;
+    const fromDate = this.fieldControls.fromDate.value;
+    const toDate = this.fieldControls.toDate.value;
+
+    const formattedFromDate = `${fromDate.year}-${fromDate.month}-${fromDate.day}`;
+    const formattedToDate = `${toDate.year}-${toDate.month}-${toDate.day}`;
+    const fileName = this.userDetail
+      ? `${this.userDetail.mobile}-${formattedFromDate}to${formattedToDate}.csv`
+      : `${formattedFromDate}to${formattedToDate}.csv`;
+    const blob = new Blob([response], {
+      type,
+    });
+    if (!isMoreContentAvailable) {
+      saveAs(blob, fileName);
+    }
+  }
+
+  openBlockWhatsappDialog({ action, cTime, channel, mobile }): void {
     const dialog = this.ngbDialog.open(BlockWhatsappDialogComponent, {
       centered: true,
     });
-    dialog.componentInstance.mobile = mobile;
-    dialog.componentInstance.optId = optId;
+    dialog.componentInstance.inputData = { action, cTime, channel, mobile };
+    dialog.result.then((res) => {
+      if (res === "SUCCESS") {
+        this.fetchUserByMobileNumber(mobile);
+      }
+    });
   }
 }

@@ -1,9 +1,9 @@
 export enum BUTTON_TEXTS {
   LOGIN_BUTTON_TEXT = "Login",
   SUBMIT_BUTTON_TEXT = "Submit",
-  DISABLE_USER_BUTTON_TEXT = "Disable User",
+  DISABLE_BUTTON_TEXT = "Disable",
   SEARCH_BUTTON_TEXT = "Search",
-  DOWNLOAD_BUTTON_TEXT = 'Download',
+  DOWNLOAD_BUTTON_TEXT = "Download",
   LAUNCH_BUTTON_TEXT = "Launch",
   BLOCK_BUTTON_TEXT = "Block",
   CONFIRM_BUTTON_TEXT = "Confirm",
@@ -12,7 +12,9 @@ export enum BUTTON_TEXTS {
   VIEW_BUTTON_TEXT = "View",
   ACTIVATE_BUTTON_TEXT = "Activate",
   DEACTIVATE_BUTTON_TEXT = "Deactivate",
-  CHANGE_PASSWORD_BUTTON_TEXT = "Change password"
+  CHANGE_PASSWORD_BUTTON_TEXT = "Change password",
+  EDIT_BUTTON_TEXT = "Edit",
+  UPDATE_BUTTON_TEXT = "Update",
 }
 
 export enum ROLES {
@@ -28,15 +30,22 @@ export enum PAGES {
   BLOCK_WHATSAPP = "/block-whatsapp",
   MARKETING_MAKER = "/marketing-maker",
   MARKETING_CHECKER = "/marketing-checker",
+  CHANGE_PASSWORD = "/public/change-password",
 }
 
 export enum TOASTER_MESSAGES {
-  LOGIN_SUCCESS = "Login Successfull",
-  LOGOUT_SUCCESS = "Logout successfull",
-  CREATE_USER_SUCCESS = "Create user successfull",
-  FETCH_USER_SUCCESS = "User fetch successfull",
-  DISABLE_USER_SUCCESS = "User disabled successfull",
-  USER_NOT_FOUND = "User not found"
+  LOGIN_SUCCESS = "Logged in successfully.",
+  LOGOUT_SUCCESS = "Logged out successfully",
+  CREATE_USER_SUCCESS = "User created successfully.",
+  CHANGE_PASSWORD_WARNING = "Please change your old password.",
+  USER_NOT_FOUND = "User not found",
+  BLOCK_WHASTAPP_SUCCESS = "blocked successfully.",
+  CHANGE_PASSWORD_SUCCESS = "Password changed successfully.",
+  INVALID_CURRENT_PASSWORD = "Current password is not valid.",
+  PASSWORD_MATCH_ERROR = "New password & Confirm password didn't match.",
+  FETCH_USER_SUCCESS = "User fetched successfully.",
+  DISABLE_USER_SUCCESS = "User disabled successfully.",
+  UPDATE_USER_SUCCESS = "User updated successfully."
 }
 
 export enum DATE_FORMATS {
@@ -51,7 +60,6 @@ export enum MENU_TITLES {
 }
 
 export enum REPORT_FILTER_TYPES {
-  ALL = 'All',
-  BLOCKED = 'Blocked'
+  ALL = "All",
+  BLOCKED = "Blocked",
 }
-

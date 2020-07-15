@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h4 class="modal-title">
-    Do you wish to block <span>{{ mobile }}</span
+    Do you wish to block <span class="text-message">{{ inputData.mobile }}</span
     >?
   </h4>
   <button type="button" class="close" aria-label="Close" (click)="close()">
@@ -42,7 +42,7 @@
     </div>
   </form>
   <span class="text-message"
-    >Blocking will disable {{ mobile }} access to whatsapp banking.</span
+    >Blocking will disable {{ inputData.mobile }} access to whatsapp banking.</span
   >
 </div>
 <div class="modal-footer">
@@ -52,7 +52,14 @@
     (click)="blockWhatsapp()"
     class="btn btn-confirm shadow"
   >
-    {{ blockButtonText }}
+    <span
+      *ngIf="loading"
+      class="spinner-border"
+      style="width: 1rem; height: 1rem;"
+      aria-hidden="true"
+    >
+    </span>
+    <span *ngIf="!loading">{{ blockButtonText }}</span>
   </button>
   <button type="button" class="btn btn-danger shadow" (click)="close()">
     {{ cancelButtonText }}

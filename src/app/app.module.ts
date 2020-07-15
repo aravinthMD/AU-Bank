@@ -11,6 +11,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { JwtInterceptor } from "./shared/interceptors/jwt.interceptor";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ChangePasswordComponent } from "./public-pages/change-password/change-password.component";
+import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,11 @@ import { ChangePasswordComponent } from "./public-pages/change-password/change-p
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true,
     },
   ],

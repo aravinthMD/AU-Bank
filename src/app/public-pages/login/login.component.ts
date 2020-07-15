@@ -1,9 +1,14 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { BUTTON_TEXTS, TOASTER_MESSAGES } from "src/app/shared/utils/constant";
+import {
+  BUTTON_TEXTS,
+  TOASTER_MESSAGES,
+  PAGES,
+} from "src/app/shared/utils/constant";
 import { UserService } from "src/app/shared/services/user.service";
 import { ToasterService } from "src/app/shared/services/toaster.service";
+import { LoginProcessVariables } from "src/app/shared/models/user.model";
 
 @Component({
   selector: "app-login",
@@ -34,14 +39,22 @@ export class LoginComponent implements OnInit {
     });
 
     // If user already logged in and redirect to home page
-    const currentUser = localStorage.getItem("currentUser");
+    const currentUser: LoginProcessVariables = JSON.parse(
+      localStorage.getItem("currentUser")
+    );
     const currentHome = localStorage.getItem("currentHome");
 
     if (currentUser) {
-      this.returnUrl = this.route.snapshot.queryParams.returnUrl
-        ? this.route.snapshot.queryParams.returnUrl
-        : JSON.parse(currentHome);
-      this.router.navigate([this.returnUrl]);
+      const isUserAndFirstLogin =
+        currentUser.roleName === "User" && currentUser.isFirstLogin === "true";
+      if (!isUserAndFirstLogin) {
+        this.returnUrl = this.route.snapshot.queryParams.returnUrl
+          ? this.route.snapshot.queryParams.returnUrl
+          : JSON.parse(currentHome);
+        this.router.navigate([this.returnUrl]);
+      } else {
+        this.router.navigate([PAGES.CHANGE_PASSWORD]);
+      }
     }
   }
 
@@ -53,27 +66,52 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.userService
       .login(this.fieldControls.userId.value, this.fieldControls.password.value)
-      .subscribe((response) => {
-        if (response.token) {
+      .subscribe(
+        () => {
           this.getUserDetail();
+          this.loading = false;
+        },
+        (error) => {
+          this.toasterService.show(error, {
+            classname: "bg-danger text-light",
+          });
+          this.loading = false;
         }
-      });
+      );
   }
 
   getUserDetail() {
+    this.loading = true;
     this.userService
       .getUserDetail(this.fieldControls.userId.value)
       .subscribe((response) => {
-        const currentHome = this.userService.currentHomeValue;
-        this.toasterService.show(TOASTER_MESSAGES.LOGIN_SUCCESS, {
-          classname: "bg-success text-light",
-        });
-        this.loading = false;
-        this.router.navigate([currentHome]);
-        // else {
-        //   this.toasterService.showError(response.message.value);
-        //   this.loading = false;
-        // }
+        if (response.status) {
+          if (
+            response.roleName !== "User" ||
+            (response.roleName === "User" && response.isFirstLogin === "false")
+          ) {
+            this.toasterService.show(TOASTER_MESSAGES.LOGIN_SUCCESS, {
+              classname: "bg-success text-light",
+            });
+            const currentHome = this.userService.currentHomeValue;
+            this.router.navigate([currentHome]);
+          } else if (
+            response.roleName === "User" &&
+            response.isFirstLogin === "true"
+          ) {
+            this.toasterService.show(TOASTER_MESSAGES.CHANGE_PASSWORD_WARNING, {
+              classname: "bg-warning text-light",
+            });
+            this.router.navigate([PAGES.CHANGE_PASSWORD]);
+          }
+
+          this.loading = false;
+        } else {
+          this.toasterService.show(response.message.value, {
+            classname: "bg-danger text-light",
+          });
+          this.loading = false;
+        }
       });
   }
 }

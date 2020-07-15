@@ -1,0 +1,53 @@
+<div class="main">
+  <h2>Manage Users</h2>
+  <div class="container">
+    <div class="row">
+      <div class="col card shadow p-0 mt-2">
+        <ngb-progressbar
+          *ngIf="loading"
+          type="dark"
+          height="0.5rem"
+          [value]="100"
+          [striped]="true"
+          [animated]="true"
+        ></ngb-progressbar>
+        <table class="table table-striped">
+          <thead>
+            <tr class="d-flex">
+              <th class="col-1">S.NO</th>
+              <th class="col-3">USER ID</th>
+              <th class="col-3">ROLE</th>
+              <th class="col-3">CREATED ON</th>
+              <th class="col-2">ACTION</th>
+            </tr>
+          </thead>
+          <tr class="d-flex" *ngFor="let user of usersList; let i = index">
+            <td class="col-1">{{ i + 1 }}</td>
+            <td class="col-3">{{ user.username }}</td>
+            <td class="col-3">{{ user.role }}</td>
+            <td class="col-3">{{ user.created_at | date: "medium" }}</td>
+            <td class="col-2">
+              <button class="shadow" (click)="editUser(user)">
+                {{ editButtontext }}
+              </button>
+              <button class="ml-2 shadow" (click)="disableUser(user)">
+                {{ disableUserButtonText }}
+              </button>
+            </td>
+          </tr>
+        </table>
+
+        <div class="d-flex justify-content-center p-2">
+          <ngb-pagination
+            [boundaryLinks]="true"
+            [collectionSize]="collectionSize"
+            [(page)]="currentPage"
+            [pageSize]="pageSize"
+            (pageChange)="fetchUsers(currentPage)"
+          >
+          </ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

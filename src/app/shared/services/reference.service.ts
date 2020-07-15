@@ -18,7 +18,6 @@ export class ReferenceService {
       "Opt Out Channel",
       "Request Id if blocked earlier",
       "Block Date",
-      "Blocking User",
       "Status",
       "Block Customer",
       "Reason",

@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    <div class="col-7" *ngIf="!isViewOnly">
+    <div class="col-8" *ngIf="!isViewOnly">
       <form [formGroup]="form">
         <div class="form-row mt-1">
           <div class="col">
@@ -104,7 +104,7 @@
           <div class="col search_btn">
             <button
               class="shadow"
-              (click)="onSubmit()"
+              (click)="downloadReport()"
               [disabled]="form.invalid || reportLoading"
             >
               <span
@@ -162,27 +162,30 @@
         ></i>
       </td>
       <td>
-        {{ userDetail.optOutDate | date: "dd/MM/yyyy" }}
+        {{
+          !userDetail.optOutDate
+            ? "NA"
+            : (userDetail.optOutDate | date: "dd/MM/yyyy")
+        }}
       </td>
       <td>
-        {{ userDetail.optOutChannel }}
+        {{ userDetail.optOutChannel ? userDetail.optOutChannel : "NA" }}
       </td>
       <td>
-        {{ userDetail.requestId }}
+        {{ userDetail.requestId ? userDetail.requestId : "NA" }}
       </td>
       <td>
-        {{ userDetail.blockDate }}
+        {{ userDetail.blockDate ? userDetail.blockDate : "NA" }}
       </td>
       <td>
-        {{ userDetail.userName }}
-      </td>
-      <td>
-        {{ userDetail.status }}
+        {{ userDetail.action }}
       </td>
       <td *ngIf="!isViewOnly">
+        <button *ngIf="userDetail.isBlocked" class="blocked-btn shadow">
+          {{ blockButtonText }}
+        </button>
         <button
-          [disabled]="userDetail.isBlocked"
-          type="button"
+          *ngIf="!userDetail.isBlocked"
           class="shadow"
           (click)="openBlockWhatsappDialog(userDetail)"
         >

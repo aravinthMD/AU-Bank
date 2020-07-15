@@ -1,0 +1,63 @@
+<div class="modal-header">
+  <h4 class="modal-title">
+    Edit User -
+    <span class="text-message">{{ userDetail && userDetail.userName }}</span>
+  </h4>
+  <button type="button" class="close" aria-label="Close" (click)="close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form class="form" [formGroup]="form">
+    <div class="form-group">
+      <label for="userId">USER ID</label>
+      <div class="input-group">
+        <input
+          type="text"
+          formControlName="userId"
+          id="userId"
+          placeholder="Eg: USER0001"
+          class="form-control"
+          autocomplete="off"
+          readonly
+        />
+      </div>
+    </div>
+    <label>ACCESS CONTROLS</label>
+    <div class="row d-flex" id="checkboxes">
+      <label
+        class="col-6 checkbox-inline container-checkbox"
+        *ngFor="let option of accessControls"
+      >
+        <input
+          class="mx-1 checkbox-input"
+          type="checkbox"
+          id="{{ option.title }}"
+          formControlName="accessMenus"
+          (change)="onChange($event, option)"
+        />
+        <span class="checkbox-title">{{ option.title }}</span>
+      </label>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button
+    class="btn btn-confirm shadow"
+    [disabled]="form.invalid || selectedMenuList.length === 0 || loading"
+    (click)="updateUser()"
+    ngbAutofocus
+  >
+    <span
+      *ngIf="loading"
+      class="spinner-border"
+      style="width: 1rem; height: 1rem;"
+      aria-hidden="true"
+    >
+    </span>
+    <span *ngIf="!loading">{{ updateButtonText }}</span>
+  </button>
+  <button type="button" class="btn btn-danger shadow" (click)="close()">
+    {{ cancelButtonText }}
+  </button>
+</div>

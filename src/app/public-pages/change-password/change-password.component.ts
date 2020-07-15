@@ -8,6 +8,7 @@ import {
 } from "src/app/shared/utils/constant";
 import { ToasterService } from "src/app/shared/services/toaster.service";
 import { Router } from "@angular/router";
+import { LoginProcessVariables } from "src/app/shared/models/user.model";
 
 @Component({
   selector: "app-change-password",
@@ -36,28 +37,43 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   changePassword(): void {
-    // this.loading = true;
-    // const fieldControls = this.form.controls;
-    // const currentPassword = fieldControls.currentPassword.value;
-    // const newPassword = fieldControls.newPassword.value;
-    // const confirmPassword = fieldControls.confirmPassword.value;
-    // const {dbPassword, userId, userName} = this.userService.currentUserValue;
-    // if (dbPassword === currentPassword && newPassword === confirmPassword) {
-    //   this.userService.changePassword(currentPassword, newPassword, confirmPassword, Number(userId)).subscribe(() => {
-    //     const currentHome = this.userService.currentHomeValue;
-    //     const currentUser: ProcessVariables = this.userService.currentUserValue;
-    //     currentUser.dbPassword = newPassword;
-    //     this.userService.setCurrentUserSubject(currentUser);
-    //     this.loading = false;
-    //     this.toasterService.showSuccess(TOASTER_MESSAGES.CHANGE_PASSWORD_SUCCESS);
-    //     this.router.navigate([currentHome]);
-    //   });
-    // } else if (dbPassword !== currentPassword) {
-    //   this.loading = false;
-    //   this.toasterService.show(TOASTER_MESSAGES.INVALID_CURRENT_PASSWORD);
-    // } else if (newPassword !== confirmPassword) {
-    //   this.loading = false;
-    //   this.toasterService.showError(TOASTER_MESSAGES.PASSWORD_MATCH_ERROR);
-    // }
+    this.loading = true;
+    const fieldControls = this.form.controls;
+    const currentPassword = fieldControls.currentPassword.value;
+    const newPassword = fieldControls.newPassword.value;
+    const confirmPassword = fieldControls.confirmPassword.value;
+    const { dbPassword, userId, userName } = this.userService.currentUserValue;
+    if (dbPassword === currentPassword && newPassword === confirmPassword) {
+      this.userService
+        .changePassword(
+          currentPassword,
+          newPassword,
+          confirmPassword,
+          Number(userId)
+        )
+        .subscribe(() => {
+          const currentHome = this.userService.currentHomeValue;
+          const currentUser: LoginProcessVariables = this.userService
+            .currentUserValue;
+          currentUser.dbPassword = newPassword;
+          currentUser.isFirstLogin = 'false';
+          this.userService.setCurrentUserSubject(currentUser);
+          this.loading = false;
+          this.toasterService.show(TOASTER_MESSAGES.CHANGE_PASSWORD_SUCCESS, {
+            classname: "bg-success text-light",
+          });
+          this.router.navigate([currentHome]);
+        });
+    } else if (dbPassword !== currentPassword) {
+      this.loading = false;
+      this.toasterService.show(TOASTER_MESSAGES.INVALID_CURRENT_PASSWORD, {
+        classname: "bg-warning text-light",
+      });
+    } else if (newPassword !== confirmPassword) {
+      this.loading = false;
+      this.toasterService.show(TOASTER_MESSAGES.PASSWORD_MATCH_ERROR, {
+        classname: "bg-warning text-light",
+      });
+    }
   }
 }
