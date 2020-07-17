@@ -12,6 +12,7 @@ import { JwtInterceptor } from "./shared/interceptors/jwt.interceptor";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ChangePasswordComponent } from "./public-pages/change-password/change-password.component";
 import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
+import { WINDOW_PROVIDERS } from './shared/interceptors/window.provider';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
       useClass: ErrorInterceptor,
       multi: true,
     },
+    WINDOW_PROVIDERS
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, Inject } from "@angular/core";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { BehaviorSubject, Observable } from "rxjs";
 import { map } from "rxjs/operators";
@@ -21,6 +21,7 @@ import {
 } from "../models/entity-request";
 import { Router } from "@angular/router";
 import { ToasterService } from "./toaster.service";
+import { WINDOW } from "../interceptors/window.provider";
 
 @Injectable({
   providedIn: "root",
@@ -36,10 +37,13 @@ export class UserService {
   private currentMenuSubject: BehaviorSubject<Menu[]>;
   private tokenSubject: BehaviorSubject<string>;
 
+  host: string;
+
   constructor(
     private http: HttpClient,
     private router: Router,
-    private toasterService: ToasterService
+    private toasterService: ToasterService,
+    @Inject(WINDOW) private window: Window
   ) {
     this.tokenSubject = new BehaviorSubject<string>(
       JSON.parse(localStorage.getItem("token"))
@@ -58,6 +62,12 @@ export class UserService {
       JSON.parse(localStorage.getItem("currentMenu"))
     );
     this.currentMenu = this.currentMenuSubject.asObservable();
+
+    const {
+      location: { origin },
+    } = this.window;
+
+    this.host = environment.production ? `${origin}/appiyo` : environment.host;
   }
 
   public get currentUserValue(): LoginProcessVariables {
@@ -150,7 +160,7 @@ export class UserService {
     const body = `email=${formattedUserEmail}&password=${password}&useADAuth=${useADAuth}`;
 
     return this.http
-      .post<TokenResponse>(`${environment.host}/account/login`, body)
+      .post<TokenResponse>(`${this.host}/account/login`, body)
       .pipe(
         map((response) => {
           const { token } = response;
@@ -187,7 +197,7 @@ export class UserService {
 
     return this.http
       .post<LoginResponse>(
-        `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+        `${this.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
         formData
       )
       .pipe(
@@ -242,7 +252,7 @@ export class UserService {
 
     return this.http
       .post<EntityResponse>(
-        `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+        `${this.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
         formData
       )
       .pipe(
@@ -279,7 +289,7 @@ export class UserService {
 
     return this.http
       .post<EntityResponse>(
-        `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+        `${this.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
         formData
       )
       .pipe(
@@ -330,7 +340,7 @@ export class UserService {
 
     return this.http
       .post<EntityResponse>(
-        `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+        `${this.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
         formData
       )
       .pipe(
@@ -374,7 +384,7 @@ export class UserService {
 
     return this.http
       .post<Response>(
-        `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+        `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
         formData
       )
       .pipe(
@@ -409,7 +419,7 @@ export class UserService {
 
     return this.http
       .post<UserResponse>(
-        `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+        `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
         formData
       )
       .pipe(
@@ -446,7 +456,7 @@ export class UserService {
 
     return this.http
       .post<EntityResponse>(
-        `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+        `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
         formData
       )
       .pipe(
@@ -482,7 +492,7 @@ export class UserService {
 
     return this.http
       .post<EntityResponse>(
-        `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+        `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
         formData
       )
       .pipe(
@@ -520,7 +530,7 @@ export class UserService {
 
     return this.http
       .post<EntityResponse>(
-        `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+        `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
         formData
       )
       .pipe(
@@ -565,7 +575,7 @@ export class UserService {
 
     return this.http
       .post<EntityResponse>(
-        `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+        `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
         formData
       )
       .pipe(
@@ -577,7 +587,7 @@ export class UserService {
   }
 
   logout() {
-    this.http.get(`${environment.host}/account/logout`);
+    this.http.get(`${this.host}/account/logout`);
   }
 
   clear() {

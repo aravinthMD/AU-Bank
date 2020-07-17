@@ -1,5 +1,7 @@
+import { version } from "package.json";
+
 export const environment = {
-  version: '0.0.1',
+  version,
   production: false,
 
   projectId: 'e1175c26fea511e8bb4f0050569c0a8e',

@@ -34,4 +34,4 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 4.git push
 
 ## Steps to build 
-1.ng build --prod --base-href=/axis-bank/
+1.ng build --prod --base-href=/waba-admin/
