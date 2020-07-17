@@ -64,8 +64,14 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     this.loading = true;
+    const fieldControls = this.loginForm.controls;
+    const isExternalUser = fieldControls.isExternalUser.value;
     this.userService
-      .login(this.fieldControls.userId.value, this.fieldControls.password.value)
+      .login(
+        this.fieldControls.userId.value,
+        this.fieldControls.password.value,
+        isExternalUser ? false : true
+      )
       .subscribe(
         () => {
           this.getUserDetail();
@@ -85,7 +91,7 @@ export class LoginComponent implements OnInit {
     this.userService
       .getUserDetail(this.fieldControls.userId.value)
       .subscribe((response) => {
-        if (response.status) {
+        if (response && response.status) {
           if (
             response.roleName !== "User" ||
             (response.roleName === "User" && response.isFirstLogin === "false")

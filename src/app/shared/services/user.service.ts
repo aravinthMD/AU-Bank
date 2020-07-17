@@ -19,6 +19,8 @@ import {
   TokenResponse,
   EntityResponse,
 } from "../models/entity-request";
+import { Router } from "@angular/router";
+import { ToasterService } from "./toaster.service";
 
 @Injectable({
   providedIn: "root",
@@ -27,18 +29,22 @@ export class UserService {
   public currentUser: Observable<LoginProcessVariables>;
   public currentHome: Observable<string>;
   public currentMenu: Observable<Menu[]>;
-  public tokenResponse: Observable<TokenResponse>;
+  public token: Observable<string>;
 
   private currentUserSubject: BehaviorSubject<LoginProcessVariables>;
   private currentHomeSubject: BehaviorSubject<string>;
   private currentMenuSubject: BehaviorSubject<Menu[]>;
-  private tokenResponseSubject: BehaviorSubject<TokenResponse>;
+  private tokenSubject: BehaviorSubject<string>;
 
-  constructor(private http: HttpClient) {
-    this.tokenResponseSubject = new BehaviorSubject<TokenResponse>(
-      JSON.parse(localStorage.getItem("tokenResponse"))
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private toasterService: ToasterService
+  ) {
+    this.tokenSubject = new BehaviorSubject<string>(
+      JSON.parse(localStorage.getItem("token"))
     );
-    this.tokenResponse = this.tokenResponseSubject.asObservable();
+    this.token = this.tokenSubject.asObservable();
 
     this.currentUserSubject = new BehaviorSubject<LoginProcessVariables>(
       JSON.parse(localStorage.getItem("currentUser"))
@@ -66,8 +72,8 @@ export class UserService {
     return this.currentMenuSubject.value;
   }
 
-  public get tokenResponseValue(): TokenResponse {
-    return this.tokenResponseSubject.value;
+  public get tokenValue(): string {
+    return this.tokenSubject.value;
   }
 
   public setCurrentUserSubject(response: LoginProcessVariables) {
@@ -136,27 +142,37 @@ export class UserService {
     }
   }
 
-  login(email: string, password: string) {
-    const body = `email=${email}&password=${password}`;
+  login(email: string, password: string, useADAuth: boolean) {
+    const userEmail = email;
+    const index = userEmail.indexOf("@");
+    const formattedUserEmail =
+      index === -1 ? `${userEmail}@uataxisb.com` : userEmail;
+    const body = `email=${formattedUserEmail}&password=${password}&useADAuth=${useADAuth}`;
+
     return this.http
       .post<TokenResponse>(`${environment.host}/account/login`, body)
       .pipe(
         map((response) => {
-          localStorage.setItem("tokenResponse", JSON.stringify(response));
-          this.tokenResponseSubject.next(response);
+          const { token } = response;
+          localStorage.setItem("token", JSON.stringify(token));
+          this.tokenSubject.next(token);
           return response;
         })
       );
   }
 
   getUserDetail(userName: string) {
+    const userEmail = userName;
+    const index = userEmail.indexOf("@");
+    const formattedUserEmail =
+      index === -1 ? `${userEmail}@uataxisb.com` : userEmail;
     const {
       api: {
         getUserDetails: { processId, workflowId },
       },
       projectId,
     } = environment;
-    const data = { userName };
+    const data = { userName: formattedUserEmail };
     const requestEntity: RequestEntity = {
       processId,
       workflowId,
@@ -176,7 +192,8 @@ export class UserService {
       )
       .pipe(
         map((response) => {
-          if (response && response.ProcessVariables) {
+          const isTokenValid = this.verifyToken(response);
+          if (isTokenValid && response && response.ProcessVariables) {
             const userResponse = response.ProcessVariables;
             localStorage.setItem("currentUser", JSON.stringify(userResponse));
             this.currentUserSubject.next(userResponse);
@@ -199,8 +216,12 @@ export class UserService {
       },
       projectId,
     } = environment;
+    const userEmail = emailId;
+    const index = userEmail.indexOf("@");
+    const formattedUserEmail =
+      index === -1 ? `${userEmail}@uataxisb.com` : userEmail;
     const data = {
-      emailId,
+      emailId: formattedUserEmail,
       roleName,
       userId,
       activityList,
@@ -219,10 +240,17 @@ export class UserService {
 
     const formData = this.transform(body);
 
-    return this.http.post<EntityResponse>(
-      `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-      formData
-    );
+    return this.http
+      .post<EntityResponse>(
+        `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+        formData
+      )
+      .pipe(
+        map((response) => {
+          const isTokenValid = this.verifyToken(response);
+          return isTokenValid ? response : null;
+        })
+      );
   }
 
   fetchUserByMobileNumber(mobileNumber: string) {
@@ -249,10 +277,17 @@ export class UserService {
 
     const formData = this.transform(body);
 
-    return this.http.post<EntityResponse>(
-      `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-      formData
-    );
+    return this.http
+      .post<EntityResponse>(
+        `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+        formData
+      )
+      .pipe(
+        map((response) => {
+          const isTokenValid = this.verifyToken(response);
+          return isTokenValid ? response : null;
+        })
+      );
   }
 
   blockUserWhatsappAccesss(
@@ -293,10 +328,17 @@ export class UserService {
 
     const formData = this.transform(body);
 
-    return this.http.post<EntityResponse>(
-      `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-      formData
-    );
+    return this.http
+      .post<EntityResponse>(
+        `${environment.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+        formData
+      )
+      .pipe(
+        map((response) => {
+          const isTokenValid = this.verifyToken(response);
+          return isTokenValid ? response : null;
+        })
+      );
   }
 
   changePassword(
@@ -330,10 +372,17 @@ export class UserService {
     };
     const formData = new HttpParams({ fromObject: body });
 
-    return this.http.post<Response>(
-      `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-      formData
-    );
+    return this.http
+      .post<Response>(
+        `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+        formData
+      )
+      .pipe(
+        map((response) => {
+          const isTokenValid = this.verifyToken(response);
+          return isTokenValid ? response : null;
+        })
+      );
   }
 
   disableUserById(newUserId: number, userId: number) {
@@ -358,10 +407,17 @@ export class UserService {
 
     const formData = this.transform(body);
 
-    return this.http.post<UserResponse>(
-      `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-      formData
-    );
+    return this.http
+      .post<UserResponse>(
+        `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+        formData
+      )
+      .pipe(
+        map((response) => {
+          const isTokenValid = this.verifyToken(response);
+          return isTokenValid ? response : null;
+        })
+      );
   }
 
   fetchUsers(perPage: number, currentPage: number) {
@@ -388,10 +444,17 @@ export class UserService {
 
     const formData = this.transform(body);
 
-    return this.http.post<EntityResponse>(
-      `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-      formData
-    );
+    return this.http
+      .post<EntityResponse>(
+        `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+        formData
+      )
+      .pipe(
+        map((response) => {
+          const isTokenValid = this.verifyToken(response);
+          return isTokenValid ? response : null;
+        })
+      );
   }
 
   fetchUserActivityByUserId(userId: number) {
@@ -417,10 +480,17 @@ export class UserService {
 
     const formData = this.transform(body);
 
-    return this.http.post<EntityResponse>(
-      `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-      formData
-    );
+    return this.http
+      .post<EntityResponse>(
+        `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+        formData
+      )
+      .pipe(
+        map((response) => {
+          const isTokenValid = this.verifyToken(response);
+          return isTokenValid ? response : null;
+        })
+      );
   }
 
   updateUser(userId: number, activityList: number[], modifiedBy: number) {
@@ -448,18 +518,31 @@ export class UserService {
 
     const formData = this.transform(body);
 
-    return this.http.post<EntityResponse>(
-      `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-      formData
-    );
+    return this.http
+      .post<EntityResponse>(
+        `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+        formData
+      )
+      .pipe(
+        map((response) => {
+          const isTokenValid = this.verifyToken(response);
+          return isTokenValid ? response : null;
+        })
+      );
   }
 
-  downloadReport(mobileNo: string, fromDate: string, toDate: string, isDownload: boolean) {
+  downloadReport(
+    mobileNo: string,
+    fromDate: string,
+    toDate: string,
+    isDownload: boolean,
+    send?: number
+  ) {
     const data = {
       mobileNo,
       fromDate,
       toDate,
-      isDownload
+      isDownload,
     };
     const {
       api: {
@@ -480,14 +563,21 @@ export class UserService {
 
     const formData = this.transform(body);
 
-    return this.http.post<EntityResponse>(
-      `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-      formData
-    );
+    return this.http
+      .post<EntityResponse>(
+        `${environment.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+        formData
+      )
+      .pipe(
+        map((response) => {
+          const isTokenValid = this.verifyToken(response);
+          return isTokenValid ? response : null;
+        })
+      );
   }
 
   logout() {
-    return this.http.get(`${environment.host}/account/logout`);
+    this.http.get(`${environment.host}/account/logout`);
   }
 
   clear() {
@@ -495,14 +585,31 @@ export class UserService {
     localStorage.removeItem("currentUser");
     localStorage.removeItem("currentHome");
     localStorage.removeItem("currentMenu");
-    localStorage.removeItem("tokenResponse");
+    localStorage.removeItem("token");
     this.currentUserSubject.next(null);
     this.currentHomeSubject.next(null);
     this.currentMenuSubject.next(null);
-    this.tokenResponseSubject.next(null);
+    this.tokenSubject.next(null);
   }
 
   transform(data: any) {
     return new HttpParams({ fromObject: data });
+  }
+
+  verifyToken(response: any): boolean {
+    if (response && !response.login_required) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  closeAndLogout() {
+    this.logout();
+    this.clear();
+    this.toasterService.show("Token Expired.Please login again!", {
+      classname: "bg-danger text-light",
+    });
+    this.router.navigate([PAGES.PUBLIC]);
   }
 }

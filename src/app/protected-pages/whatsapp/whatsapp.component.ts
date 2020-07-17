@@ -110,18 +110,24 @@ export class WhatsappComponent implements OnInit {
     this.userService
       .fetchUserByMobileNumber(mobileNumber)
       .subscribe((response) => {
-        const {
-          ProcessVariables: { blockLog },
-        } = response;
-        if (blockLog) {
-          const [data] = blockLog;
-          this.userDetail = data;
+        if (response) {
+          const {
+            ProcessVariables: { blockLog },
+          } = response;
+          if (blockLog) {
+            const [data] = blockLog;
+            this.userDetail = data;
+            this.searchLoading = false;
+          } else {
+            this.toasterService.show(TOASTER_MESSAGES.USER_NOT_FOUND, {
+              classname: "bg-danger text-light",
+            });
+            this.searchLoading = false;
+          }
         } else {
-          this.toasterService.show(TOASTER_MESSAGES.USER_NOT_FOUND, {
-            classname: "bg-danger text-light",
-          });
+          this.searchLoading = false;
+          this.userService.closeAndLogout();
         }
-        this.searchLoading = false;
       });
   }
 
@@ -129,7 +135,8 @@ export class WhatsappComponent implements OnInit {
     return this.form.controls;
   }
 
-  downloadReport(): void {
+  downloadReport(next?: number): void {
+    this.reportLoading = true;
     const fromDate = this.fieldControls.fromDate.value;
     const toDate = this.fieldControls.toDate.value;
     const filterType = this.fieldControls.filterType.value;
@@ -141,35 +148,75 @@ export class WhatsappComponent implements OnInit {
         this.userDetail ? this.userDetail.mobile : -1,
         formattedFromDate,
         formattedToDate,
-        true
+        true,
+        next
       )
       .subscribe((response) => {
-        const {
-          ProcessVariables: { status, downloadContent, more },
-        } = response;
-        if (status) {
-          this.download(downloadContent, "text/csv", more);
+        if (response) {
+          const {
+            ProcessVariables: { status, downloadContent },
+          } = response;
+          if (status) {
+            this.saveFile(downloadContent);
+            this.toasterService.show(TOASTER_MESSAGES.REPORT_DOWNLOAD_SUCCESS, {
+              classname: "bg-success text-light",
+            });
+            this.reportLoading = false;
+          } else {
+            this.toasterService.show("Something went wrong", {
+              classname: "bg-danger text-light",
+            });
+            this.reportLoading = false;
+          }
+        } else {
+          this.reportLoading = false;
+          this.userService.closeAndLogout();
         }
       });
   }
 
-  download(response, type, isMoreContentAvailable: boolean) {
-    const data = response;
-    const data1 = `${data} ${response}`;
+  transform(response, remaining: number, sent: number) {
+    console.log(remaining);
+    // let contentToDownload: string;
+    // const savedData = localStorage.getItem("contentToDownload");
+
+    // if (remaining > 0) {
+    //   for (let i = 0; i < remaining; i++) {
+    //     if (savedData) {
+    //       contentToDownload = savedData.concat(response);
+    //       localStorage.setItem("contentToDownload", contentToDownload);
+    //     } else {
+    //       contentToDownload = response;
+    //       localStorage.setItem("contentToDownload", contentToDownload);
+    //     }
+    //     this.downloadReport(sent);
+    //     if (i === remaining) {
+    //       this.saveFile(contentToDownload);
+    //     }
+    //   }
+    // } else {
+    //   this.saveFile(response);
+    // }
+  }
+
+  saveFile(content: string): void {
     const fromDate = this.fieldControls.fromDate.value;
     const toDate = this.fieldControls.toDate.value;
 
     const formattedFromDate = `${fromDate.year}-${fromDate.month}-${fromDate.day}`;
     const formattedToDate = `${toDate.year}-${toDate.month}-${toDate.day}`;
+
     const fileName = this.userDetail
       ? `${this.userDetail.mobile}-${formattedFromDate}to${formattedToDate}.csv`
       : `${formattedFromDate}to${formattedToDate}.csv`;
-    const blob = new Blob([response], {
+
+    const type = "text/csv";
+
+    const blob = new Blob([content], {
       type,
     });
-    if (!isMoreContentAvailable) {
-      saveAs(blob, fileName);
-    }
+    saveAs(blob, fileName);
+    localStorage.removeItem("contentToDownload");
   }
 
   openBlockWhatsappDialog({ action, cTime, channel, mobile }): void {

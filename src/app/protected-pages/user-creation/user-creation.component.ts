@@ -89,7 +89,7 @@ export class UserCreationComponent implements OnInit {
       );
       this.selectedMenuList.splice(index, 1);
     }
-    this.validate();
+   // this.validate();
   }
 
   validate(): void {
@@ -131,22 +131,28 @@ export class UserCreationComponent implements OnInit {
         this.selectedMenuList
       )
       .subscribe((response) => {
-        const {
-          ProcessVariables: { status },
-          ProcessVariables: { message = {} },
-        } = response;
-        if (status) {
-          this.toasterService.show(TOASTER_MESSAGES.CREATE_USER_SUCCESS, {
-            classname: "bg-success text-light",
-          });
-          this.superAdminForm.reset();
-          this.adminForm.reset();
+        if (response) {
+          const {
+            ProcessVariables: { status },
+            ProcessVariables: { message = {} },
+          } = response;
+          if (status) {
+            this.toasterService.show(TOASTER_MESSAGES.CREATE_USER_SUCCESS, {
+              classname: "bg-success text-light",
+            });
+            this.superAdminForm.reset();
+            this.adminForm.reset();
+            this.loading = false;
+          } else {
+            this.loading = false;
+            this.toasterService.show(message.value, {
+              classname: "bg-danger text-light",
+            });
+          }
         } else {
-          this.toasterService.show(message.value, {
-            classname: "bg-danger text-light",
-          });
+          this.loading = false;
+          this.userService.closeAndLogout();
         }
-        this.loading = false;
       });
   }
 }

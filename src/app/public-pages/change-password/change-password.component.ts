@@ -51,18 +51,20 @@ export class ChangePasswordComponent implements OnInit {
           confirmPassword,
           Number(userId)
         )
-        .subscribe(() => {
-          const currentHome = this.userService.currentHomeValue;
-          const currentUser: LoginProcessVariables = this.userService
-            .currentUserValue;
-          currentUser.dbPassword = newPassword;
-          currentUser.isFirstLogin = 'false';
-          this.userService.setCurrentUserSubject(currentUser);
-          this.loading = false;
-          this.toasterService.show(TOASTER_MESSAGES.CHANGE_PASSWORD_SUCCESS, {
-            classname: "bg-success text-light",
-          });
-          this.router.navigate([currentHome]);
+        .subscribe((response) => {
+          if (response) {
+            const currentHome = this.userService.currentHomeValue;
+            const currentUser: LoginProcessVariables = this.userService
+              .currentUserValue;
+            currentUser.dbPassword = newPassword;
+            currentUser.isFirstLogin = "false";
+            this.userService.setCurrentUserSubject(currentUser);
+            this.loading = false;
+            this.toasterService.show(TOASTER_MESSAGES.CHANGE_PASSWORD_SUCCESS, {
+              classname: "bg-success text-light",
+            });
+            this.router.navigate([currentHome]);
+          }
         });
     } else if (dbPassword !== currentPassword) {
       this.loading = false;

@@ -39,12 +39,17 @@ export class ManageUsersComponent implements OnInit {
     this.userService
       .fetchUsers(this.pageSize, pageNumber)
       .subscribe((response) => {
-        const {
-          ProcessVariables: { usersList, totalCount },
-        } = response;
-        this.collectionSize = totalCount;
-        this.usersList = usersList;
-        this.loading = false;
+        if (response) {
+          const {
+            ProcessVariables: { usersList, totalCount },
+          } = response;
+          this.collectionSize = totalCount;
+          this.usersList = usersList;
+          this.loading = false;
+        } else {
+          this.loading = false;
+          this.userService.closeAndLogout();
+        }
       });
   }
 

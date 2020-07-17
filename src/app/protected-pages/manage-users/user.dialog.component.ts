@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import {
   BUTTON_TEXTS,
   TOASTER_MESSAGES,
-  ROLES,
   MENU_TITLES,
 } from "src/app/shared/utils/constant";
 import { ToasterService } from "src/app/shared/services/toaster.service";
@@ -54,13 +53,19 @@ export class UserDialogComponent implements OnInit {
     this.userService
       .fetchUserActivityByUserId(this.userId)
       .subscribe((response) => {
-        const {
-          ProcessVariables: { status },
-        } = response;
-        if (status) {
-          this.setForm(response);
+        if (response) {
+          const {
+            ProcessVariables: { status },
+          } = response;
+          if (status) {
+            this.setForm(response);
+          }
+          this.loading = false;
+        } else {
+          this.loading = false;
+          this.close();
+          this.userService.closeAndLogout();
         }
-        this.loading = false;
       });
   }
 
@@ -111,7 +116,7 @@ export class UserDialogComponent implements OnInit {
       checkBoxElements[3].checked = true;
       this.selectedMenuList.push(4);
     }
-    this.validate();
+   // this.validate();
   }
 
   get fieldControls() {
@@ -128,7 +133,7 @@ export class UserDialogComponent implements OnInit {
       );
       this.selectedMenuList.splice(index, 1);
     }
-    this.validate();
+    // this.validate();
   }
 
   validate(): void {
@@ -154,21 +159,28 @@ export class UserDialogComponent implements OnInit {
     this.userService
       .updateUser(this.userId, this.selectedMenuList, Number(currentUserId))
       .subscribe((response) => {
-        const {
-          ProcessVariables: { status },
-          ProcessVariables: { message = {} },
-        } = response;
-        if (status) {
-          this.toasterService.show(TOASTER_MESSAGES.UPDATE_USER_SUCCESS, {
-            classname: "bg-success text-light",
-          });
-          this.close("SUCCESS");
+        if (response) {
+          const {
+            ProcessVariables: { status },
+            ProcessVariables: { message = {} },
+          } = response;
+          if (status) {
+            this.toasterService.show(TOASTER_MESSAGES.UPDATE_USER_SUCCESS, {
+              classname: "bg-success text-light",
+            });
+            this.loading = false;
+            this.close("SUCCESS");
+          } else {
+            this.loading = false;
+            this.toasterService.show(message.value, {
+              classname: "bg-danger text-light",
+            });
+          }
         } else {
-          this.toasterService.show(message.value, {
-            classname: "bg-danger text-light",
-          });
+          this.loading = false;
+          this.close();
+          this.userService.closeAndLogout();
         }
-        this.loading = false;
       });
   }
 

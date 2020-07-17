@@ -57,23 +57,29 @@ export class BlockWhatsappDialogComponent implements OnInit {
         this.inputData.mobile
       )
       .subscribe((response) => {
-        const {
-          ProcessVariables: { status, message = {} },
-        } = response;
-        if (status) {
-          this.toasterService.show(
-            `${this.inputData.mobile} ${TOASTER_MESSAGES.BLOCK_WHASTAPP_SUCCESS}`,
-            {
-              classname: "bg-success text-light",
-            }
-          );
-          this.close("SUCCESS");
-          this.loading = false;
+        if (response) {
+          const {
+            ProcessVariables: { status, message = {} },
+          } = response;
+          if (status) {
+            this.toasterService.show(
+              `${this.inputData.mobile} ${TOASTER_MESSAGES.BLOCK_WHASTAPP_SUCCESS}`,
+              {
+                classname: "bg-success text-light",
+              }
+            );
+            this.close("SUCCESS");
+            this.loading = false;
+          } else {
+            this.toasterService.show(message.value, {
+              classname: "bg-danger text-light",
+            });
+            this.loading = false;
+          }
         } else {
-          this.toasterService.show(message.value, {
-            classname: "bg-danger text-light",
-          });
           this.loading = false;
+          this.close();
+          this.userService.closeAndLogout();
         }
       });
   }

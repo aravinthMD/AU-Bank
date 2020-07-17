@@ -32,3 +32,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 2.git add -A
 3.git commit -m"commit message"
 4.git push
+
+## Steps to build 
+1.ng build --prod --base-href=/axis-bank/

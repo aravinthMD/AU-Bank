@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: "app-public-home",
@@ -7,6 +8,7 @@ import { Component, OnInit } from "@angular/core";
 })
 export class PublicHomeComponent implements OnInit {
   currentYear = new Date().getFullYear();
+  version = environment.version;
 
   constructor() {}
 

@@ -11,8 +11,10 @@ export interface EntityResponse {
   ProcessVariables: {
     usersList?: User[];
     downloadContent?: string;
-    more?: boolean;
-    totalCount: number;
+    remaining?: number;
+    sent?: number;
+    totalCount?: number;
+    totalPages?: number;
     activityList?: number[];
     blockLog?: [
       {

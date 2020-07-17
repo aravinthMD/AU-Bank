@@ -45,7 +45,8 @@ export enum TOASTER_MESSAGES {
   PASSWORD_MATCH_ERROR = "New password & Confirm password didn't match.",
   FETCH_USER_SUCCESS = "User fetched successfully.",
   DISABLE_USER_SUCCESS = "User disabled successfully.",
-  UPDATE_USER_SUCCESS = "User updated successfully."
+  UPDATE_USER_SUCCESS = "User updated successfully.",
+  REPORT_DOWNLOAD_SUCCESS = "Report downloaded successfully."
 }
 
 export enum DATE_FORMATS {

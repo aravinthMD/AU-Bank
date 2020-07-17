@@ -21,8 +21,8 @@ export class JwtInterceptor implements HttpInterceptor {
     request = request.clone({
       setHeaders: {
         "Content-Type": "application/x-www-form-urlencoded",
-        "authentication-token": this.userService.tokenResponseValue
-          ? this.userService.tokenResponseValue.token
+        "authentication-token": this.userService.tokenValue
+          ? this.userService.tokenValue
           : "",
       },
     });

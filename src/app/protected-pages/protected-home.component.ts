@@ -10,6 +10,7 @@ import {
 } from "../shared/utils/constant";
 import { ToasterService } from "../shared/services/toaster.service";
 import { Router } from "@angular/router";
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: "app-protected-home",
@@ -23,6 +24,7 @@ export class ProtectedHomeComponent implements OnInit {
   menuItems: Menu[];
   userName: string;
   currentYear = new Date().getFullYear();
+  version = environment.version;
 
   constructor(
     private menuService: MenuService,
@@ -30,7 +32,7 @@ export class ProtectedHomeComponent implements OnInit {
     private ngbModal: NgbModal,
     private toasterService: ToasterService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.menuItems = this.menuService.getMenuItems();
