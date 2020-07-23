@@ -1,6 +1,10 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
-import { BUTTON_TEXTS, TOASTER_MESSAGES } from "src/app/shared/utils/constant";
+import {
+  BUTTON_TEXTS,
+  TOASTER_MESSAGES,
+  RESPONSES,
+} from "src/app/shared/utils/constant";
 import { ToasterService } from "src/app/shared/services/toaster.service";
 import { UserService } from "src/app/shared/services/user.service";
 
@@ -22,39 +26,37 @@ export class DisableUserDialogComponent implements OnInit {
     private ngbActiveModal: NgbActiveModal,
     private userService: UserService,
     private toasterService: ToasterService
-  ) { }
+  ) {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   disableUser(): void {
     this.loading = true;
     const currentUserId = this.userService.currentUserValue.userId;
     this.userService
       .disableUserById(this.userId, Number(currentUserId))
-      .subscribe((response) => {
-        if (response) {
+      .subscribe(
+        (response) => {
           const {
             ProcessVariables: { status },
             ProcessVariables: { message = {} },
           } = response;
           if (status) {
-            this.toasterService.show(TOASTER_MESSAGES.DISABLE_USER_SUCCESS, {
-              classname: "bg-success text-light",
-            });
-            this.close("SUCCESS");
+            this.toasterService.showSuccess(
+              TOASTER_MESSAGES.DISABLE_USER_SUCCESS
+            );
             this.loading = false;
+            this.close(RESPONSES.SUCCESS);
           } else {
-            this.toasterService.show(message.value, {
-              classname: "bg-danger text-light",
-            });
             this.loading = false;
+            this.toasterService.showError(message.value);
           }
-        } else {
+        },
+        (error) => {
           this.loading = false;
-          this.close();
-          this.userService.closeAndLogout();
+          this.toasterService.showError(error);
         }
-      });
+      );
   }
 
   close(message?: string): void {

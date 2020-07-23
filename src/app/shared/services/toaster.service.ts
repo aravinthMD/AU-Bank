@@ -10,9 +10,18 @@ export class ToasterService {
   private toastsSubject = new BehaviorSubject([]);
   toasts = this.toastsSubject.asObservable();
 
-  show(message: string, options: any = {}) {
-    this.toastsSubject.next([{ message, ...options }]);
+  showSuccess(message: string) {
+    this.toastsSubject.next([{ message, classname: "bg-success text-light" }]);
   }
+
+  showError(message: string) {
+    this.toastsSubject.next([{ message, classname: "bg-danger text-light" }]);
+  }
+
+  showWarning(message: string) {
+    this.toastsSubject.next([{ message, classname: "bg-warning text-light" }]);
+  }
+
 
   remove() {
     this.toastsSubject.next(null);

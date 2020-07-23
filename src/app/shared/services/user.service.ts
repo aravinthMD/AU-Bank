@@ -3,25 +3,27 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { BehaviorSubject, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { environment } from "../../../environments/environment";
-import {
-  LoginResponse,
-  LoginProcessVariables,
-  UserResponse,
-} from "../models/user.model";
+import { LoginResponse, LoginProcessVariables } from "../models/entity-model";
 import {
   Menu,
   ADMIN_MENU_ITEMS,
   SUPER_ADMIN_MENU_ITEMS,
 } from "../models/menu.model";
-import { ROLES, PAGES } from "../utils/constant";
+import {
+  ROLES,
+  PAGES,
+  TOASTER_MESSAGES,
+  CONCAT_HELPERS,
+} from "../utils/constant";
 import {
   RequestEntity,
   TokenResponse,
   EntityResponse,
-} from "../models/entity-request";
+} from "../models/entity-model";
 import { Router } from "@angular/router";
 import { ToasterService } from "./toaster.service";
-import { WINDOW } from "../interceptors/window.provider";
+import { WINDOW } from "../interceptors/window.interceptor";
+import { UserResponse } from "../models/user.model";
 
 @Injectable({
   providedIn: "root",
@@ -66,7 +68,6 @@ export class UserService {
     const {
       location: { origin },
     } = this.window;
-
     this.host = environment.production ? `${origin}/appiyo` : environment.host;
   }
 
@@ -91,8 +92,8 @@ export class UserService {
     this.currentUserSubject.next(response);
   }
 
-  setHomeAndMenu(data: LoginProcessVariables): void {
-    if (data.roleName === ROLES.SUPER_ADMIN) {
+  setHomeAndMenu(roleName: string, activityList: number[]): void {
+    if (roleName === ROLES.SUPER_ADMIN) {
       this.currentMenuSubject.next(SUPER_ADMIN_MENU_ITEMS);
       this.currentHomeSubject.next(PAGES.USER_CREATION);
       localStorage.setItem("currentHome", JSON.stringify(PAGES.USER_CREATION));
@@ -100,15 +101,13 @@ export class UserService {
         "currentMenu",
         JSON.stringify(SUPER_ADMIN_MENU_ITEMS)
       );
-    } else if (data.roleName === ROLES.ADMIN) {
+    } else if (roleName === ROLES.ADMIN) {
       this.currentMenuSubject.next(ADMIN_MENU_ITEMS);
       this.currentHomeSubject.next(PAGES.USER_CREATION);
       localStorage.setItem("currentHome", JSON.stringify(PAGES.USER_CREATION));
       localStorage.setItem("currentMenu", JSON.stringify(ADMIN_MENU_ITEMS));
     } else {
-      const { activityList } = data;
       const USER_MENU_ITEMS = [];
-
       const isViewWhatsappControlAvailable = activityList.find(
         (value) => value === 1
       );
@@ -153,10 +152,9 @@ export class UserService {
   }
 
   login(email: string, password: string, useADAuth: boolean) {
-    const userEmail = email;
-    const index = userEmail.indexOf("@");
+    const index = email.indexOf("@");
     const formattedUserEmail =
-      index === -1 ? `${userEmail}@uataxisb.com` : userEmail;
+      index === -1 ? `${email}${CONCAT_HELPERS.USER_ID_CONCAT_HELPER}` : email;
     const body = `email=${formattedUserEmail}&password=${password}&useADAuth=${useADAuth}`;
 
     return this.http
@@ -171,11 +169,12 @@ export class UserService {
       );
   }
 
-  getUserDetail(userName: string) {
-    const userEmail = userName;
+  getUserDetail(userEmail: string) {
     const index = userEmail.indexOf("@");
     const formattedUserEmail =
-      index === -1 ? `${userEmail}@uataxisb.com` : userEmail;
+      index === -1
+        ? `${userEmail}${CONCAT_HELPERS.USER_ID_CONCAT_HELPER}`
+        : userEmail;
     const {
       api: {
         getUserDetails: { processId, workflowId },
@@ -202,12 +201,12 @@ export class UserService {
       )
       .pipe(
         map((response) => {
-          const isTokenValid = this.verifyToken(response);
-          if (isTokenValid && response && response.ProcessVariables) {
+          if (response && response.ProcessVariables) {
             const userResponse = response.ProcessVariables;
             localStorage.setItem("currentUser", JSON.stringify(userResponse));
             this.currentUserSubject.next(userResponse);
-            this.setHomeAndMenu(userResponse);
+            const { roleName, activityList } = userResponse;
+            this.setHomeAndMenu(roleName, activityList);
             return userResponse;
           }
         })
@@ -250,17 +249,10 @@ export class UserService {
 
     const formData = this.transform(body);
 
-    return this.http
-      .post<EntityResponse>(
-        `${this.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-        formData
-      )
-      .pipe(
-        map((response) => {
-          const isTokenValid = this.verifyToken(response);
-          return isTokenValid ? response : null;
-        })
-      );
+    return this.http.post<EntityResponse>(
+      `${this.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
   }
 
   fetchUserByMobileNumber(mobileNumber: string) {
@@ -287,17 +279,10 @@ export class UserService {
 
     const formData = this.transform(body);
 
-    return this.http
-      .post<EntityResponse>(
-        `${this.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-        formData
-      )
-      .pipe(
-        map((response) => {
-          const isTokenValid = this.verifyToken(response);
-          return isTokenValid ? response : null;
-        })
-      );
+    return this.http.post<EntityResponse>(
+      `${this.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
   }
 
   blockUserWhatsappAccesss(
@@ -338,17 +323,10 @@ export class UserService {
 
     const formData = this.transform(body);
 
-    return this.http
-      .post<EntityResponse>(
-        `${this.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-        formData
-      )
-      .pipe(
-        map((response) => {
-          const isTokenValid = this.verifyToken(response);
-          return isTokenValid ? response : null;
-        })
-      );
+    return this.http.post<EntityResponse>(
+      `${this.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
   }
 
   changePassword(
@@ -382,17 +360,10 @@ export class UserService {
     };
     const formData = new HttpParams({ fromObject: body });
 
-    return this.http
-      .post<Response>(
-        `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-        formData
-      )
-      .pipe(
-        map((response) => {
-          const isTokenValid = this.verifyToken(response);
-          return isTokenValid ? response : null;
-        })
-      );
+    return this.http.post<EntityResponse>(
+      `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
   }
 
   disableUserById(newUserId: number, userId: number) {
@@ -417,17 +388,10 @@ export class UserService {
 
     const formData = this.transform(body);
 
-    return this.http
-      .post<UserResponse>(
-        `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-        formData
-      )
-      .pipe(
-        map((response) => {
-          const isTokenValid = this.verifyToken(response);
-          return isTokenValid ? response : null;
-        })
-      );
+    return this.http.post<UserResponse>(
+      `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
   }
 
   fetchUsers(perPage: number, currentPage: number) {
@@ -454,17 +418,10 @@ export class UserService {
 
     const formData = this.transform(body);
 
-    return this.http
-      .post<EntityResponse>(
-        `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-        formData
-      )
-      .pipe(
-        map((response) => {
-          const isTokenValid = this.verifyToken(response);
-          return isTokenValid ? response : null;
-        })
-      );
+    return this.http.post<EntityResponse>(
+      `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
   }
 
   fetchUserActivityByUserId(userId: number) {
@@ -490,17 +447,10 @@ export class UserService {
 
     const formData = this.transform(body);
 
-    return this.http
-      .post<EntityResponse>(
-        `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-        formData
-      )
-      .pipe(
-        map((response) => {
-          const isTokenValid = this.verifyToken(response);
-          return isTokenValid ? response : null;
-        })
-      );
+    return this.http.post<EntityResponse>(
+      `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
   }
 
   updateUser(userId: number, activityList: number[], modifiedBy: number) {
@@ -528,25 +478,17 @@ export class UserService {
 
     const formData = this.transform(body);
 
-    return this.http
-      .post<EntityResponse>(
-        `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-        formData
-      )
-      .pipe(
-        map((response) => {
-          const isTokenValid = this.verifyToken(response);
-          return isTokenValid ? response : null;
-        })
-      );
+    return this.http.post<EntityResponse>(
+      `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
   }
 
   downloadReport(
     mobileNo: string,
     fromDate: string,
     toDate: string,
-    isDownload: boolean,
-    send?: number
+    isDownload: boolean
   ) {
     const data = {
       mobileNo,
@@ -573,17 +515,10 @@ export class UserService {
 
     const formData = this.transform(body);
 
-    return this.http
-      .post<EntityResponse>(
-        `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
-        formData
-      )
-      .pipe(
-        map((response) => {
-          const isTokenValid = this.verifyToken(response);
-          return isTokenValid ? response : null;
-        })
-      );
+    return this.http.post<EntityResponse>(
+      `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
   }
 
   logout() {
@@ -591,7 +526,6 @@ export class UserService {
   }
 
   clear() {
-    // remove user from local storage to log user out
     localStorage.removeItem("currentUser");
     localStorage.removeItem("currentHome");
     localStorage.removeItem("currentMenu");
@@ -606,20 +540,15 @@ export class UserService {
     return new HttpParams({ fromObject: data });
   }
 
-  verifyToken(response: any): boolean {
-    if (response && !response.login_required) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   closeAndLogout() {
     this.logout();
     this.clear();
-    this.toasterService.show("Token Expired.Please login again!", {
-      classname: "bg-danger text-light",
-    });
-    this.router.navigate([PAGES.PUBLIC]);
+    this.toasterService.showError(TOASTER_MESSAGES.TOKEN_EXPIRED_MESSAGE);
+    this.router.navigate([
+      PAGES.PUBLIC,
+      {
+        queryParams: { returnUrl: this.router.url },
+      },
+    ]);
   }
 }

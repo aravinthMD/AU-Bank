@@ -7,6 +7,6 @@ const windowProvider: FactoryProvider = {
   useFactory: () => window
 };
 
-export const WINDOW_PROVIDERS = [
+export const WINDOW_INTERCEPTOR = [
   windowProvider
 ];

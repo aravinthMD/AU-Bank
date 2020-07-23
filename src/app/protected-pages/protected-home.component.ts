@@ -50,9 +50,7 @@ export class ProtectedHomeComponent implements OnInit {
     this.userService.logout();
     this.ngbModal.dismissAll();
     this.userService.clear();
-    this.toasterService.show(TOASTER_MESSAGES.LOGOUT_SUCCESS, {
-      classname: "bg-success text-light",
-    });
+    this.toasterService.showSuccess(TOASTER_MESSAGES.LOGOUT_SUCCESS);
     this.router.navigate([PAGES.PUBLIC]);
   }
 }

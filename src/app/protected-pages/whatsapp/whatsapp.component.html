@@ -121,87 +121,86 @@
       </form>
     </div>
   </div>
-  <div class="row">
-    <div class="col">
-      <table class="table table-responsive shadow">
-        <tr>
-          <th *ngFor="let header of tableHeaders">
-            {{ header }}
-          </th>
-        </tr>
-        <tr *ngIf="userDetail">
-          <td>
-            {{ userDetail.mobile }}
-          </td>
-          <td>
-            <i
-              *ngIf="userDetail.isOptIn"
-              class="fa fa-check-circle-o fa-2x text-success"
-              aria-hidden="true"
-            ></i>
-            <i
-              *ngIf="!userDetail.isOptIn"
-              class="fa fa-times-circle-o fa-2x text-danger"
-              aria-hidden="true"
-            ></i>
-          </td>
-          <td>
-            {{ userDetail.optInDate | date: "dd/MM/yyyy" }}
-          </td>
-          <td>
-            {{ userDetail.optInChannel }}
-          </td>
-          <td>
-            <i
-              *ngIf="userDetail.isOptOut"
-              class="fa fa-check-circle-o fa-2x text-success"
-              aria-hidden="true"
-            ></i>
-            <i
-              *ngIf="!userDetail.isOptOut"
-              class="fa fa-times-circle-o fa-2x text-danger"
-              aria-hidden="true"
-            ></i>
-          </td>
-          <td>
-            {{
-              !userDetail.optOutDate
-                ? "NA"
-                : (userDetail.optOutDate | date: "dd/MM/yyyy")
-            }}
-          </td>
-          <td>
-            {{ userDetail.optOutChannel ? userDetail.optOutChannel : "NA" }}
-          </td>
-          <td>
-            {{ userDetail.requestId ? userDetail.requestId : "NA" }}
-          </td>
-          <td>
-            {{ userDetail.blockDate ? userDetail.blockDate : "NA" }}
-          </td>
-          <td>
-            {{ userDetail.action }}
-          </td>
-          <td *ngIf="!isViewOnly">
-            <button *ngIf="userDetail.isBlocked" class="blocked-btn shadow">
-              {{ blockButtonText }}
-            </button>
-            <button
-              *ngIf="!userDetail.isBlocked"
-              class="shadow"
-              (click)="openBlockWhatsappDialog(userDetail)"
-            >
-              {{ blockButtonText }}
-            </button>
-          </td>
-          <td>
-            {{ userDetail.blockReason ? userDetail.blockReason : "NA" }}
-          </td>
-          <td>
-            {{ userDetail.srNo ? userDetail.srNo : "NA" }}
-          </td>
-        </tr>
-      </table>
-    </div>
+
+  <div class="table-responsive">
+    <table class="table shadow">
+      <tr>
+        <th *ngFor="let header of tableHeaders">
+          {{ header }}
+        </th>
+      </tr>
+      <tr *ngIf="userDetail">
+        <td>
+          {{ userDetail.mobile }}
+        </td>
+        <td>
+          <i
+            *ngIf="userDetail.isOptIn"
+            class="fa fa-check-circle-o fa-2x text-success"
+            aria-hidden="true"
+          ></i>
+          <i
+            *ngIf="!userDetail.isOptIn"
+            class="fa fa-times-circle-o fa-2x text-danger"
+            aria-hidden="true"
+          ></i>
+        </td>
+        <td>
+          {{ userDetail.optInDate | date: "dd/MM/yyyy" }}
+        </td>
+        <td>
+          {{ userDetail.optInChannel }}
+        </td>
+        <td>
+          <i
+            *ngIf="userDetail.isOptOut"
+            class="fa fa-check-circle-o fa-2x text-success"
+            aria-hidden="true"
+          ></i>
+          <i
+            *ngIf="!userDetail.isOptOut"
+            class="fa fa-times-circle-o fa-2x text-danger"
+            aria-hidden="true"
+          ></i>
+        </td>
+        <td>
+          {{
+            !userDetail.optOutDate
+              ? "NA"
+              : (userDetail.optOutDate | date: "dd/MM/yyyy")
+          }}
+        </td>
+        <td>
+          {{ userDetail.optOutChannel ? userDetail.optOutChannel : "NA" }}
+        </td>
+        <td>
+          {{ userDetail.requestId ? userDetail.requestId : "NA" }}
+        </td>
+        <td>
+          {{ userDetail.blockDate ? userDetail.blockDate : "NA" }}
+        </td>
+        <td>
+          {{ userDetail.action }}
+        </td>
+        <td *ngIf="!isViewOnly">
+          <button *ngIf="userDetail.isBlocked" class="blocked-btn shadow">
+            {{ blockButtonText }}
+          </button>
+          <button
+            *ngIf="!userDetail.isBlocked"
+            class="shadow"
+            (click)="openBlockWhatsappDialog(userDetail)"
+          >
+            {{ blockButtonText }}
+          </button>
+        </td>
+        <td>
+          {{ userDetail.blockReason ? userDetail.blockReason : "NA" }}
+        </td>
+        <td>
+          {{ userDetail.srNo ? userDetail.srNo : "NA" }}
+        </td>
+      </tr>
+    </table>
   </div>
 </div>

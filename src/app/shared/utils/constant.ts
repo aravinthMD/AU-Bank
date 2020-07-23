@@ -46,11 +46,17 @@ export enum TOASTER_MESSAGES {
   FETCH_USER_SUCCESS = "User fetched successfully.",
   DISABLE_USER_SUCCESS = "User disabled successfully.",
   UPDATE_USER_SUCCESS = "User updated successfully.",
-  REPORT_DOWNLOAD_SUCCESS = "Report downloaded successfully."
+  REPORT_DOWNLOAD_SUCCESS = "Report downloaded successfully.",
+
+  TOKEN_EXPIRED_MESSAGE = "Token Expired.Please login again!",
 }
 
 export enum DATE_FORMATS {
   DD_MM_YYYY = "dd/mm/yyyy",
+}
+
+export enum RESPONSES {
+  SUCCESS = "SUCCESS",
 }
 
 export enum MENU_TITLES {
@@ -63,4 +69,12 @@ export enum MENU_TITLES {
 export enum REPORT_FILTER_TYPES {
   ALL = "All",
   BLOCKED = "Blocked",
+}
+
+export enum CONCAT_HELPERS {
+  USER_ID_CONCAT_HELPER = "@uataxisb.com",
+}
+
+export enum MESSAGES {
+  NETWORK_NOT_AVAILABLE = "Network connection not available.",
 }

@@ -1,7 +1,11 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { BUTTON_TEXTS, TOASTER_MESSAGES } from "src/app/shared/utils/constant";
+import {
+  BUTTON_TEXTS,
+  TOASTER_MESSAGES,
+  RESPONSES,
+} from "src/app/shared/utils/constant";
 import { ToasterService } from "src/app/shared/services/toaster.service";
 import { UserService } from "src/app/shared/services/user.service";
 
@@ -56,32 +60,27 @@ export class BlockWhatsappDialogComponent implements OnInit {
         this.inputData.channel,
         this.inputData.mobile
       )
-      .subscribe((response) => {
-        if (response) {
+      .subscribe(
+        (response) => {
           const {
             ProcessVariables: { status, message = {} },
           } = response;
           if (status) {
-            this.toasterService.show(
-              `${this.inputData.mobile} ${TOASTER_MESSAGES.BLOCK_WHASTAPP_SUCCESS}`,
-              {
-                classname: "bg-success text-light",
-              }
+            this.toasterService.showSuccess(
+              `${this.inputData.mobile} ${TOASTER_MESSAGES.BLOCK_WHASTAPP_SUCCESS}`
             );
-            this.close("SUCCESS");
             this.loading = false;
+            this.close(RESPONSES.SUCCESS);
           } else {
-            this.toasterService.show(message.value, {
-              classname: "bg-danger text-light",
-            });
             this.loading = false;
+            this.toasterService.showError(message.value);
           }
-        } else {
+        },
+        (error) => {
           this.loading = false;
-          this.close();
-          this.userService.closeAndLogout();
+          this.toasterService.showError(error);
         }
-      });
+      );
   }
 
   close(message?: string): void {

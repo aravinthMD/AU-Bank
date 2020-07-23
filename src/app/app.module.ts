@@ -8,11 +8,10 @@ import { PublicHomeComponent } from "./public-pages/public-home.component";
 import { LoginComponent } from "./public-pages/login/login.component";
 import { SharedModule } from "./shared/shared.module";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
-import { JwtInterceptor } from "./shared/interceptors/jwt.interceptor";
+import { Interceptor } from "./shared/interceptors/http.interceptor";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ChangePasswordComponent } from "./public-pages/change-password/change-password.component";
-import { ErrorInterceptor } from './shared/interceptors/error.interceptor';
-import { WINDOW_PROVIDERS } from './shared/interceptors/window.provider';
+import { WINDOW_INTERCEPTOR } from "./shared/interceptors/window.interceptor";
 
 @NgModule({
   declarations: [
@@ -33,16 +32,11 @@ import { WINDOW_PROVIDERS } from './shared/interceptors/window.provider';
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: JwtInterceptor,
+      useClass: Interceptor,
       multi: true,
     },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ErrorInterceptor,
-      multi: true,
-    },
-    WINDOW_PROVIDERS
+    WINDOW_INTERCEPTOR,
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

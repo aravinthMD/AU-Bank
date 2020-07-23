@@ -5,11 +5,12 @@ import {
   BUTTON_TEXTS,
   TOASTER_MESSAGES,
   MENU_TITLES,
+  RESPONSES,
 } from "src/app/shared/utils/constant";
 import { ToasterService } from "src/app/shared/services/toaster.service";
 import { UserService } from "src/app/shared/services/user.service";
 import { ReferenceService } from "src/app/shared/services/reference.service";
-import { EntityResponse } from "src/app/shared/models/user.model";
+import { EntityResponse } from "src/app/shared/models/entity-model";
 
 @Component({
   selector: "app-user-dialog",
@@ -50,23 +51,24 @@ export class UserDialogComponent implements OnInit {
 
   fetchUserActivityByUserId() {
     this.loading = true;
-    this.userService
-      .fetchUserActivityByUserId(this.userId)
-      .subscribe((response) => {
-        if (response) {
-          const {
-            ProcessVariables: { status },
-          } = response;
-          if (status) {
-            this.setForm(response);
-          }
+    this.userService.fetchUserActivityByUserId(this.userId).subscribe(
+      (response) => {
+        const {
+          ProcessVariables: { status, message = {} },
+        } = response;
+        if (status) {
+          this.setForm(response);
           this.loading = false;
         } else {
           this.loading = false;
-          this.close();
-          this.userService.closeAndLogout();
+          this.toasterService.showError(message.value);
         }
-      });
+      },
+      (error) => {
+        this.loading = false;
+        this.toasterService.showError(error);
+      }
+    );
   }
 
   setForm(response: EntityResponse): void {
@@ -116,7 +118,7 @@ export class UserDialogComponent implements OnInit {
       checkBoxElements[3].checked = true;
       this.selectedMenuList.push(4);
     }
-   // this.validate();
+    this.validate();
   }
 
   get fieldControls() {
@@ -133,7 +135,7 @@ export class UserDialogComponent implements OnInit {
       );
       this.selectedMenuList.splice(index, 1);
     }
-    // this.validate();
+    this.validate();
   }
 
   validate(): void {
@@ -158,30 +160,28 @@ export class UserDialogComponent implements OnInit {
     const currentUserId = this.userService.currentUserValue.userId;
     this.userService
       .updateUser(this.userId, this.selectedMenuList, Number(currentUserId))
-      .subscribe((response) => {
-        if (response) {
+      .subscribe(
+        (response) => {
           const {
             ProcessVariables: { status },
             ProcessVariables: { message = {} },
           } = response;
           if (status) {
-            this.toasterService.show(TOASTER_MESSAGES.UPDATE_USER_SUCCESS, {
-              classname: "bg-success text-light",
-            });
+            this.toasterService.showSuccess(
+              TOASTER_MESSAGES.UPDATE_USER_SUCCESS
+            );
             this.loading = false;
-            this.close("SUCCESS");
+            this.close(RESPONSES.SUCCESS);
           } else {
             this.loading = false;
-            this.toasterService.show(message.value, {
-              classname: "bg-danger text-light",
-            });
+            this.toasterService.showError(message.value);
           }
-        } else {
+        },
+        (error) => {
           this.loading = false;
-          this.close();
-          this.userService.closeAndLogout();
+          this.toasterService.showError(error);
         }
-      });
+      );
   }
 
   close(message?: string): void {

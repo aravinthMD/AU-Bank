@@ -4,6 +4,7 @@ import {
   BUTTON_TEXTS,
   PAGES,
   TOASTER_MESSAGES,
+  RESPONSES,
 } from "src/app/shared/utils/constant";
 import { Router } from "@angular/router";
 import { NgbDate, NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -107,28 +108,28 @@ export class WhatsappComponent implements OnInit {
 
   fetchUserByMobileNumber(mobileNumber: string): void {
     this.searchLoading = true;
-    this.userService
-      .fetchUserByMobileNumber(mobileNumber)
-      .subscribe((response) => {
-        if (response) {
+    this.userService.fetchUserByMobileNumber(mobileNumber).subscribe(
+      (response) => {
+        const {
+          ProcessVariables: { status },
+        } = response;
+        if (status) {
           const {
             ProcessVariables: { blockLog },
           } = response;
-          if (blockLog) {
-            const [data] = blockLog;
-            this.userDetail = data;
-            this.searchLoading = false;
-          } else {
-            this.toasterService.show(TOASTER_MESSAGES.USER_NOT_FOUND, {
-              classname: "bg-danger text-light",
-            });
-            this.searchLoading = false;
-          }
-        } else {
+          const [data] = blockLog;
+          this.userDetail = data;
           this.searchLoading = false;
-          this.userService.closeAndLogout();
+        } else {
+          this.toasterService.showError(TOASTER_MESSAGES.USER_NOT_FOUND);
+          this.searchLoading = false;
         }
-      });
+      },
+      (error) => {
+        this.searchLoading = false;
+        this.toasterService.showError(error);
+      }
+    );
   }
 
   get fieldControls() {
@@ -148,31 +149,32 @@ export class WhatsappComponent implements OnInit {
         this.userDetail ? this.userDetail.mobile : -1,
         formattedFromDate,
         formattedToDate,
-        true,
-        next
+        true
       )
-      .subscribe((response) => {
-        if (response) {
+      .subscribe(
+        (response) => {
           const {
-            ProcessVariables: { status, downloadContent },
+            ProcessVariables: { status, message = {} },
           } = response;
           if (status) {
+            const {
+              ProcessVariables: { downloadContent },
+            } = response;
             this.saveFile(downloadContent);
-            this.toasterService.show(TOASTER_MESSAGES.REPORT_DOWNLOAD_SUCCESS, {
-              classname: "bg-success text-light",
-            });
+            this.toasterService.showSuccess(
+              TOASTER_MESSAGES.REPORT_DOWNLOAD_SUCCESS
+            );
             this.reportLoading = false;
           } else {
-            this.toasterService.show("Something went wrong", {
-              classname: "bg-danger text-light",
-            });
+            this.toasterService.showError(message.value);
             this.reportLoading = false;
           }
-        } else {
+        },
+        (error) => {
           this.reportLoading = false;
-          this.userService.closeAndLogout();
+          this.toasterService.showError(error);
         }
-      });
+      );
   }
 
   transform(response, remaining: number, sent: number) {
@@ -224,8 +226,8 @@ export class WhatsappComponent implements OnInit {
       centered: true,
     });
     dialog.componentInstance.inputData = { action, cTime, channel, mobile };
-    dialog.result.then((res) => {
-      if (res === "SUCCESS") {
+    dialog.result.then((response) => {
+      if (response === RESPONSES.SUCCESS) {
         this.fetchUserByMobileNumber(mobile);
       }
     });

@@ -49,16 +49,16 @@ export class ReferenceService {
         routerPath: PAGES.BLOCK_WHATSAPP,
         value: 2,
       },
-      // {
-      //   title: MENU_TITLES.MARKETING_MAKER,
-      //   routerPath: PAGES.MARKETING_MAKER,
-      //   value: 3,
-      // },
-      // {
-      //   title: MENU_TITLES.MARKETING_CHECKER,
-      //   routerPath: PAGES.MARKETING_CHECKER,
-      //   value: 4,
-      // },
+      {
+        title: MENU_TITLES.MARKETING_MAKER,
+        routerPath: PAGES.MARKETING_MAKER,
+        value: 3,
+      },
+      {
+        title: MENU_TITLES.MARKETING_CHECKER,
+        routerPath: PAGES.MARKETING_CHECKER,
+        value: 4,
+      },
     ];
   }
 }

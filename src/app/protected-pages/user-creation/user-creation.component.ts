@@ -89,7 +89,7 @@ export class UserCreationComponent implements OnInit {
       );
       this.selectedMenuList.splice(index, 1);
     }
-   // this.validate();
+    this.validate();
   }
 
   validate(): void {
@@ -130,29 +130,28 @@ export class UserCreationComponent implements OnInit {
         Number(currentUserId),
         this.selectedMenuList
       )
-      .subscribe((response) => {
-        if (response) {
+      .subscribe(
+        (response) => {
           const {
             ProcessVariables: { status },
             ProcessVariables: { message = {} },
           } = response;
           if (status) {
-            this.toasterService.show(TOASTER_MESSAGES.CREATE_USER_SUCCESS, {
-              classname: "bg-success text-light",
-            });
+            this.toasterService.showSuccess(
+              TOASTER_MESSAGES.CREATE_USER_SUCCESS
+            );
             this.superAdminForm.reset();
             this.adminForm.reset();
             this.loading = false;
           } else {
             this.loading = false;
-            this.toasterService.show(message.value, {
-              classname: "bg-danger text-light",
-            });
+            this.toasterService.showError(message.value);
           }
-        } else {
+        },
+        (error) => {
           this.loading = false;
-          this.userService.closeAndLogout();
+          this.toasterService.showError(error);
         }
-      });
+      );
   }
 }

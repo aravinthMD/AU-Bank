@@ -89,5 +89,5 @@ export interface LoginProcessVariables {
   userId: string;
   userName: string;
   message?: { type?: string; value?: string };
-  menus?: any;
+  payload?: { error?: string };
 }

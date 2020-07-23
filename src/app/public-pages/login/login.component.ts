@@ -8,7 +8,7 @@ import {
 } from "src/app/shared/utils/constant";
 import { UserService } from "src/app/shared/services/user.service";
 import { ToasterService } from "src/app/shared/services/toaster.service";
-import { LoginProcessVariables } from "src/app/shared/models/user.model";
+import { LoginProcessVariables } from "src/app/shared/models/entity-model";
 
 @Component({
   selector: "app-login",
@@ -78,9 +78,7 @@ export class LoginComponent implements OnInit {
           this.loading = false;
         },
         (error) => {
-          this.toasterService.show(error, {
-            classname: "bg-danger text-light",
-          });
+          this.toasterService.showError(error);
           this.loading = false;
         }
       );
@@ -88,36 +86,37 @@ export class LoginComponent implements OnInit {
 
   getUserDetail() {
     this.loading = true;
-    this.userService
-      .getUserDetail(this.fieldControls.userId.value)
-      .subscribe((response) => {
+    this.userService.getUserDetail(this.fieldControls.userId.value).subscribe(
+      (response) => {
         if (response && response.status) {
           if (
             response.roleName !== "User" ||
             (response.roleName === "User" && response.isFirstLogin === "false")
           ) {
-            this.toasterService.show(TOASTER_MESSAGES.LOGIN_SUCCESS, {
-              classname: "bg-success text-light",
-            });
+            this.loading = false;
+            this.toasterService.showSuccess(TOASTER_MESSAGES.LOGIN_SUCCESS);
             const currentHome = this.userService.currentHomeValue;
             this.router.navigate([currentHome]);
           } else if (
             response.roleName === "User" &&
             response.isFirstLogin === "true"
           ) {
-            this.toasterService.show(TOASTER_MESSAGES.CHANGE_PASSWORD_WARNING, {
-              classname: "bg-warning text-light",
-            });
+            this.loading = false;
+            this.toasterService.showWarning(
+              TOASTER_MESSAGES.CHANGE_PASSWORD_WARNING
+            );
+
             this.router.navigate([PAGES.CHANGE_PASSWORD]);
           }
-
-          this.loading = false;
         } else {
-          this.toasterService.show(response.message.value, {
-            classname: "bg-danger text-light",
-          });
           this.loading = false;
+          this.toasterService.showError(response.message.value);
         }
-      });
+      },
+      (error) => {
+        this.loading = false;
+        this.toasterService.showError(error);
+      }
+    );
   }
 }

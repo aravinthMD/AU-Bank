@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { BUTTON_TEXTS } from "src/app/shared/utils/constant";
+import { BUTTON_TEXTS, RESPONSES } from "src/app/shared/utils/constant";
 import { UserService } from "src/app/shared/services/user.service";
 import { ToasterService } from "src/app/shared/services/toaster.service";
 import { User } from "src/app/shared/models/user.model";
@@ -36,10 +36,12 @@ export class ManageUsersComponent implements OnInit {
   fetchUsers(pageNumber: number): void {
     window.scroll(0, 0);
     this.loading = true;
-    this.userService
-      .fetchUsers(this.pageSize, pageNumber)
-      .subscribe((response) => {
-        if (response) {
+    this.userService.fetchUsers(this.pageSize, pageNumber).subscribe(
+      (response) => {
+        const {
+          ProcessVariables: { status, message = {} },
+        } = response;
+        if (status) {
           const {
             ProcessVariables: { usersList, totalCount },
           } = response;
@@ -48,9 +50,14 @@ export class ManageUsersComponent implements OnInit {
           this.loading = false;
         } else {
           this.loading = false;
-          this.userService.closeAndLogout();
+          this.toasterService.showError(message.value);
         }
-      });
+      },
+      (error) => {
+        this.loading = false;
+        this.toasterService.showError(error);
+      }
+    );
   }
 
   editUser({ userId }): void {
@@ -58,8 +65,8 @@ export class ManageUsersComponent implements OnInit {
       centered: true,
     });
     dialog.componentInstance.userId = userId;
-    dialog.result.then((res) => {
-      if (res === "SUCCESS") {
+    dialog.result.then((response) => {
+      if (response === RESPONSES.SUCCESS) {
         this.fetchUsers(this.currentPage);
       }
     });
@@ -72,8 +79,8 @@ export class ManageUsersComponent implements OnInit {
     dialog.componentInstance.userId = userId;
     dialog.componentInstance.userName = username;
 
-    dialog.result.then((res) => {
-      if (res === "SUCCESS") {
+    dialog.result.then((response) => {
+      if (response === RESPONSES.SUCCESS) {
         this.fetchUsers(this.currentPage);
       }
     });
