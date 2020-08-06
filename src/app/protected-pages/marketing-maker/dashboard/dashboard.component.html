@@ -1,3 +1,86 @@
+<ngb-progressbar
+  *ngIf="loading"
+  type="dark"
+  height="0.5rem"
+  [value]="100"
+  [striped]="true"
+  [animated]="true"
+></ngb-progressbar>
+<div class="row p-3">
+  <div class="col-6"></div>
+  <div class="col-6">
+    <form [formGroup]="form">
+      <div class="form-row">
+        <div class="col">
+          <div class="input-group">
+            <input
+              class="form-control bg-search btn-outline-secondary"
+              placeholder="From Date"
+              name="fromDate"
+              formControlName="fromDate"
+              (dateSelect)="onFromDateChange($event)"
+              ngbDatepicker
+              [maxDate]="fromMaxDate"
+              [minDate]="fromMinDate"
+              readonly
+              #fromDate="ngbDatepicker"
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary"
+                (click)="fromDate.toggle()"
+                type="button"
+              >
+                <i class="fa fa-calendar-check-o"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="input-group">
+            <input
+              class="form-control bg-search btn-outline-secondary"
+              placeholder="To Date"
+              name="toDate"
+              formControlName="toDate"
+              (dateSelect)="onToDateChange($event)"
+              ngbDatepicker
+              readonly
+              [maxDate]="toMaxDate"
+              [minDate]="toMinDate"
+              #toDate="ngbDatepicker"
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary"
+                (click)="toDate.toggle()"
+                type="button"
+              >
+                <i class="fa fa-calendar-check-o"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <select
+            class="custom-select"
+            formControlName="filterType"
+            title="Filter Type"
+            id="role"
+            (change)="onFilterTypeChange($event)"
+          >
+            <option
+              *ngFor="let option of filterOptions"
+              [value]="option.value"
+              >{{ option.name }}</option
+            >
+          </select>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
 <div class="table-responsive">
   <table class="table">
     <thead class="thead-light">
@@ -6,20 +89,44 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let template of templates">
+      <tr *ngFor="let item of templates">
         <td>
-          <a (click)="openTemplateDetail(template)">{{
-            template.templateId
-          }}</a>
+          <a>{{ item.id }}</a>
         </td>
         <td>
-          {{ template.template }}
+          {{ item.template }}
         </td>
-        <td>{{ template.dynamicParameters }}</td>
         <td>
-          <span class="p-1 bg-maroon rounded-pill">{{ template.status }}</span>
+          {{ item.startDate | date: "medium" }}
+        </td>
+        <td>
+          <span class="p-1 bg-maroon rounded-pill" *ngIf="item.status === '10'"
+            >SUBMITTED</span
+          >
+          <span
+            class="p-1 approved-btn rounded-pill"
+            *ngIf="item.status === '30'"
+            >APPROVED</span
+          >
+          <span
+            class="p-1 rejected-btn rounded-pill"
+            *ngIf="item.status === '20'"
+            >REJECTED</span
+          >
+          <br />
+          <span *ngIf="item.status === '20'">{{ item.reason }}</span>
         </td>
       </tr>
     </tbody>
   </table>
+  <div class="d-flex justify-content-center p-2">
+    <ngb-pagination
+      [boundaryLinks]="true"
+      [collectionSize]="collectionSize"
+      [(page)]="currentPage"
+      [pageSize]="pageSize"
+      (pageChange)="onPageChanged(currentPage)"
+    >
+    </ngb-pagination>
+  </div>
 </div>

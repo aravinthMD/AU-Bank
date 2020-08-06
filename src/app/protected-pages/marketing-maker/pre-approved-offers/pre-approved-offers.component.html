@@ -2,15 +2,6 @@
   <div class="container">
     <form [formGroup]="form">
       <div class="form-group">
-        <label for="template">Template</label>
-        <textarea
-          class="form-control"
-          formControlName="template"
-          id="template"
-          rows="3"
-        ></textarea>
-      </div>
-      <div class="form-group">
         <label>Campaign Start Date</label>
         <div class="input-group">
           <input
@@ -77,15 +68,14 @@
         class="btn submit-btn shadow"
         (click)="onSubmit()"
       >
-      <span
-        *ngIf="loading"
-        class="spinner-border"
-        style="width: 2rem; height: 2rem;"
-        aria-hidden="true"
-      >
-      </span>
-      <span *ngIf="!loading"> {{ submitButtonText }}</span>
-
+        <span
+          *ngIf="loading"
+          class="spinner-border"
+          style="width: 2rem; height: 2rem;"
+          aria-hidden="true"
+        >
+        </span>
+        <span *ngIf="!loading"> {{ submitButtonText }}</span>
       </button>
     </form>
   </div>

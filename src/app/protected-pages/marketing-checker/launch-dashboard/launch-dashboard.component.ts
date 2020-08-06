@@ -21,7 +21,6 @@ export class LaunchDashboardComponent implements OnInit {
   tableHeaders = [
     "Template Id",
     "Created On",
-    "No of Dynamic Parameters",
     "Upload Time",
     "Launch ID",
     "Campaign End Date",
@@ -58,7 +57,6 @@ export class LaunchDashboardComponent implements OnInit {
         createdOn: "26/06/2020, 12:00PM",
         uploadTime: "3:00PM",
         launchId: "Launch0002",
-        dynamicParameters: "2",
         campaignEndDate: "26/07/2020, 12:00PM",
         status: "Active",
       },
@@ -67,7 +65,6 @@ export class LaunchDashboardComponent implements OnInit {
         createdOn: "26/06/2020, 12:00PM",
         uploadTime: "4:00PM",
         launchId: "Launch0003",
-        dynamicParameters: "2",
         campaignEndDate: "26/07/2020, 12:00PM",
         status: "Inactive",
       },

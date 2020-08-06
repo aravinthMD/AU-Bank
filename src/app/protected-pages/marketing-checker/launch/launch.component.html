@@ -1,3 +1,11 @@
+<ngb-progressbar
+  *ngIf="loading"
+  type="dark"
+  height="0.5rem"
+  [value]="100"
+  [striped]="true"
+  [animated]="true"
+></ngb-progressbar>
 <div class="row p-3">
   <div class="col-6"></div>
   <div class="col-6">
@@ -59,10 +67,13 @@
             formControlName="filterType"
             title="Filter Type"
             id="role"
+            (change)="onFilterTypeChange($event)"
           >
-            <option *ngFor="let option of filterOptions" [value]="option">{{
-              option | uppercase
-            }}</option>
+            <option
+              *ngFor="let option of filterOptions"
+              [value]="option.value"
+              >{{ option.name }}</option
+            >
           </select>
         </div>
       </div>
@@ -79,23 +90,58 @@
     </thead>
     <tbody>
       <tr *ngFor="let template of templates">
-        <td>{{ template.templateId }}</td>
-        <td>{{ template.createdOn }}</td>
+        <td>
+          <a>{{ template.id }}</a>
+        </td>
         <td>
           {{ template.template }}
         </td>
-        <td>{{ template.dynamicParameters }}</td>
-        <td>{{ template.campaignEndDate }}</td>
+        <td>{{ template.startDate | date: "medium" }}</td>
         <td>
-          <button
-            type="button"
-            class="btn shadow"
-            (click)="openPreviewTemplateDialog()"
-          >
-            {{ launchButtonText }}
-          </button>
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button
+              *ngIf="template.status === '10'"
+              type="button"
+              class="btn action-btn shadow"
+              (click)="openApproveTemplateDialog(template)"
+            >
+              {{ launchButtonText }}
+            </button>
+            <button
+              *ngIf="template.status === '10'"
+              type="button"
+              class="btn action-btn shadow"
+              (click)="openRejectTemplateDialog(template)"
+            >
+              {{ rejectButtonText }}
+            </button>
+            <button
+              *ngIf="template.status === '20'"
+              type="button"
+              class="btn rejected-btn shadow"
+            >
+              Rejected
+            </button>
+            <button
+              *ngIf="template.status === '30'"
+              type="button"
+              class="btn approved-btn shadow"
+            >
+              Approved
+            </button>
+          </div>
         </td>
       </tr>
     </tbody>
   </table>
+  <div class="d-flex justify-content-center p-2">
+    <ngb-pagination
+      [boundaryLinks]="true"
+      [collectionSize]="collectionSize"
+      [(page)]="currentPage"
+      [pageSize]="pageSize"
+      (pageChange)="onPageChanged(currentPage)"
+    >
+    </ngb-pagination>
+  </div>
 </div>

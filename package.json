@@ -1,6 +1,6 @@
 {
   "name": "axis-bank",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -26,6 +26,7 @@
     "file-saver": "^2.0.2",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
+    "xlsx": "^0.16.4",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {

@@ -68,7 +68,9 @@ export class UserService {
     const {
       location: { origin },
     } = this.window;
-    this.host = environment.production ? `${origin}/appiyo` : environment.host;
+    this.host = environment.production
+      ? `${origin}${environment.host}`
+      : environment.host;
   }
 
   public get currentUserValue(): LoginProcessVariables {
@@ -501,6 +503,189 @@ export class UserService {
         whatsappReport: { processId, workflowId },
       },
       projectId,
+    } = environment;
+    const requestEntity: RequestEntity = {
+      processId,
+      ProcessVariables: data,
+      workflowId,
+      projectId,
+    };
+
+    const body = {
+      processVariables: JSON.stringify(requestEntity),
+    };
+
+    const formData = this.transform(body);
+
+    return this.http.post<EntityResponse>(
+      `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
+  }
+
+  createMessageTemplate(
+    template: string,
+    startDate: string,
+    endDate: string,
+    triggerTime: string,
+    userId: string
+  ) {
+    const data = {
+      template,
+      startDate,
+      endDate,
+      triggerTime,
+      userId,
+    };
+    const {
+      api: {
+        createMessageTemplate: { processId, workflowId, projectId },
+      },
+    } = environment;
+    const requestEntity: RequestEntity = {
+      processId,
+      ProcessVariables: data,
+      workflowId,
+      projectId,
+    };
+
+    const body = {
+      processVariables: JSON.stringify(requestEntity),
+    };
+
+    const formData = this.transform(body);
+
+    return this.http.post<EntityResponse>(
+      `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
+  }
+
+  createPromotionalTemplate(
+    template: string,
+    startDate: string,
+    triggerTime: string,
+    userId: string
+  ) {
+    const data = {
+      template,
+      startDate,
+      triggerTime,
+      userId,
+      isPromotion: "true",
+    };
+    const {
+      api: {
+        createPromotionalTemplate: { processId, workflowId, projectId },
+      },
+    } = environment;
+    const requestEntity: RequestEntity = {
+      processId,
+      ProcessVariables: data,
+      workflowId,
+      projectId,
+    };
+
+    const body = {
+      processVariables: JSON.stringify(requestEntity),
+    };
+
+    const formData = this.transform(body);
+
+    return this.http.post<EntityResponse>(
+      `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
+  }
+
+  fetchTemplates(
+    currentPage: number,
+    fromDate: string,
+    toDate: string,
+    templateStatus: string
+  ) {
+    const data = {
+      fromDate,
+      toDate,
+      templateStatus,
+      currentPage,
+    };
+    const {
+      api: {
+        fetchTemplates: { processId, workflowId, projectId },
+      },
+    } = environment;
+    const requestEntity: RequestEntity = {
+      processId,
+      ProcessVariables: data,
+      workflowId,
+      projectId,
+    };
+
+    const body = {
+      processVariables: JSON.stringify(requestEntity),
+    };
+
+    const formData = this.transform(body);
+
+    return this.http.post<EntityResponse>(
+      `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
+  }
+
+  updateTemplate(
+    userId: string,
+    templateStatus: string,
+    id: string,
+    reason?: string
+  ) {
+    const data = {
+      userId,
+      templateStatus,
+      id,
+      reason,
+    };
+    const {
+      api: {
+        updateTemplate: { processId, workflowId, projectId },
+      },
+    } = environment;
+    const requestEntity: RequestEntity = {
+      processId,
+      ProcessVariables: data,
+      workflowId,
+      projectId,
+    };
+
+    const body = {
+      processVariables: JSON.stringify(requestEntity),
+    };
+
+    const formData = this.transform(body);
+
+    return this.http.post<EntityResponse>(
+      `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
+  }
+
+  deactivateTemplate(
+    userId: string,
+    templateStatus: string,
+    id: string,
+    reason?: string
+  ) {
+    const data = {
+      userId,
+      templateStatus,
+      id,
+      reason,
+    };
+    const {
+      api: {
+        updateTemplate: { processId, workflowId, projectId },
+      },
     } = environment;
     const requestEntity: RequestEntity = {
       processId,

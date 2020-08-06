@@ -6,11 +6,11 @@ import { UserService } from "src/app/shared/services/user.service";
 import { ToasterService } from "src/app/shared/services/toaster.service";
 
 @Component({
-  selector: "app-message-template",
-  templateUrl: "./message-template.component.html",
-  styleUrls: ["./message-template.component.scss"],
+  selector: "app-pre-approved-offers",
+  templateUrl: "./pre-approved-offers.component.html",
+  styleUrls: ["./pre-approved-offers.component.scss"],
 })
-export class MessageTemplateComponent implements OnInit {
+export class PreApprovedOffersComponent implements OnInit {
   submitButtonText = BUTTON_TEXTS.SUBMIT_BUTTON_TEXT;
 
   form: FormGroup;
@@ -30,7 +30,6 @@ export class MessageTemplateComponent implements OnInit {
     private toasterService: ToasterService
   ) {
     this.form = this.formBuilder.group({
-      template: [null, Validators.required],
       campaignStartDate: [new Date(), Validators.required],
       campaignEndDate: [null, Validators.required],
       triggerTime: [this.defaultTime, Validators.required],
@@ -44,15 +43,15 @@ export class MessageTemplateComponent implements OnInit {
   setValidators(): void {
     const date = new Date();
     this.fromMinDate = {
-      year: 0,
-      month: 0,
-      day: 0,
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
     };
 
     this.toMinDate = {
-      year: 0,
-      month: 0,
-      day: 0,
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
     };
   }
 
@@ -75,14 +74,13 @@ export class MessageTemplateComponent implements OnInit {
       const campaignEndDate = fieldControls.campaignEndDate.value;
 
       // tslint:disable-next-line: max-line-length
-      const transformedStartDate = `${campaignStartDate.year}-${campaignStartDate.month}-${campaignStartDate.day}`;
-      const transformedEndDate = `${campaignEndDate.year}-${campaignEndDate.month}-${campaignEndDate.day}`;
+      const transformedStartDate = `${campaignStartDate.year}-${campaignStartDate.month}-${campaignStartDate.day}T${triggerTime.hour}:${triggerTime.minute}:00.000Z`;
+      const transformedEndDate = `${campaignEndDate.year}-${campaignEndDate.month}-${campaignEndDate.day}T12:0:00.000Z`;
       this.userService
         .createMessageTemplate(
           fieldControls.template.value,
           transformedStartDate,
           transformedEndDate,
-          `${triggerTime.hour}:${triggerTime.minute}:00`,
           String(this.userService.currentUserValue.userId)
         )
         .subscribe(

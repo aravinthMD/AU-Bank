@@ -32,6 +32,7 @@ export interface EntityResponse {
         srNo?: string;
       }
     ];
+    templateList: any[];
     dbPassword: string;
     dbUserName: string;
     isFirstLogin: string;
@@ -44,6 +45,7 @@ export interface EntityResponse {
     userId: number;
     userName: string;
   };
+
   Status: string;
   WorkflowId: string;
 }

@@ -6,7 +6,8 @@ import { LaunchComponent } from "./launch/launch.component";
 import { LaunchDashboardComponent } from "./launch-dashboard/launch-dashboard.component";
 import { SharedModule } from "src/app/shared/shared.module";
 import { ViewTemplateHistoryDialogComponent } from "./launch-dashboard/view-template-history-dialog.component";
-import { PreviewTemplateDialogComponent } from "./launch/preview-template-dialog.component";
+import { ApproveTemplateDialogComponent } from "./launch/approve-template-dialog.component";
+import { RejectTemplateDialogComponent } from "./launch/reject-template-dialog.component";
 
 @NgModule({
   declarations: [
@@ -14,12 +15,14 @@ import { PreviewTemplateDialogComponent } from "./launch/preview-template-dialog
     LaunchComponent,
     LaunchDashboardComponent,
     ViewTemplateHistoryDialogComponent,
-    PreviewTemplateDialogComponent,
+    ApproveTemplateDialogComponent,
+    RejectTemplateDialogComponent,
   ],
   imports: [CommonModule, SharedModule, MarketingCheckerRoutingModule],
   entryComponents: [
     ViewTemplateHistoryDialogComponent,
-    PreviewTemplateDialogComponent,
+    ApproveTemplateDialogComponent,
+    RejectTemplateDialogComponent,
   ],
 })
 export class MarketingCheckerModule {}

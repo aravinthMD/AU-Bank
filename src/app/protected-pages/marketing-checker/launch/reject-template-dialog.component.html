@@ -1,0 +1,38 @@
+<div class="modal-header">
+  <h4 class="modal-title">
+    Reject Template -<span class="text-message">{{
+      inputData && inputData.id
+    }}</span>
+  </h4>
+  <button type="button" class="close" aria-label="Close" (click)="close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="form">
+    <div class="form-group">
+      <label for="template">Reason</label>
+      <input class="form-control" formControlName="reason" ngbAutofocus />
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-confirm shadow"
+    (click)="rejectTemplate()"
+    [disabled]="form.invalid || loading"
+  >
+    <span
+      *ngIf="loading"
+      class="spinner-border"
+      style="width: 1rem; height: 1rem;"
+      aria-hidden="true"
+    >
+    </span>
+    <span *ngIf="!loading">{{ rejectButtonText }}</span>
+  </button>
+  <button type="button" class="btn btn-danger shadow" (click)="close()">
+    {{ cancelButtonText }}
+  </button>
+</div>

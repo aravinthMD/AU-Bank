@@ -54,6 +54,32 @@ export const environment = {
       workflowId: "54b48f28c6a511eab22b727d5ac274b2",
       processId: "54d2fe86c6a511eab22b727d5ac274b2",
     },
+    createMessageTemplate: {
+      projectId: "e45e9cf0d5a411eab60b727d5ac274b2",
+      workflowId: "2356727ad5a511eab60b727d5ac274b2",
+      processId: "28952a4cd5a511eab60b727d5ac274b2",
+    },
+    createPromotionalTemplate: {
+      projectId: "e45e9cf0d5a411eab60b727d5ac274b2",
+      workflowId: "2356727ad5a511eab60b727d5ac274b2",
+      processId: "32445f1ad5bc11eab60b727d5ac274b2",
+    },
+    updateTemplate: {
+      projectId: "e45e9cf0d5a411eab60b727d5ac274b2",
+      workflowId: "2356727ad5a511eab60b727d5ac274b2",
+      processId: "e81eed10d5ac11eab60b727d5ac274b2",
+    },
+
+    fetchTemplates: {
+      projectId: "e45e9cf0d5a411eab60b727d5ac274b2",
+      workflowId: "102df80ed5a911eab60b727d5ac274b2",
+      processId: "f24acf34d5bb11eab60b727d5ac274b2",
+    },
+    deactivateTemplate: {
+      projectId: "e45e9cf0d5a411eab60b727d5ac274b2",
+      workflowId: "5a3bad14d6e511eab60b727d5ac274b2",
+      processId: "390f605ad72511eab60c727d5ac274b2",
+    },
   },
-  host: "http://178.128.125.44/appiyo",
+  host: "/appiyo",
 };

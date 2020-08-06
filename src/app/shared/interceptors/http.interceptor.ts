@@ -38,8 +38,9 @@ export class Interceptor implements HttpInterceptor {
           if (response && response.login_required) {
             this.ngbModal.dismissAll();
             this.userService.closeAndLogout();
+          } else {
+            return event;
           }
-          return event;
         }
       }),
       catchError((err) => {

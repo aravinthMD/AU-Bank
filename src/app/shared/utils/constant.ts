@@ -15,6 +15,7 @@ export enum BUTTON_TEXTS {
   CHANGE_PASSWORD_BUTTON_TEXT = "Change password",
   EDIT_BUTTON_TEXT = "Edit",
   UPDATE_BUTTON_TEXT = "Update",
+  REJECT_BUTTON_TEXT = "Reject",
 }
 
 export enum ROLES {
@@ -47,6 +48,11 @@ export enum TOASTER_MESSAGES {
   DISABLE_USER_SUCCESS = "User disabled successfully.",
   UPDATE_USER_SUCCESS = "User updated successfully.",
   REPORT_DOWNLOAD_SUCCESS = "Report downloaded successfully.",
+  CREATE_MESSAGE_TEMPLATE_SUCCESS = "Message template created successfully.",
+  CREATE_PROMOTIONAL_TEMPLATE_SUCCESS = "Promotional template created successfully.",
+
+  APPROVE_TEMPLATE_SUCCESS = "Template approved successfully.",
+  REJECT_TEMPLATE_SUCCESS = "Template rejected successfully.",
 
   TOKEN_EXPIRED_MESSAGE = "Token Expired.Please login again!",
 }
@@ -77,4 +83,11 @@ export enum CONCAT_HELPERS {
 
 export enum MESSAGES {
   NETWORK_NOT_AVAILABLE = "Network connection not available.",
+}
+
+export enum TEMPLATE_STATUS_CODES {
+  SUBMITTED = "10",
+  REJECTED = "20",
+  APPROVED = "30",
+  ALL = "40",
 }

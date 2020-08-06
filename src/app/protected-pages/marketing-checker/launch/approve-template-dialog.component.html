@@ -1,0 +1,55 @@
+<div class="modal-header">
+  <h4 class="modal-title">
+    Approve Template -<span class="text-message">{{
+      inputData && inputData.id
+    }}</span>
+  </h4>
+  <button type="button" class="close" aria-label="Close" (click)="close()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <!-- <ul class="list-group list-group-flush">
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      Template Id
+      <span class="badge bg-maroon badge-pill">1786</span>
+    </li>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      Created On
+      <span class="badge bg-maroon badge-pill">26/07/2020, 3:00PM</span>
+    </li>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      Campaign Date
+      <span class="badge bg-maroon badge-pill">1786</span>
+    </li>
+  </ul> -->
+  <span class="text-message"
+    >Do you want to approve the template?</span
+  >
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    ngbAutofocus
+    class="btn btn-confirm shadow"
+    (click)="approveTemplate()"
+  >
+    <span
+      *ngIf="loading"
+      class="spinner-border"
+      style="width: 1rem; height: 1rem;"
+      aria-hidden="true"
+    >
+    </span>
+    <span *ngIf="!loading">{{ launchButtonText }}</span>
+  </button>
+  <button type="button" class="btn btn-danger shadow" (click)="close()">
+    Cancel
+  </button>
+</div>

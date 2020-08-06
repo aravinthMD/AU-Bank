@@ -1,0 +1,21 @@
+@import "../../../shared/styles/variables.scss";
+form {
+  width: 50%;
+  margin: auto;
+  text-align: left;
+}
+
+.bg-search {
+  background-color: $white-color !important;
+  color: #6c757d;
+}
+
+.submit-btn {
+  width: -webkit-fill-available;
+  color: $white-color;
+  background-color: $maroon-color;
+  border: 1px solid $maroon-color;
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 18px;
+}
