@@ -97,7 +97,12 @@
           {{ item.template }}
         </td>
         <td>
-          {{ item.startDate | date: "medium" }}
+          <span>START DATE - {{ item.startDate | date: "yyyy-MM-dd" }}</span
+          ><br />
+          <span>TRIGGER TIME - {{ item.trigger_time }}</span>
+          <span *ngIf="item.endDate"
+            ><br />END DATE - {{ item.endDate | date: "yyyy-MM-dd" }}</span
+          >
         </td>
         <td>
           <span class="p-1 bg-maroon rounded-pill" *ngIf="item.status === '10'"

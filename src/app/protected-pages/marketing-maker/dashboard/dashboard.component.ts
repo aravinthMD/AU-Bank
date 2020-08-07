@@ -130,7 +130,6 @@ export class DashboardComponent implements OnInit {
           if (status) {
             this.templates = fetchedTemplates.ProcessVariables.templateList;
             this.collectionSize = fetchedTemplates.ProcessVariables.totalCount;
-            this.currentPage = this.currentPage;
             this.loading = false;
           } else {
             this.loading = false;
