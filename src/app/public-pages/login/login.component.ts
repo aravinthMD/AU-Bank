@@ -5,6 +5,8 @@ import {
   BUTTON_TEXTS,
   TOASTER_MESSAGES,
   PAGES,
+  ROLES,
+  BOOLEANS,
 } from "src/app/shared/utils/constant";
 import { UserService } from "src/app/shared/services/user.service";
 import { ToasterService } from "src/app/shared/services/toaster.service";
@@ -46,7 +48,8 @@ export class LoginComponent implements OnInit {
 
     if (currentUser) {
       const isUserAndFirstLogin =
-        currentUser.roleName === "User" && currentUser.isFirstLogin === "true";
+        currentUser.roleName === ROLES.USER &&
+        currentUser.isFirstLogin === BOOLEANS.TRUE;
       if (!isUserAndFirstLogin) {
         this.returnUrl = this.route.snapshot.queryParams.returnUrl
           ? this.route.snapshot.queryParams.returnUrl
@@ -90,16 +93,17 @@ export class LoginComponent implements OnInit {
       (response) => {
         if (response && response.status) {
           if (
-            response.roleName !== "User" ||
-            (response.roleName === "User" && response.isFirstLogin === "false")
+            response.roleName !== ROLES.USER ||
+            (response.roleName === ROLES.USER &&
+              response.isFirstLogin === BOOLEANS.FALSE)
           ) {
             this.loading = false;
             this.toasterService.showSuccess(TOASTER_MESSAGES.LOGIN_SUCCESS);
             const currentHome = this.userService.currentHomeValue;
             this.router.navigate([currentHome]);
           } else if (
-            response.roleName === "User" &&
-            response.isFirstLogin === "true"
+            response.roleName === ROLES.USER &&
+            response.isFirstLogin === BOOLEANS.TRUE
           ) {
             this.loading = false;
             this.toasterService.showWarning(

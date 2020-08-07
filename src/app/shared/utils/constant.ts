@@ -92,3 +92,8 @@ export enum TEMPLATE_STATUS_CODES {
   APPROVED = "30",
   ALL = "40",
 }
+
+export enum BOOLEANS {
+  TRUE = "true",
+  FALSE = "false",
+}

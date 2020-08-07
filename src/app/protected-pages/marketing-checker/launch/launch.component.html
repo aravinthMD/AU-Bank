@@ -96,7 +96,14 @@
         <td>
           {{ template.template }}
         </td>
-        <td>{{ template.startDate | date: "medium" }}</td>
+        <td>
+          <span>START DATE - {{ template.startDate | date: "yyyy-MM-dd" }}</span
+          ><br />
+          <span>TRIGGER TIME - {{ template.trigger_time }}</span>
+          <span *ngIf="template.endDate"
+            ><br />END DATE - {{ template.endDate | date: "yyyy-MM-dd" }}</span
+          >
+        </td>
         <td>
           <div class="btn-group" role="group" aria-label="Basic example">
             <button
