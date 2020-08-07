@@ -1,0 +1,977 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>axis-bank documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">axis-bank documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>ManageUsersComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/protected-pages/manage-users/manage-users.component.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-manage-users</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./manage-users.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./manage-users.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#collectionSize">collectionSize</a>
+                            </li>
+                            <li>
+                                <a href="#currentPage">currentPage</a>
+                            </li>
+                            <li>
+                                <a href="#disableUserButtonText">disableUserButtonText</a>
+                            </li>
+                            <li>
+                                <a href="#editButtontext">editButtontext</a>
+                            </li>
+                            <li>
+                                <a href="#loading">loading</a>
+                            </li>
+                            <li>
+                                <a href="#pageSize">pageSize</a>
+                            </li>
+                            <li>
+                                <a href="#usersList">usersList</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#disableUser">disableUser</a>
+                            </li>
+                            <li>
+                                <a href="#editUser">editUser</a>
+                            </li>
+                            <li>
+                                <a href="#fetchUsers">fetchUsers</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(ngbDialog: NgbModal, userService: <a href="../injectables/UserService.html">UserService</a>, toasterService: <a href="../injectables/ToasterService.html">ToasterService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/protected-pages/manage-users/manage-users.component.ts:24</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>ngbDialog</td>
+                                                  
+                                                        <td>
+                                                                    <code>NgbModal</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>userService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/UserService.html" target="_self" >UserService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>toasterService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ToasterService.html" target="_self" >ToasterService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="disableUser"></a>
+                    <span class="name">
+                        <b>
+                            disableUser
+                        </b>
+                        <a href="#disableUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>disableUser(undefined)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="75"
+                            class="link-to-prism">src/app/protected-pages/manage-users/manage-users.component.ts:75</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="editUser"></a>
+                    <span class="name">
+                        <b>
+                            editUser
+                        </b>
+                        <a href="#editUser"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>editUser(undefined)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="63"
+                            class="link-to-prism">src/app/protected-pages/manage-users/manage-users.component.ts:63</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="fetchUsers"></a>
+                    <span class="name">
+                        <b>
+                            fetchUsers
+                        </b>
+                        <a href="#fetchUsers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>fetchUsers(pageNumber: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="36"
+                            class="link-to-prism">src/app/protected-pages/manage-users/manage-users.component.ts:36</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>pageNumber</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <b>
+                            ngOnInit
+                        </b>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="32"
+                            class="link-to-prism">src/app/protected-pages/manage-users/manage-users.component.ts:32</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="collectionSize"></a>
+                        <span class="name">
+                            <b>
+                            collectionSize</b>
+                            <a href="#collectionSize"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/protected-pages/manage-users/manage-users.component.ts:23</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="currentPage"></a>
+                        <span class="name">
+                            <b>
+                            currentPage</b>
+                            <a href="#currentPage"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>1</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/app/protected-pages/manage-users/manage-users.component.ts:21</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="disableUserButtonText"></a>
+                        <span class="name">
+                            <b>
+                            disableUserButtonText</b>
+                            <a href="#disableUserButtonText"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>BUTTON_TEXTS.DISABLE_BUTTON_TEXT</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/protected-pages/manage-users/manage-users.component.ts:17</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="editButtontext"></a>
+                        <span class="name">
+                            <b>
+                            editButtontext</b>
+                            <a href="#editButtontext"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>BUTTON_TEXTS.EDIT_BUTTON_TEXT</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/protected-pages/manage-users/manage-users.component.ts:16</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="loading"></a>
+                        <span class="name">
+                            <b>
+                            loading</b>
+                            <a href="#loading"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>false</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/app/protected-pages/manage-users/manage-users.component.ts:19</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="pageSize"></a>
+                        <span class="name">
+                            <b>
+                            pageSize</b>
+                            <a href="#pageSize"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>10</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/protected-pages/manage-users/manage-users.component.ts:22</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="usersList"></a>
+                        <span class="name">
+                            <b>
+                            usersList</b>
+                            <a href="#usersList"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../interfaces/User.html" target="_self" >User[]</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/protected-pages/manage-users/manage-users.component.ts:24</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &quot;@angular/core&quot;;
+import { BUTTON_TEXTS, RESPONSES } from &quot;src/app/shared/utils/constant&quot;;
+import { UserService } from &quot;src/app/shared/services/user.service&quot;;
+import { ToasterService } from &quot;src/app/shared/services/toaster.service&quot;;
+import { User } from &quot;src/app/shared/models/user.model&quot;;
+import { NgbModal } from &quot;@ng-bootstrap/ng-bootstrap&quot;;
+import { UserDialogComponent } from &quot;./user.dialog.component&quot;;
+import { DisableUserDialogComponent } from &quot;./disable-user-dialog.component&quot;;
+
+@Component({
+  selector: &quot;app-manage-users&quot;,
+  templateUrl: &quot;./manage-users.component.html&quot;,
+  styleUrls: [&quot;./manage-users.component.scss&quot;],
+})
+export class ManageUsersComponent implements OnInit {
+  editButtontext &#x3D; BUTTON_TEXTS.EDIT_BUTTON_TEXT;
+  disableUserButtonText &#x3D; BUTTON_TEXTS.DISABLE_BUTTON_TEXT;
+
+  loading &#x3D; false;
+
+  currentPage &#x3D; 1;
+  pageSize &#x3D; 10;
+  collectionSize: number;
+  usersList: User[];
+
+  constructor(
+    private ngbDialog: NgbModal,
+    private userService: UserService,
+    private toasterService: ToasterService
+  ) {}
+
+  ngOnInit(): void {
+    this.fetchUsers(this.currentPage);
+  }
+
+  fetchUsers(pageNumber: number): void {
+    window.scroll(0, 0);
+    this.loading &#x3D; true;
+    this.userService.fetchUsers(this.pageSize, pageNumber).subscribe(
+      (response) &#x3D;&gt; {
+        const {
+          ProcessVariables: { status, message &#x3D; {} },
+        } &#x3D; response;
+        if (status) {
+          const {
+            ProcessVariables: { usersList, totalCount },
+          } &#x3D; response;
+          this.collectionSize &#x3D; totalCount;
+          this.usersList &#x3D; usersList;
+          this.loading &#x3D; false;
+        } else {
+          this.loading &#x3D; false;
+          this.toasterService.showError(message.value);
+        }
+      },
+      (error) &#x3D;&gt; {
+        this.loading &#x3D; false;
+        this.toasterService.showError(error);
+      }
+    );
+  }
+
+  editUser({ userId }): void {
+    const dialog &#x3D; this.ngbDialog.open(UserDialogComponent, {
+      centered: true,
+    });
+    dialog.componentInstance.userId &#x3D; userId;
+    dialog.result.then((response) &#x3D;&gt; {
+      if (response &#x3D;&#x3D;&#x3D; RESPONSES.SUCCESS) {
+        this.fetchUsers(this.currentPage);
+      }
+    });
+  }
+
+  disableUser({ userId, username }): void {
+    const dialog &#x3D; this.ngbDialog.open(DisableUserDialogComponent, {
+      centered: true,
+    });
+    dialog.componentInstance.userId &#x3D; userId;
+    dialog.componentInstance.userName &#x3D; username;
+
+    dialog.result.then((response) &#x3D;&gt; {
+      if (response &#x3D;&#x3D;&#x3D; RESPONSES.SUCCESS) {
+        this.fetchUsers(this.currentPage);
+      }
+    });
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;main&quot;&gt;
+  &lt;h2&gt;Manage Users&lt;/h2&gt;
+  &lt;div class&#x3D;&quot;container&quot;&gt;
+    &lt;div class&#x3D;&quot;row&quot;&gt;
+      &lt;div class&#x3D;&quot;col card shadow p-0 mt-2&quot;&gt;
+        &lt;ngb-progressbar
+          *ngIf&#x3D;&quot;loading&quot;
+          type&#x3D;&quot;dark&quot;
+          height&#x3D;&quot;0.5rem&quot;
+          [value]&#x3D;&quot;100&quot;
+          [striped]&#x3D;&quot;true&quot;
+          [animated]&#x3D;&quot;true&quot;
+        &gt;&lt;/ngb-progressbar&gt;
+        &lt;table class&#x3D;&quot;table table-striped&quot;&gt;
+          &lt;thead&gt;
+            &lt;tr class&#x3D;&quot;d-flex&quot;&gt;
+              &lt;th class&#x3D;&quot;col-1&quot;&gt;S.NO&lt;/th&gt;
+              &lt;th class&#x3D;&quot;col-3&quot;&gt;USER ID&lt;/th&gt;
+              &lt;th class&#x3D;&quot;col-3&quot;&gt;ROLE&lt;/th&gt;
+              &lt;th class&#x3D;&quot;col-3&quot;&gt;CREATED ON&lt;/th&gt;
+              &lt;th class&#x3D;&quot;col-2&quot;&gt;ACTION&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tr class&#x3D;&quot;d-flex&quot; *ngFor&#x3D;&quot;let user of usersList; let i &#x3D; index&quot;&gt;
+            &lt;td class&#x3D;&quot;col-1&quot;&gt;{{ i + 1 }}&lt;/td&gt;
+            &lt;td class&#x3D;&quot;col-3&quot;&gt;{{ user.username }}&lt;/td&gt;
+            &lt;td class&#x3D;&quot;col-3&quot;&gt;{{ user.role }}&lt;/td&gt;
+            &lt;td class&#x3D;&quot;col-3&quot;&gt;{{ user.created_at | date: &quot;medium&quot; }}&lt;/td&gt;
+            &lt;td class&#x3D;&quot;col-2&quot;&gt;
+              &lt;button class&#x3D;&quot;shadow&quot; (click)&#x3D;&quot;editUser(user)&quot;&gt;
+                {{ editButtontext }}
+              &lt;/button&gt;
+              &lt;button class&#x3D;&quot;ml-2 shadow&quot; (click)&#x3D;&quot;disableUser(user)&quot;&gt;
+                {{ disableUserButtonText }}
+              &lt;/button&gt;
+            &lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/table&gt;
+
+        &lt;div class&#x3D;&quot;d-flex justify-content-center p-2&quot;&gt;
+          &lt;ngb-pagination
+            [boundaryLinks]&#x3D;&quot;true&quot;
+            [collectionSize]&#x3D;&quot;collectionSize&quot;
+            [(page)]&#x3D;&quot;currentPage&quot;
+            [pageSize]&#x3D;&quot;pageSize&quot;
+            (pageChange)&#x3D;&quot;fetchUsers(currentPage)&quot;
+          &gt;
+          &lt;/ngb-pagination&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./manage-users.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">@import &quot;../../shared/styles/variables.scss&quot;;
+
+table button {
+  color: $white-color;
+  font-size: 14px;
+  background-color: $maroon-color;
+  border: 1px solid $maroon-color;
+}
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="main">  <h2>Manage Users</h2>  <div class="container">    <div class="row">      <div class="col card shadow p-0 mt-2">        <ngb-progressbar          *ngIf="loading"          type="dark"          height="0.5rem"          [value]="100"          [striped]="true"          [animated]="true"        ></ngb-progressbar>        <table class="table table-striped">          <thead>            <tr class="d-flex">              <th class="col-1">S.NO</th>              <th class="col-3">USER ID</th>              <th class="col-3">ROLE</th>              <th class="col-3">CREATED ON</th>              <th class="col-2">ACTION</th>            </tr>          </thead>          <tr class="d-flex" *ngFor="let user of usersList; let i = index">            <td class="col-1">{{ i + 1 }}</td>            <td class="col-3">{{ user.username }}</td>            <td class="col-3">{{ user.role }}</td>            <td class="col-3">{{ user.created_at | date: "medium" }}</td>            <td class="col-2">              <button class="shadow" (click)="editUser(user)">                {{ editButtontext }}              </button>              <button class="ml-2 shadow" (click)="disableUser(user)">                {{ disableUserButtonText }}              </button>            </td>          </tr>        </table>        <div class="d-flex justify-content-center p-2">          <ngb-pagination            [boundaryLinks]="true"            [collectionSize]="collectionSize"            [(page)]="currentPage"            [pageSize]="pageSize"            (pageChange)="fetchUsers(currentPage)"          >          </ngb-pagination>        </div>      </div>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'ApproveTemplateDialogComponent', 'selector': 'app-approve-template-dialog'},{'name': 'BlockWhatsappDialogComponent', 'selector': 'app-block-whatsapp-dialog'},{'name': 'ChangePasswordComponent', 'selector': 'app-change-password'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DisableUserDialogComponent', 'selector': 'app-disable-user-dialog'},{'name': 'LaunchComponent', 'selector': 'app-launch'},{'name': 'LaunchDashboardComponent', 'selector': 'app-launch-dashboard'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'ManageUsersComponent', 'selector': 'app-manage-users'},{'name': 'MarketingCheckerComponent', 'selector': 'app-marketing-checker'},{'name': 'MarketingMakerComponent', 'selector': 'app-marketing-maker'},{'name': 'MessageTemplateComponent', 'selector': 'app-message-template'},{'name': 'PreApprovedOffersComponent', 'selector': 'app-pre-approved-offers'},{'name': 'PromotionalTemplateComponent', 'selector': 'app-promotional-template'},{'name': 'ProtectedHomeComponent', 'selector': 'app-protected-home'},{'name': 'PublicHomeComponent', 'selector': 'app-public-home'},{'name': 'RejectTemplateDialogComponent', 'selector': 'app-reject-template-dialog'},{'name': 'SidenavComponent', 'selector': 'app-sidenav'},{'name': 'ToastComponent', 'selector': 'app-toast'},{'name': 'UserCreationComponent', 'selector': 'app-user-creation'},{'name': 'UserDialogComponent', 'selector': 'app-user-dialog'},{'name': 'VerticalMenuComponent', 'selector': 'app-vertical-menu'},{'name': 'ViewTemplateHistoryDialogComponent', 'selector': 'app-view-template-history-dialog'},{'name': 'WhatsappComponent', 'selector': 'app-whatsapp'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'ManageUsersComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'ManageUsersComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
