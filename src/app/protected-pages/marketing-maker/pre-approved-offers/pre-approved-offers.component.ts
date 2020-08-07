@@ -43,15 +43,15 @@ export class PreApprovedOffersComponent implements OnInit {
   setValidators(): void {
     const date = new Date();
     this.fromMinDate = {
-      year: date.getFullYear(),
-      month: date.getMonth() + 1,
-      day: date.getDate(),
+      year: 0,
+      month: 0,
+      day: 0,
     };
 
     this.toMinDate = {
-      year: date.getFullYear(),
-      month: date.getMonth() + 1,
-      day: date.getDate(),
+      year: 0,
+      month: 0,
+      day: 0,
     };
   }
 
@@ -74,24 +74,24 @@ export class PreApprovedOffersComponent implements OnInit {
       const campaignEndDate = fieldControls.campaignEndDate.value;
 
       // tslint:disable-next-line: max-line-length
-      const transformedStartDate = `${campaignStartDate.year}-${campaignStartDate.month}-${campaignStartDate.day}T${triggerTime.hour}:${triggerTime.minute}:00.000Z`;
-      const transformedEndDate = `${campaignEndDate.year}-${campaignEndDate.month}-${campaignEndDate.day}T12:0:00.000Z`;
+      const transformedStartDate = `${campaignStartDate.year}-${campaignStartDate.month}-${campaignStartDate.day}`;
+      const transformedEndDate = `${campaignEndDate.year}-${campaignEndDate.month}-${campaignEndDate.day}`;
       this.userService
-        .createMessageTemplate(
-          fieldControls.template.value,
+        .createPreapprovedOffer(
           transformedStartDate,
           transformedEndDate,
+          `${triggerTime.hour}:${triggerTime.minute}:00`,
           String(this.userService.currentUserValue.userId)
         )
         .subscribe(
-          (createdMessageTemplate) => {
+          (createdOffer) => {
             const {
               ProcessVariables: { status },
               ProcessVariables: { message = {} },
-            } = createdMessageTemplate;
+            } = createdOffer;
             if (status) {
               this.toasterService.showSuccess(
-                TOASTER_MESSAGES.CREATE_MESSAGE_TEMPLATE_SUCCESS
+                TOASTER_MESSAGES.CREATE_PREAPPROVED_OFFER_SUCCESS
               );
               this.form.reset();
               this.loading = false;

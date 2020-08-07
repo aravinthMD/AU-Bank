@@ -562,12 +562,14 @@ export class UserService {
   }
 
   createPromotionalTemplate(
+    templateId: string,
     template: string,
     startDate: string,
     triggerTime: string,
     userId: string
   ) {
     const data = {
+      templateId,
       template,
       startDate,
       triggerTime,
@@ -577,6 +579,42 @@ export class UserService {
     const {
       api: {
         createPromotionalTemplate: { processId, workflowId, projectId },
+      },
+    } = environment;
+    const requestEntity: RequestEntity = {
+      processId,
+      ProcessVariables: data,
+      workflowId,
+      projectId,
+    };
+
+    const body = {
+      processVariables: JSON.stringify(requestEntity),
+    };
+
+    const formData = this.transform(body);
+
+    return this.http.post<EntityResponse>(
+      `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
+  }
+
+  createPreapprovedOffer(
+    startDate: string,
+    endDate: string,
+    triggerTime: string,
+    userId: string
+  ) {
+    const data = {
+      startDate,
+      triggerTime,
+      endDate,
+      userId,
+    };
+    const {
+      api: {
+        createPreappovedOffer: { processId, workflowId, projectId },
       },
     } = environment;
     const requestEntity: RequestEntity = {

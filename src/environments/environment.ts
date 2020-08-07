@@ -81,6 +81,11 @@ export const environment = {
       workflowId: "5a3bad14d6e511eab60b727d5ac274b2",
       processId: "390f605ad72511eab60c727d5ac274b2",
     },
+    createPreappovedOffer: {
+      projectId: "e45e9cf0d5a411eab60b727d5ac274b2",
+      workflowId: "2356727ad5a511eab60b727d5ac274b2",
+      processId: "c4acd156d86511eab60c727d5ac274b2",
+    },
   },
   host: "http://178.128.125.44/appiyo",
 };

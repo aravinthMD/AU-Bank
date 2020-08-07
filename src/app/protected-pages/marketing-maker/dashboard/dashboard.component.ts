@@ -102,7 +102,6 @@ export class DashboardComponent implements OnInit {
 
   fetchFilteredTemplates() {
     this.templates = null;
-    this.collectionSize = null;
     window.scroll(0, 0);
     this.loading = true;
     const fieldControls = this.form.controls;
@@ -131,6 +130,7 @@ export class DashboardComponent implements OnInit {
           if (status) {
             this.templates = fetchedTemplates.ProcessVariables.templateList;
             this.collectionSize = fetchedTemplates.ProcessVariables.totalCount;
+            this.currentPage = this.currentPage;
             this.loading = false;
           } else {
             this.loading = false;
@@ -146,7 +146,6 @@ export class DashboardComponent implements OnInit {
 
   fetchTemplates() {
     this.templates = null;
-    this.collectionSize = null;
     window.scroll(0, 0);
     this.loading = true;
     this.userService.fetchTemplates(this.currentPage, "", "", "").subscribe(

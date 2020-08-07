@@ -26,6 +26,7 @@ export class PromotionalTemplateComponent implements OnInit {
   ) {
     this.form = this.formBuilder.group({
       templateId: [null, Validators.required],
+      template: [null, Validators.required],
       campaignDate: [new Date(), Validators.required],
       triggerTime: [this.defaultTime, Validators.required],
     });
@@ -46,6 +47,7 @@ export class PromotionalTemplateComponent implements OnInit {
     this.userService
       .createPromotionalTemplate(
         fieldControls.templateId.value,
+        fieldControls.template.value,
         formattedDate,
         `${triggerTime.hour}:${triggerTime.minute}:00`,
         String(this.userService.currentUserValue.userId)

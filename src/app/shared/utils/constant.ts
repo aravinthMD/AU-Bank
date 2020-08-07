@@ -50,6 +50,7 @@ export enum TOASTER_MESSAGES {
   REPORT_DOWNLOAD_SUCCESS = "Report downloaded successfully.",
   CREATE_MESSAGE_TEMPLATE_SUCCESS = "Message template created successfully.",
   CREATE_PROMOTIONAL_TEMPLATE_SUCCESS = "Promotional template created successfully.",
+  CREATE_PREAPPROVED_OFFER_SUCCESS = "Offer created successfully.",
 
   APPROVE_TEMPLATE_SUCCESS = "Template approved successfully.",
   REJECT_TEMPLATE_SUCCESS = "Template rejected successfully.",
