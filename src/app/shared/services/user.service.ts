@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { BehaviorSubject, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { environment } from "../../../environments/environment";
+
 import { LoginResponse, LoginProcessVariables } from "../models/entity-model";
 import {
   Menu,
@@ -709,20 +710,14 @@ export class UserService {
   }
 
   deactivateTemplate(
-    userId: string,
-    templateStatus: string,
     id: string,
-    reason?: string
   ) {
     const data = {
-      userId,
-      templateStatus,
-      id,
-      reason,
+      id
     };
     const {
       api: {
-        updateTemplate: { processId, workflowId, projectId },
+        deactivateTemplate: { processId, workflowId, projectId },
       },
     } = environment;
     const requestEntity: RequestEntity = {
@@ -742,6 +737,37 @@ export class UserService {
       `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
       formData
     );
+  }
+
+  activateTemplate(id : string)
+  {
+    const data = {
+      id
+    };
+
+    const {
+      api: {
+        activateTemplate: { processId, workflowId, projectId },
+      },
+    } = environment;
+    const requestEntity: RequestEntity = {
+      processId,
+      ProcessVariables: data,
+      workflowId,
+      projectId,
+    };
+
+    const body = {
+      processVariables: JSON.stringify(requestEntity),
+    };
+
+    const formData = this.transform(body);
+
+    return this.http.post<EntityResponse>(
+      `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
+
   }
 
   logout() {
@@ -773,5 +799,50 @@ export class UserService {
         queryParams: { returnUrl: this.router.url },
       },
     ]);
+  }
+
+  fetchCheckerScreenTemplates(
+    currentPage: number,
+    fromDate : string,
+    toDate : string,
+    templateStatus : string,
+    checkerLogin : string,
+    isActiveInput :string
+  )
+  {
+
+    const data = {
+      fromDate,
+      toDate,
+      templateStatus,
+      currentPage,
+      checkerLogin,
+      isActiveInput
+    }
+
+    const {
+      api : {
+        fetchcheckerScreenTemplates :{ processId ,workflowId, projectId},
+      } ,
+    } = environment;
+
+    const requestEntity: RequestEntity = {
+      processId,
+      ProcessVariables: data,
+      workflowId,
+      projectId,
+    };
+
+    const body = {
+      processVariables: JSON.stringify(requestEntity)
+    };
+
+    const formData = this.transform(body);
+
+    return this.http.post<EntityResponse>(
+      `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
+
   }
 }

@@ -25,6 +25,7 @@ export class ProtectedHomeComponent implements OnInit {
   userName: string;
   currentYear = new Date().getFullYear();
   version = environment.version;
+  buildDate = environment.buildDate;
 
   constructor(
     private menuService: MenuService,

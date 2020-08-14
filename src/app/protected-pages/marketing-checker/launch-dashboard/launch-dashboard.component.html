@@ -1,3 +1,11 @@
+<ngb-progressbar
+  *ngIf="loading"
+  type="dark"
+  height="0.5rem"
+  [value]="100"
+  [striped]="true"
+  [animated]="true"
+></ngb-progressbar>
 <div class="row p-3">
   <div class="col-6"></div>
   <div class="col-6">
@@ -60,9 +68,8 @@
             title="Filter Type"
             id="role"
           >
-            <option *ngFor="let option of filterOptions" [value]="option">{{
-              option | uppercase
-            }}</option>
+            <option *ngFor="let option of filterOptions" [value]="option.value"
+            >{{ option.name }}</option>
           </select>
         </div>
       </div>
@@ -79,25 +86,24 @@
     </thead>
     <tbody>
       <tr *ngFor="let template of templates">
-        <td>{{ template.templateId }}</td>
-        <td>{{ template.createdOn }}</td>
-        <td>{{ template.uploadTime }}</td>
-        <td>{{ template.launchId }}</td>
-        <td>{{ template.campaignEndDate }}</td>
+        <td>{{ template.id }}</td>
+        <td>{{ template.startDate | date: "yyyy-MM-dd"}}</td>
+        <td>{{ template.triggerTime }}</td>
+        <td>{{ template.endDate | date: "yyyy-MM-dd" }}</td>
         <td>
-          <button
-            *ngIf="template.status === 'Inactive'"
+          <button 
             type="button"
             class="btn shadow"
-          >
-            {{ activateButtonText }}
-          </button>
-          <button
-            *ngIf="template.status === 'Active'"
-            type="button"
-            class="btn shadow"
+            (click) = "deActivateTemplate(template)"
           >
             {{ deactivateButtonText }}
+          </button>
+          <button
+            type="button"
+            class="btn shadow"
+            (click) = "activateTemplate(template)"
+          >
+            {{ activateButtonText }}
           </button>
         </td>
         <td>

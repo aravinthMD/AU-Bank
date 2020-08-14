@@ -1,7 +1,9 @@
 import { version } from "package.json";
+import { environment as environmentProd } from './environment.prod';
 
 export const environment = {
-  version,
+  version: environmentProd.version,
+  buildDate:  environmentProd.buildDate,
   production: false,
 
   projectId: "e1175c26fea511e8bb4f0050569c0a8e",
@@ -67,7 +69,7 @@ export const environment = {
     updateTemplate: {
       projectId: "e45e9cf0d5a411eab60b727d5ac274b2",
       workflowId: "2356727ad5a511eab60b727d5ac274b2",
-      processId: "e81eed10d5ac11eab60b727d5ac274b2",
+      processId: "e81eed10d5ac11eab60b727d5ac274b2",//LOCAL && PROD
     },
 
     fetchTemplates: {
@@ -81,10 +83,23 @@ export const environment = {
       workflowId: "5a3bad14d6e511eab60b727d5ac274b2",
       processId: "390f605ad72511eab60c727d5ac274b2",
     },
+
+    activateTemplate: {
+      projectId: "e45e9cf0d5a411eab60b727d5ac274b2",
+      workflowId: "5a3bad14d6e511eab60b727d5ac274b2",
+      processId : "0da2875ed72411eab60c727d5ac274b2" //LOCAL
+    },
     createPreappovedOffer: {
       projectId: "e45e9cf0d5a411eab60b727d5ac274b2",
       workflowId: "2356727ad5a511eab60b727d5ac274b2",
       processId: "c4acd156d86511eab60c727d5ac274b2",
+    },
+
+    fetchcheckerScreenTemplates : {
+      projectId: "e45e9cf0d5a411eab60b727d5ac274b2",
+      workflowId: "102df80ed5a911eab60b727d5ac274b2",
+      processId: "34c44c92dbbf11eab60d727d5ac274b2", // LOCAL
+     // processId: "eab3b07cdcb111ea854a46113bb841db",  //Production
     },
   },
   host: "http://178.128.125.44/appiyo",

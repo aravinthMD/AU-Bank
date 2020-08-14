@@ -23,7 +23,7 @@ export class WhatsappComponent implements OnInit {
   blockButtonText = BUTTON_TEXTS.BLOCK_BUTTON_TEXT;
   downloadButtonText = BUTTON_TEXTS.DOWNLOAD_BUTTON_TEXT;
 
-  filterOptions = ["BLOCKED"];
+  filterOptions = ["ALL","BLOCKED","UNBLOCKED"];
   tableHeaders: string[] = [];
 
   isViewOnly = false;
@@ -50,6 +50,7 @@ export class WhatsappComponent implements OnInit {
     private toasterService: ToasterService,
     private ngbDialog: NgbModal
   ) {
+    debugger;
     this.form = this.formBuilder.group({
       fromDate: [null, Validators.required],
       toDate: [null, Validators.required],

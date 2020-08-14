@@ -42,7 +42,7 @@ export class LaunchComponent implements OnInit {
     { name: "REJECTED", value: "20" },
   ];
 
-  tableHeaders = ["Template Id", "Template", "Schedule", "Action"];
+  tableHeaders = ["Template Id", "Template", "Created On", "Upload Time","Campaign End Date","Action"];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -54,7 +54,7 @@ export class LaunchComponent implements OnInit {
     this.form = this.formBuilder.group({
       fromDate: [null, Validators.required],
       toDate: [null, Validators.required],
-      filterType: [TEMPLATE_STATUS_CODES.ALL, Validators.required],
+      //filterType: [TEMPLATE_STATUS_CODES.ALL, Validators.required],
     });
   }
 
@@ -77,6 +77,7 @@ export class LaunchComponent implements OnInit {
   }
 
   onFromDateChange(event: NgbDate): void {
+    debugger;
     const { year, month, day } = event;
     this.toMinDate = { year, month, day };
     this.validate();
@@ -102,6 +103,7 @@ export class LaunchComponent implements OnInit {
   }
 
   onPageChanged(currentPage: number) {
+    debugger;
     this.currentPage = currentPage;
     if (this.isFilterValid) {
       this.fetchFilteredTemplates();
@@ -120,16 +122,17 @@ export class LaunchComponent implements OnInit {
 
     const formattedFromDate = `${fromDate.year}-${fromDate.month}-${fromDate.day}`;
     const formattedToDate = `${toDate.year}-${toDate.month}-${toDate.day}`;
-    const filterType = fieldControls.filterType.value;
+    // const filterType = fieldControls.filterType.value;
 
-    const statusCode =
-      filterType === TEMPLATE_STATUS_CODES.ALL ? "" : filterType;
+    // const statusCode =
+    //   filterType === TEMPLATE_STATUS_CODES.ALL ? "" : filterType;
+    const statusCode = "";
     this.userService
-      .fetchTemplates(
+      .fetchCheckerScreenTemplates(
         this.currentPage,
         formattedFromDate,
         formattedToDate,
-        statusCode
+        statusCode,"",""
       )
       .subscribe(
         (fetchedTemplates) => {
@@ -154,11 +157,13 @@ export class LaunchComponent implements OnInit {
   }
 
   fetchTemplates() {
+    debugger;
     this.templates = null;
     window.scroll(0, 0);
     this.loading = true;
-    this.userService.fetchTemplates(this.currentPage, "", "", "").subscribe(
+    this.userService.fetchCheckerScreenTemplates(this.currentPage, "", "", "","","").subscribe(
       (fetchedTemplates) => {
+        debugger;
         const {
           ProcessVariables: { status },
           ProcessVariables: { message = {} },
@@ -179,6 +184,7 @@ export class LaunchComponent implements OnInit {
     );
   }
   openApproveTemplateDialog(template: any): void {
+    debugger;
     const dialog = this.ngbModal.open(ApproveTemplateDialogComponent, {
       centered: true,
     });
@@ -195,6 +201,7 @@ export class LaunchComponent implements OnInit {
   }
 
   openRejectTemplateDialog(template: any): void {
+    debugger;
     const dialog = this.ngbModal.open(RejectTemplateDialogComponent, {
       centered: true,
     });

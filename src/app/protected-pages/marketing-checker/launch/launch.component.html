@@ -61,7 +61,7 @@
             </div>
           </div>
         </div>
-        <div class="col">
+        <!-- <div class="col">
           <select
             class="custom-select"
             formControlName="filterType"
@@ -75,7 +75,7 @@
               >{{ option.name }}</option
             >
           </select>
-        </div>
+        </div> -->
       </div>
     </form>
   </div>
@@ -97,13 +97,11 @@
           {{ template.template }}
         </td>
         <td>
-          <span>START DATE - {{ template.startDate | date: "yyyy-MM-dd" }}</span
-          ><br />
-          <span>TRIGGER TIME - {{ template.trigger_time }}</span>
-          <span *ngIf="template.endDate"
-            ><br />END DATE - {{ template.endDate | date: "yyyy-MM-dd" }}</span
-          >
+          {{ template.startDate | date: "yyyy-MM-dd" }}
         </td>
+          <td>{{ template.triggerTime }}</td>
+          <td>{{ template.endDate | date: "yyyy-MM-dd" }}</td>  
+        
         <td>
           <div class="btn-group" role="group" aria-label="Basic example">
             <button

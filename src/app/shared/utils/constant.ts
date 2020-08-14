@@ -56,6 +56,8 @@ export enum TOASTER_MESSAGES {
   REJECT_TEMPLATE_SUCCESS = "Template rejected successfully.",
 
   TOKEN_EXPIRED_MESSAGE = "Token Expired.Please login again!",
+  DEACTIVATE_USER_SUCCESS = "Successfully Deactivated.",
+  ACTIVATE_USER_SUCCESS = "Successfully Activated.",
 }
 
 export enum DATE_FORMATS {
