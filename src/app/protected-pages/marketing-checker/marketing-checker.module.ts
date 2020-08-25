@@ -8,6 +8,10 @@ import { SharedModule } from "src/app/shared/shared.module";
 import { ViewTemplateHistoryDialogComponent } from "./launch-dashboard/view-template-history-dialog.component";
 import { ApproveTemplateDialogComponent } from "./launch/approve-template-dialog.component";
 import { RejectTemplateDialogComponent } from "./launch/reject-template-dialog.component";
+import {MaterialModule} from "src/app/material/material.module";
+import { FilePreviewDialogComponent } from './launch-dashboard/file-preview-dialog/file-preview-dialog.component';
+import { FilePreviewDialogBoxComponent } from './launch/file-preview-dialog-box/file-preview-dialog-box.component'
+
 
 @NgModule({
   declarations: [
@@ -17,12 +21,16 @@ import { RejectTemplateDialogComponent } from "./launch/reject-template-dialog.c
     ViewTemplateHistoryDialogComponent,
     ApproveTemplateDialogComponent,
     RejectTemplateDialogComponent,
+    FilePreviewDialogComponent,
+    FilePreviewDialogBoxComponent,
   ],
-  imports: [CommonModule, SharedModule, MarketingCheckerRoutingModule],
+  imports: [CommonModule, SharedModule, MarketingCheckerRoutingModule,MaterialModule],
   entryComponents: [
     ViewTemplateHistoryDialogComponent,
     ApproveTemplateDialogComponent,
     RejectTemplateDialogComponent,
+    FilePreviewDialogComponent,
+    FilePreviewDialogBoxComponent
   ],
 })
 export class MarketingCheckerModule {}

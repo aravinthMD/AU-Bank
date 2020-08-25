@@ -1,6 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit,Input } from "@angular/core";
 import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
 import { BUTTON_TEXTS } from "src/app/shared/utils/constant";
+import { UserService } from 'src/app/shared/services/user.service';
+import { ToasterService } from 'src/app/shared/services/toaster.service';
 
 @Component({
   selector: "app-view-template-history-dialog",
@@ -8,13 +10,54 @@ import { BUTTON_TEXTS } from "src/app/shared/utils/constant";
   styleUrls: ["./view-template-history-dialog.component.scss"],
 })
 export class ViewTemplateHistoryDialogComponent implements OnInit {
+  @Input() inputData: any
   closeButtonText = BUTTON_TEXTS.CLOSE_BUTTON_TEXT;
+  sent : number;
+  total :number;
+  code : number;
+  launchedOn : any;
 
-  constructor(private ngbActiveModal: NgbActiveModal) {}
+  constructor(
+    private ngbActiveModal: NgbActiveModal,
+    private userService:UserService,
+    private toasterService: ToasterService
+    ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.fetchViewTemplate(this.inputData);
+  }
 
   close(): void {
     this.ngbActiveModal.close();
   }
+
+fetchViewTemplate(inputData)
+{
+  let id = inputData.id
+  this.userService.fetchViewTemplate(id).subscribe((response) =>
+  {
+    console.log(response);
+    const {
+      ProcessVariables: { status },
+      ProcessVariables: { message = {} },
+    } = response;
+
+    if (status){
+    this.sent = response.ProcessVariables.sent;
+    this.total = response.ProcessVariables.total;
+    this.code = response.ProcessVariables.code;
+    this.launchedOn = response.ProcessVariables.launchedOn;
+
+    }
+    else{
+      this.toasterService.showError(message.value);
+    }
+    
+  },
+  (error) =>
+  {
+    this.toasterService.showError(error);
+  });
+}
+
 }

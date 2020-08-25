@@ -12,6 +12,7 @@ import { Interceptor } from "./shared/interceptors/http.interceptor";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ChangePasswordComponent } from "./public-pages/change-password/change-password.component";
 import { WINDOW_INTERCEPTOR } from "./shared/interceptors/window.interceptor";
+import {MaterialModule} from "./material/material.module"
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { WINDOW_INTERCEPTOR } from "./shared/interceptors/window.interceptor";
     AppRoutingModule,
     SharedModule,
     NgbModule,
+    MaterialModule
   ],
   providers: [
     {

@@ -1,5 +1,5 @@
 import { Injectable, Inject } from "@angular/core";
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpParams,HttpHeaders } from "@angular/common/http";
 import { BehaviorSubject, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { environment } from "../../../environments/environment";
@@ -529,14 +529,19 @@ export class UserService {
     startDate: string,
     endDate: string,
     triggerTime: string,
-    userId: string
+    userId: string,
+    uploadFlag: boolean,
+    documentId: any
   ) {
+
     const data = {
       template,
       startDate,
       endDate,
       triggerTime,
       userId,
+      uploadFlag,
+      documentId
     };
     const {
       api: {
@@ -567,7 +572,9 @@ export class UserService {
     template: string,
     startDate: string,
     triggerTime: string,
-    userId: string
+    userId: string,
+    uploadFlag: boolean,
+    documentId: any
   ) {
     const data = {
       templateId,
@@ -576,6 +583,8 @@ export class UserService {
       triggerTime,
       userId,
       isPromotion: "true",
+      uploadFlag,
+      documentId
     };
     const {
       api: {
@@ -770,6 +779,8 @@ export class UserService {
 
   }
 
+  
+
   logout() {
     this.http.get(`${this.host}/account/logout`);
   }
@@ -845,4 +856,55 @@ export class UserService {
     );
 
   }
+
+  fetchViewTemplate(id : string)
+  {
+    const data = {
+      id
+    };
+
+    const {
+      api: {
+        fetchViewTemplate: { processId, workflowId, projectId },
+      },
+    } = environment;
+
+    const requestEntity: RequestEntity = {
+      processId,
+      ProcessVariables: data,
+      workflowId,
+      projectId,
+    };
+
+    const body = {
+      processVariables: JSON.stringify(requestEntity),
+    };
+      
+    const formData = this.transform(body);
+
+    return this.http.post<EntityResponse>(
+      `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
+
+  }
+
+  uploadToAppiyoDrive(file : File)
+  {
+    let uri = environment.host + environment.appiyoDrive;
+    let headers = {
+      headers: new HttpHeaders({
+       // 'Content-Type': 'application/json'
+      })
+      
+    };
+  //  const headers = {
+  //     'Content-Type': 'application/json'
+  //   }
+    const formData = new FormData();
+    formData.append('file[]',file,file.name); 
+    return this.http.post(uri,formData,headers);
+  }
+
+
 }

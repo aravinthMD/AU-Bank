@@ -11,6 +11,8 @@ import { UserService } from "../services/user.service";
 import { map, catchError } from "rxjs/operators";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { MESSAGES } from "../utils/constant";
+import { environment } from "src/environments/environment";
+
 
 @Injectable({
   providedIn: "root",
@@ -22,14 +24,26 @@ export class Interceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    request = request.clone({
-      setHeaders: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "authentication-token": this.userService.tokenValue
-          ? this.userService.tokenValue
-          : "",
-      },
-    });
+    let uri = environment.host + environment.appiyoDrive;
+    if(!request.headers.has('Content-Type') && request.url != uri)
+    {
+      request = request.clone({
+        setHeaders: {
+          //"Content-Type":  "multipart/form-data",
+          "Content-Type": "application/x-www-form-urlencoded",
+          // "authentication-token": this.userService.tokenValue
+          //   ? this.userService.tokenValue
+          //   : "",
+        },
+      });
+    }
+      request = request.clone({
+        setHeaders : {
+          "authentication-token": this.userService.tokenValue ? this.userService.tokenValue : "",
+        }
+      });
+   
+    
 
     return next.handle(request).pipe(
       map((event: HttpEvent<any>) => {

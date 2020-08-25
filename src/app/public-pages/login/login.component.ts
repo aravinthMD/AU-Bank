@@ -34,6 +34,7 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    debugger;
     this.loginForm = this.formBuilder.group({
       userId: ["", Validators.required],
       password: ["", Validators.required],
@@ -66,6 +67,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
+    debugger;
     this.loading = true;
     const fieldControls = this.loginForm.controls;
     const isExternalUser = fieldControls.isExternalUser.value;

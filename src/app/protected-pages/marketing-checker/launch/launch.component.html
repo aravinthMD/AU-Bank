@@ -1,11 +1,16 @@
-<ngb-progressbar
+<!-- <ngb-progressbar
   *ngIf="loading"
   type="dark"
   height="0.5rem"
   [value]="100"
   [striped]="true"
   [animated]="true"
-></ngb-progressbar>
+></ngb-progressbar> -->
+<div class="loading-indicator">
+  <div class="uploader-status">
+<mat-spinner *ngIf = "loading"  mode="indeterminate"></mat-spinner>
+</div>
+</div>
 <div class="row p-3">
   <div class="col-6"></div>
   <div class="col-6">
@@ -136,8 +141,21 @@
             </button>
           </div>
         </td>
+        <td>
+          <ng-template [ngIf] = "template.documentId">
+            <!-- <button mat-icon-button matTooltip="preview document" matTooltipClass="example-tooltip-red" aria-label="Example icon-button with a preview icon" (click) = "openFilePreviewDialog(template)">
+              <mat-icon>preview</mat-icon>
+            </button> -->
+            <button mat-icon-button matTooltip="preview document" aria-label="Example icon-button with a preview icon" (click) = "openFilePreviewDialog(template)" >
+              <mat-icon>preview</mat-icon>
+            </button>
+          </ng-template>
+          <ng-template [ngIf] = "!template.documentId">
+            No
+          </ng-template>
+        </td>
       </tr>
-    </tbody>
+    </tbody>  
   </table>
   <div class="d-flex justify-content-center p-2">
     <ngb-pagination

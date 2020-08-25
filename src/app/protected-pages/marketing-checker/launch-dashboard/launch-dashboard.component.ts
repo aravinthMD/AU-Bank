@@ -6,6 +6,11 @@ import { ViewTemplateHistoryDialogComponent } from "./view-template-history-dial
 import { ReferenceService } from "src/app/shared/services/reference.service";
 import { UserService } from 'src/app/shared/services/user.service';
 import { ToasterService } from "src/app/shared/services/toaster.service";
+import {MatDialog} from '@angular/material/dialog';
+import {FilePreviewDialogComponent} from "./file-preview-dialog/file-preview-dialog.component"
+import { DomSanitizer } from "@angular/platform-browser";
+import {environment} from "src/environments/environment"
+
 
 
 @Component({
@@ -30,6 +35,9 @@ export class LaunchDashboardComponent implements OnInit {
   pageSize = 10;
   collectionSize : number;
 
+  doucumentPreviewUrl = environment.newAppiyoDrive;
+  host = environment.host;
+
   tableHeaders = [
     "Template Id",
     "Created On",
@@ -42,9 +50,9 @@ export class LaunchDashboardComponent implements OnInit {
   //filterOptions = ["All", "Active", "Inactive"];
 
   filterOptions = [
-    { name : "ALL" , value : "0"},
+    { name : "ALL" , value : "2"},
     { name : "Active",value : "1"},
-    {name : "Inactive" , value : "2"}
+    {name : "Inactive" , value : "0"}
   ];
 
 
@@ -54,13 +62,16 @@ export class LaunchDashboardComponent implements OnInit {
   fromMaxDate: any;
   toMinDate: any;
   toMaxDate: any;
+  previewDatas:any = "http://178.128.125.44/appiyo/d/drive/docs/5f3e9f47f2903d7b8d41f20c" ;
 
   constructor(
     private formBuilder: FormBuilder,
     private referenceService: ReferenceService,
     private ngbModal: NgbModal,
     private userService: UserService,
-    private toasterService: ToasterService) {
+    private toasterService: ToasterService,
+    private previewDialog: MatDialog,
+    private domSanitizer: DomSanitizer) {
     this.form = this.formBuilder.group({
       fromDate: [null, Validators.required],
       toDate: [null, Validators.required],
@@ -132,8 +143,9 @@ export class LaunchDashboardComponent implements OnInit {
     this.validate();
   }
 
-  openTemplateHistoryDialog(): void {
-    this.ngbModal.open(ViewTemplateHistoryDialogComponent, { centered: true });
+  openTemplateHistoryDialog(template : any): void {
+    const dialog = this.ngbModal.open(ViewTemplateHistoryDialogComponent, { centered: true });
+    dialog.componentInstance.inputData = template;
   }
 
   validate()
@@ -160,7 +172,7 @@ export class LaunchDashboardComponent implements OnInit {
     const formattedFromDate = `${fromDate.year}-${fromDate.month}-${fromDate.day}`;
     const formattedToDate = `${toDate.year}-${toDate.month}-${toDate.day}`;
     const filterType = feildControls.filterType.value;
-    const isActiveStatus = filterType === "0" ? "" : filterType;
+    const isActiveStatus = filterType === "2" ? "" : filterType;
 
     this.userService.fetchCheckerScreenTemplates(this.currentPage,formattedFromDate,formattedToDate,"",this.checkerLogin,isActiveStatus)
     .subscribe((fetchedTemplates) =>{
@@ -201,6 +213,19 @@ export class LaunchDashboardComponent implements OnInit {
           if(status)
           {
             this.templates = fetchedTemplates.ProcessVariables.templateList;
+            // this.templates.forEach((obj) =>
+            // {
+            //   const documentUrl = null;
+            //   if(obj["documentId"] == null)
+            //   {
+            //     Object.defineProperty(obj,"documentUrl",{
+            //       writable:true,
+            //       value: this.host + this.doucumentPreviewUrl + "5f3eaeacf2903d7b8d41f23f"
+            //     });
+            //   }
+
+            // })
+            console.log("Updated List"+this.templates);
             this.collectionSize = fetchedTemplates.ProcessVariables.totalCount
             this.loading = false;
           }
@@ -277,5 +302,14 @@ export class LaunchDashboardComponent implements OnInit {
  
   }
   
+  openFilePreviewDialog(Template : any)
+  {
+    debugger;
+    const dialogRef = this.previewDialog.open(FilePreviewDialogComponent,{
+      data: {previewData : this.domSanitizer.bypassSecurityTrustResourceUrl(this.previewDatas),
+              templateId : Template.id},
+      width: '1000px',
+    });
+  }
 
 }

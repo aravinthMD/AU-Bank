@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h4 class="modal-title">
-    Template launch history - <span class="text-message">L0000001</span>
+    Template launch history <span class="text-message"></span>
   </h4>
   <button type="button" class="close" aria-label="Close" (click)="close()">
     <span aria-hidden="true">&times;</span>
@@ -9,22 +9,28 @@
 <div class="modal-body">
   <ul class="list-group list-group-flush">
     <li
+    class="list-group-item d-flex justify-content-between align-items-center"
+       >
+    Template
+    <span class="badge bg-maroon badge-pill">{{inputData.template}}</span>
+    </li>
+    <li
       class="list-group-item d-flex justify-content-between align-items-center"
     >
       Launched On
-      <span class="badge bg-maroon badge-pill">26/07/2020, 3:00PM</span>
+      <span class="badge bg-maroon badge-pill">{{launchedOn}}</span>
     </li>
     <li
       class="list-group-item d-flex justify-content-between align-items-center"
     >
       No of customers within Active Window
-      <span class="badge bg-maroon badge-pill">426</span>
+      <span class="badge bg-maroon badge-pill">{{total}}</span>
     </li>
     <li
       class="list-group-item d-flex justify-content-between align-items-center"
     >
       Messages sent
-      <span class="badge bg-maroon badge-pill">426</span>
+      <span class="badge bg-maroon badge-pill">{{sent}}</span>
     </li>
   </ul>
 </div>

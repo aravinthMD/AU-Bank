@@ -44,6 +44,9 @@ export interface EntityResponse {
     status: boolean;
     userId: number;
     userName: string;
+    total: number;
+    code:number;
+    launchedOn:any;
   };
 
   Status: string;

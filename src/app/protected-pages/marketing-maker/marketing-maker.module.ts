@@ -7,6 +7,8 @@ import { MarketingMakerComponent } from "./marketing-maker.component";
 import { MarketingMakerRoutingModule } from "./marketing-maker.routing.module";
 import { SharedModule } from "src/app/shared/shared.module";
 import { PreApprovedOffersComponent } from "./pre-approved-offers/pre-approved-offers.component";
+import {MaterialModule} from "src/app/material/material.module"
+
 
 @NgModule({
   declarations: [
@@ -16,6 +18,6 @@ import { PreApprovedOffersComponent } from "./pre-approved-offers/pre-approved-o
     DashboardComponent,
     PreApprovedOffersComponent,
   ],
-  imports: [CommonModule, MarketingMakerRoutingModule, SharedModule],
+  imports: [CommonModule, MarketingMakerRoutingModule, SharedModule,MaterialModule],
 })
 export class MarketingMakerModule {}

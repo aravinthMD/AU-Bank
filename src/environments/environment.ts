@@ -99,8 +99,17 @@ export const environment = {
       projectId: "e45e9cf0d5a411eab60b727d5ac274b2",
       workflowId: "102df80ed5a911eab60b727d5ac274b2",
       processId: "34c44c92dbbf11eab60d727d5ac274b2", // LOCAL
-     // processId: "eab3b07cdcb111ea854a46113bb841db",  //Production
+      // processId: "eab3b07cdcb111ea854a46113bb841db",  //Production
     },
+
+    fetchViewTemplate : {
+      projectId : "e45e9cf0d5a411eab60b727d5ac274b2",
+      workflowId: "5a3bad14d6e511eab60b727d5ac274b2",
+      processId: "e2942064dcb311ea81f946113bb841db", //UAT
+      
+    }
   },
   host: "http://178.128.125.44/appiyo",
+  appiyoDrive: "/d/drive/upload/",
+  newAppiyoDrive: "/account/appiyo_drive/docs/"
 };

@@ -108,6 +108,7 @@ export class WhatsappComponent implements OnInit {
   }
 
   fetchUserByMobileNumber(mobileNumber: string): void {
+    debugger;
     this.searchLoading = true;
     this.userService.fetchUserByMobileNumber(mobileNumber).subscribe(
       (response) => {
@@ -154,6 +155,7 @@ export class WhatsappComponent implements OnInit {
       )
       .subscribe(
         (response) => {
+          debugger;
           const {
             ProcessVariables: { status, message = {} },
           } = response;

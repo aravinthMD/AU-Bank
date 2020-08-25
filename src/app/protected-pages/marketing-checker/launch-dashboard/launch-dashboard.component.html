@@ -1,11 +1,16 @@
-<ngb-progressbar
+<!-- <ngb-progressbar
   *ngIf="loading"
   type="dark"
   height="0.5rem"
   [value]="100"
   [striped]="true"
   [animated]="true"
-></ngb-progressbar>
+></ngb-progressbar> -->
+<div class="loading-indicator">
+  <div class="uploader-status">
+<mat-spinner *ngIf = "loading"  mode="indeterminate"></mat-spinner>
+</div>
+</div>
 <div class="row p-3">
   <div class="col-6"></div>
   <div class="col-6">
@@ -94,6 +99,7 @@
           <button 
             type="button"
             class="btn shadow"
+            *ngif = "isActive === '1' "
             (click) = "deActivateTemplate(template)"
           >
             {{ deactivateButtonText }}
@@ -101,6 +107,7 @@
           <button
             type="button"
             class="btn shadow"
+            *ngif = "isActive === '0' "
             (click) = "activateTemplate(template)"
           >
             {{ activateButtonText }}
@@ -110,7 +117,7 @@
           <button
             type="button"
             class="btn shadow"
-            (click)="openTemplateHistoryDialog()"
+            (click)="openTemplateHistoryDialog(template)"
           >
             {{ viewButtonText }}
           </button>

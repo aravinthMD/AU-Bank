@@ -58,6 +58,9 @@ export enum TOASTER_MESSAGES {
   TOKEN_EXPIRED_MESSAGE = "Token Expired.Please login again!",
   DEACTIVATE_USER_SUCCESS = "Successfully Deactivated.",
   ACTIVATE_USER_SUCCESS = "Successfully Activated.",
+  LABLE_MESSAGE = "Choose File",
+  FILE_UPLOAD_SUCCESS = "SuccessFully Uploaded",
+  FILE_UPLOAD_FAILURE = "File Upload Unsuccessfull",
 }
 
 export enum DATE_FORMATS {

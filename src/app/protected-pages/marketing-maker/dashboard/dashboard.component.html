@@ -119,7 +119,10 @@
             >REJECTED</span
           >
           <br />
+        </td>
+        <td>
           <span *ngIf="item.status === '20'">{{ item.reason }}</span>
+          <span *ngIf="item.status !== '20'">--</span>
         </td>
       </tr>
     </tbody>

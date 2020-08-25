@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>Preview</h2>
+<span mat-dialog-title align = "centre">Template Id:{{data.templateId}}</span>
+<mat-dialog-content>
+    <embed [src]= "previewUrl"  type="application/pdf"   height="900px" width="1000px">
+      <h1 *ngIf = "!validUrl">***404***</h1>
+        <!-- <embed src= "http://178.128.125.44/appiyo/account/appiyo_drive/5f3f78e0f2903d7b8d41f39f" type="application/pdf" height="900px" width="1000px"> -->
+          <!-- <embed src= "http://178.128.125.44/appiyo/d/drive/docs/5f3e9f47f2903d7b8d41f20c" type="application/pdf" height="900px" width="1000px"> -->
+
+</mat-dialog-content>
+<mat-dialog-actions align ="end">
+<button mat-button mat-dialog-close  style="background-color: #dc3545;color:white;border: none;border-radius:0.25rem;padding: 0.375rem 0.75rem;">close</button>
+</mat-dialog-actions>

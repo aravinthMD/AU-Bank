@@ -33,7 +33,7 @@ export class DashboardComponent implements OnInit {
     { name: "REJECTED", value: "20" },
   ];
 
-  tableHeaders = ["Template Id", "Template", "Schedule", "Status"];
+  tableHeaders = ["Template Id", "Template", "Schedule", "Status","Reason"];
 
   constructor(
     private formBuilder: FormBuilder,

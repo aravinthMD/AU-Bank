@@ -11,6 +11,11 @@ import { ReferenceService } from "src/app/shared/services/reference.service";
 import { RejectTemplateDialogComponent } from "./reject-template-dialog.component";
 import { UserService } from "src/app/shared/services/user.service";
 import { ToasterService } from "src/app/shared/services/toaster.service";
+import {MatDialog} from '@angular/material/dialog';
+import { FilePreviewDialogBoxComponent } from './file-preview-dialog-box/file-preview-dialog-box.component';
+import {environment} from "src/environments/environment"
+import { DomSanitizer } from '@angular/platform-browser';
+
 
 @Component({
   selector: "app-launch",
@@ -35,6 +40,10 @@ export class LaunchComponent implements OnInit {
   toMinDate: any;
   toMaxDate: any;
 
+  previewFileUrl : any;
+  host : any = environment.host;
+  newAppiyoDrive  = environment.newAppiyoDrive;s
+
   filterOptions = [
     { name: "ALL", value: "40" },
     { name: "SUBMITTED", value: "10" },
@@ -42,14 +51,16 @@ export class LaunchComponent implements OnInit {
     { name: "REJECTED", value: "20" },
   ];
 
-  tableHeaders = ["Template Id", "Template", "Created On", "Upload Time","Campaign End Date","Action"];
+  tableHeaders = ["Template Id", "Template", "Created On", "Upload Time","Campaign End Date","Action","Document"];
 
   constructor(
     private formBuilder: FormBuilder,
     private referenceService: ReferenceService,
     private userService: UserService,
     private toasterService: ToasterService,
-    private ngbModal: NgbModal
+    private ngbModal: NgbModal,
+    private previewDialog: MatDialog,
+    private sanitizer: DomSanitizer
   ) {
     this.form = this.formBuilder.group({
       fromDate: [null, Validators.required],
@@ -214,6 +225,17 @@ export class LaunchComponent implements OnInit {
           this.fetchTemplates();
         }
       }
+    });
+  }
+
+  openFilePreviewDialog(Template : any)
+  {
+    this.previewFileUrl = this.host+this.newAppiyoDrive+Template.documentId;
+    console.log("Preview Url"+this.previewFileUrl)
+    const dialogRef = this.previewDialog.open(FilePreviewDialogBoxComponent,{
+      data: {previewData : this.previewFileUrl,
+              templateId : Template.id},
+      width: '1000px',
     });
   }
 }
