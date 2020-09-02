@@ -16,6 +16,7 @@ import { ToasterService } from "src/app/shared/services/toaster.service";
 })
 export class ApproveTemplateDialogComponent implements OnInit {
   @Input() inputData: any;
+  @Input() previewUrl:any;
 
   launchButtonText = BUTTON_TEXTS.LAUNCH_BUTTON_TEXT;
   rejectButtonText = BUTTON_TEXTS.REJECT_BUTTON_TEXT;
@@ -37,7 +38,7 @@ export class ApproveTemplateDialogComponent implements OnInit {
       .updateTemplate(
         String(this.userService.currentUserValue.userId),
         TEMPLATE_STATUS_CODES.APPROVED,
-        this.inputData.id
+        this.inputData.id,this.previewUrl
       )
       .subscribe(
         (updatedTemplate) => {

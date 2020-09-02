@@ -13,7 +13,7 @@ import { UserService } from "src/app/shared/services/user.service";
 import { ToasterService } from "src/app/shared/services/toaster.service";
 import {MatDialog} from '@angular/material/dialog';
 import { FilePreviewDialogBoxComponent } from './file-preview-dialog-box/file-preview-dialog-box.component';
-import {environment} from "src/environments/environment"
+import {environment} from "src/environments/environment";
 import { DomSanitizer } from '@angular/platform-browser';
 
 
@@ -42,7 +42,7 @@ export class LaunchComponent implements OnInit {
 
   previewFileUrl : any;
   host : any = environment.host;
-  newAppiyoDrive  = environment.newAppiyoDrive;s
+  newAppiyoDrive  = environment.newAppiyoDrive;
 
   filterOptions = [
     { name: "ALL", value: "40" },
@@ -51,7 +51,7 @@ export class LaunchComponent implements OnInit {
     { name: "REJECTED", value: "20" },
   ];
 
-  tableHeaders = ["Template Id", "Template", "Created On", "Upload Time","Campaign End Date","Action","Document"];
+  tableHeaders = ["Template Id", "Template", "Campaign Start Date", "Upload Time","Campaign End Date","Campaign Type","Action","Document"];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -65,7 +65,7 @@ export class LaunchComponent implements OnInit {
     this.form = this.formBuilder.group({
       fromDate: [null, Validators.required],
       toDate: [null, Validators.required],
-      //filterType: [TEMPLATE_STATUS_CODES.ALL, Validators.required],
+      // filterType: [TEMPLATE_STATUS_CODES.ALL, Validators.required],
     });
   }
 
@@ -91,21 +91,21 @@ export class LaunchComponent implements OnInit {
     debugger;
     const { year, month, day } = event;
     this.toMinDate = { year, month, day };
-    this.validate();
+    this.validate(false);
   }
 
   onToDateChange(event: NgbDate): void {
     const { year, month, day } = event;
     this.fromMaxDate = { year, month, day };
-    this.validate();
+    this.validate(false);
   }
 
   onFilterTypeChange(event: any) {
-    this.validate();
+    this.validate(true);
   }
 
-  validate() {
-    if (this.form.valid) {
+  validate(filterFlag) {
+    if (this.form.valid || filterFlag) {
       this.isFilterValid = true;
       this.fetchFilteredTemplates();
     } else {
@@ -199,7 +199,15 @@ export class LaunchComponent implements OnInit {
     const dialog = this.ngbModal.open(ApproveTemplateDialogComponent, {
       centered: true,
     });
+    if(template.documentId !== null)
+    {
+    this.previewFileUrl = this.host+this.newAppiyoDrive+template.documentId;
+    }
+    else{
+      this.previewFileUrl = null;
+    }
     dialog.componentInstance.inputData = template;
+    dialog.componentInstance.previewUrl = this.previewFileUrl;
     dialog.result.then((response) => {
       if (response === RESPONSES.SUCCESS) {
         if (this.isFilterValid) {
@@ -237,5 +245,12 @@ export class LaunchComponent implements OnInit {
               templateId : Template.id},
       width: '1000px',
     });
+  }
+
+  clearFilter()
+  {
+    this.form.reset();
+    this.isFilterValid = false;
+    this.fetchTemplates();
   }
 }

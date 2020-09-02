@@ -2,6 +2,56 @@
   <div class="container">
     <form [formGroup]="form">
       <div class="form-group">
+        <label>TemplateId</label><br>
+        <mat-form-field floatLabel = "never" class="example-full-width">
+          <mat-select placeholder = "select the id" formControlName="templateId" (selectionChange) = "onTemplateIdChange()">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let data of templateDropDown" [value]="data">{{data.templateId}}-{{data.templateName}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        </div>
+
+        <div *ngIf = "showTemplateMessageFlag" class="form-group">
+          <label for="template">Template</label>
+          <textarea [readonly] = "true"
+            class="form-control"
+            formControlName="template"
+            id="template"
+            rows="3"
+          ></textarea>
+        </div>
+
+      <div class="form-group">
+        <label>TimeZones</label><br>
+        <mat-form-field class="example-full-width" floatLabel = "never">
+          <input type="text"
+                 placeholder="select time zones"
+                 aria-label="Number"
+                 matInput
+                 [formControl]="form.controls['timeZone']"
+                 formControlName = "timeZone"
+                 [matAutocomplete]="auto" class="form-control">
+          <mat-autocomplete #auto="matAutocomplete" [displayWith] = "displayFn.bind(this)">
+            <mat-option *ngFor="let timeZone of filteredOptions | async " [value]="timeZone.utc[0]">
+              {{timeZone.text}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <div class="country-code">
+        <label>CountryCode</label>
+        <ng-multiselect-dropdown formControlName="countryCodes" 
+        placeholder="select country code"
+        [settings]="dropdownSettings"
+        [data]="countryCodeList"
+        >
+        <mat-icon matSuffix>search</mat-icon>
+        </ng-multiselect-dropdown>
+      </div>
+      </div>
+      <div class="form-group">
         <label>Campaign Start Date</label>
         <div class="input-group">
           <input
@@ -35,6 +85,9 @@
           [meridian]="false"
           [spinners]="false"
         ></ngb-timepicker>
+         <div class = "alert alert-danger" *ngIf = "form.get('triggerTime').invalid && (form.get('triggerTime').dirty || form.get('triggerTime').touched)">
+           <small *ngIf = "form.get('triggerTime').hasError('triggerTimeError') && form.get('triggerTime').errors.triggerTimeError" class="medium form-text text-danger">Time sholud not be less than current time</small>
+         </div>
       </div>
       <div class="form-group">
         <label>Campaign End Date</label>

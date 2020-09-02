@@ -23,7 +23,8 @@ export class WhatsappComponent implements OnInit {
   blockButtonText = BUTTON_TEXTS.BLOCK_BUTTON_TEXT;
   downloadButtonText = BUTTON_TEXTS.DOWNLOAD_BUTTON_TEXT;
 
-  filterOptions = ["ALL","BLOCKED","UNBLOCKED"];
+  // filterOptions = ["ALL","BLOCKED","UNBLOCKED"];
+  filterOptions = [{name:"ALL",value:"0"},{name:"BLOCKED",value:"1"},{name:"UNBLOCKED",value:"2"}]
   tableHeaders: string[] = [];
 
   isViewOnly = false;
@@ -34,6 +35,7 @@ export class WhatsappComponent implements OnInit {
   searchLoading = false;
   reportLoading = false;
   validSearch = false;
+  Local:any;
 
   today = new Date();
 
@@ -41,6 +43,13 @@ export class WhatsappComponent implements OnInit {
   fromMaxDate: any;
   toMinDate: any;
   toMaxDate: any;
+
+  from:number;
+  downLoadContentConcat:string = "";
+  fromIncValue:number;
+  val:boolean = true;
+  downLoadCompleteFlag:boolean = false;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -50,11 +59,10 @@ export class WhatsappComponent implements OnInit {
     private toasterService: ToasterService,
     private ngbDialog: NgbModal
   ) {
-    debugger;
     this.form = this.formBuilder.group({
       fromDate: [null, Validators.required],
       toDate: [null, Validators.required],
-      filterType: [this.filterOptions[0], Validators.required],
+      filterType: [this.filterOptions[0].value, Validators.required],
     });
 
     const { url } = this.router;
@@ -138,36 +146,72 @@ export class WhatsappComponent implements OnInit {
     return this.form.controls;
   }
 
-  downloadReport(next?: number): void {
+  // downLoadFetchReport(){
+  //   debugger;
+  //   this.downLoadContentConcat = ""
+  //   this.downloadReport();
+  //   if(this.downLoadCompleteFlag)
+  //   this.saveFile(this.downLoadContentConcat);
+  // }
+
+   convert(d) {
+    var date = new Date(d),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
+  }
+
+  downloadReport(fromVal ?: number): void {
     this.reportLoading = true;
     const fromDate = this.fieldControls.fromDate.value;
     const toDate = this.fieldControls.toDate.value;
     const filterType = this.fieldControls.filterType.value;
-
-    const formattedFromDate = `${fromDate.year}-${fromDate.month}-${fromDate.day}`;
-    const formattedToDate = `${toDate.year}-${toDate.month}-${toDate.day}`;
+    // const formattedFromDate = `${fromDate.year}-${fromDate.month}-${fromDate.day}`;
+    // const formattedToDate = `${toDate.year}-${toDate.month}-${toDate.day}`;
+    const formattedFromDate= `${fromDate.month}/${fromDate.day}/${fromDate.year}`+" 00:00:00";
+    const formattedToDate = `${toDate.month}/${toDate.day}/${toDate.year}`+" 23:59:59"
+    const ISOformattedFromDate = new Date(formattedFromDate).toISOString();
+    const ISOformattedToDate = new Date(formattedToDate).toISOString();
     this.userService
       .downloadReport(
         this.userDetail ? this.userDetail.mobile : -1,
-        formattedFromDate,
-        formattedToDate,
-        true
+        ISOformattedFromDate,
+        ISOformattedToDate,
+        filterType,
+        true,fromVal
       )
       .subscribe(
         (response) => {
           debugger;
           const {
-            ProcessVariables: { status, message = {} },
+            ProcessVariables: { status, message = {},more },
           } = response;
           if (status) {
             const {
               ProcessVariables: { downloadContent },
             } = response;
-            this.saveFile(downloadContent);
-            this.toasterService.showSuccess(
-              TOASTER_MESSAGES.REPORT_DOWNLOAD_SUCCESS
-            );
+
+            this.downLoadContentConcat = this.downLoadContentConcat.concat(downloadContent);
+            console.log("Document Data:"+this.downLoadContentConcat);
             this.reportLoading = false;
+
+              if(more)
+              {
+                this.fromIncValue = fromVal + 25;
+                this.downloadReport(this.fromIncValue);
+              }
+              if(!more)
+              {
+              this.saveFile(this.downLoadContentConcat);
+              this.toasterService.showSuccess(
+                TOASTER_MESSAGES.REPORT_DOWNLOAD_SUCCESS
+              );
+              this.downLoadContentConcat = null; 
+              }
+              // if(!this.val){
+              // this.saveFile(this.downLoadContentConcat);
+              // this.downLoadContentConcat = null;
+              // }
           } else {
             this.toasterService.showError(message.value);
             this.reportLoading = false;

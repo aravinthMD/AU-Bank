@@ -47,6 +47,8 @@ export interface EntityResponse {
     total: number;
     code:number;
     launchedOn:any;
+    more:boolean;
+    templateIdList: any[]
   };
 
   Status: string;

@@ -10,6 +10,49 @@
           rows="3"
         ></textarea>
       </div>
+      <!-- <div class="form-group">
+        <label>TimeZones</label><br>
+        <mat-form-field >
+          <mat-label>TimeZones</mat-label>
+          <mat-select formControlName="timeZone">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let timeZone of timeZones" [value]="timeZone.utc[0]">{{timeZone.text}}</mat-option>
+          </mat-select>
+        </mat-form-field> -->
+
+         <div class="form-group">
+          <label>TimeZones</label><br>
+          <mat-form-field class="example-full-width" floatLabel = "never">
+            <input type="text"
+                   placeholder="select time zones"
+                   aria-label="Number"
+                   matInput
+                   [formControl]="form.controls['timeZone']"
+                   formControlName = "timeZone"
+                   [matAutocomplete]="auto" class="form-control">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith] = "displayFn.bind(this)">
+              <mat-option *ngFor="let timeZone of filteredOptions | async " [value]="timeZone.utc[0]">
+                {{timeZone.text}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+       
+        <div class="form-group">
+          <div class="country-code">
+          <label>CountryCode</label>
+          <ng-multiselect-dropdown formControlName="countryCodes" floatLabel = "never"
+          placeholder="select country code"
+          [settings]="dropdownSettings"
+          [data]="countryCodeList"
+          >
+          <mat-icon matSuffix>search</mat-icon>
+          </ng-multiselect-dropdown>
+        </div>
+        </div>
+
+    
+      
       <div class="form-group">
         <label>Campaign Start Date</label>
         <div class="input-group">
@@ -38,6 +81,8 @@
         </div>
       </div>
 
+     
+
       <div class="form-group">
         <label>Trigger Time</label>
         <ngb-timepicker
@@ -45,6 +90,10 @@
           [meridian]="false"
           [spinners]="false"
         ></ngb-timepicker>
+        <!-- <small *ngIf = "triggerTimeExceedCurrentTime" class="medium form-text text-danger">Time sholud not be less than current time</small> -->
+        <div class = "alert alert-danger" *ngIf = "form.get('triggerTime').invalid && (form.get('triggerTime').dirty || form.get('triggerTime').touched)">
+        <small *ngIf = "form.get('triggerTime').hasError('triggerTimeError') && form.get('triggerTime').errors.triggerTimeError" class="medium form-text text-danger">Time sholud not be less than current time</small>
+        </div>
       </div>
       <div class="form-group">
         <label>Campaign End Date</label>
@@ -72,6 +121,7 @@
           </div>
         </div>
       </div>
+
       <!-- <div class="form-group">
         <label>File Upload</label>
         <input type ="file" id="image" (change) = "onSelectedFile($event)">
@@ -94,12 +144,15 @@
             <label class="custom-file-label" for="inputGroupFile" #labelImport>Choose file</label>
           </div>
         </div>
+        <div *ngIf = "onlyPdf" class="alert alert-danger">
+        <small *ngIf = "onlyPdf" class="medium form-text text-danger">Only pdf is allowed</small>
+      </div>
         <!-- <button class = "custom-button" *ngIf = "fileToUpload" type="button" (click) = "cancelFileUpload()">Cancel</button> -->
       </div>
 
       <button
         type="button"
-        [disabled]="form.invalid || loading"
+        [disabled]="form.invalid || loading "
         class="btn submit-btn shadow"
         (click)="onSubmit()" 
       >

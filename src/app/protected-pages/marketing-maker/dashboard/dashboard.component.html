@@ -76,6 +76,9 @@
             >
           </select>
         </div>
+        <button matTooltip="Clear Filter" (click) = "clearFilter()" [disabled] = "!isFilterValid" mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+        <mat-icon>clear_all</mat-icon>
+        </button>
       </div>
     </form>
   </div>
@@ -96,13 +99,19 @@
         <td>
           {{ item.template }}
         </td>
+        <td>{{ item.startDate | customDateFilter }}</td>
+        <td>{{ item.triggerTime }}</td>
+        <td>{{ item.endDate  | customDateFilter }}</td>
         <td>
-          <span>START DATE - {{ item.startDate | date: "yyyy-MM-dd" }}</span
-          ><br />
-          <span>TRIGGER TIME - {{ item.triggerTime }}</span>
-          <span *ngIf="item.endDate"
-            ><br />END DATE - {{ item.endDate | date: "yyyy-MM-dd" }}</span
-          >
+          <ng-template [ngIf] = "item.isPromotion === '1'">
+            Promotional
+          </ng-template>
+          <ng-template [ngIf] = "item.isPromotion === '0'">
+            Message
+          </ng-template>
+          <ng-template [ngIf] = "item.isPromotion !=='1' && item.isPromotion !== '0'">
+            PreApproved Offers
+          </ng-template>
         </td>
         <td>
           <span class="p-1 bg-maroon rounded-pill" *ngIf="item.status === '10'"
@@ -123,6 +132,19 @@
         <td>
           <span *ngIf="item.status === '20'">{{ item.reason }}</span>
           <span *ngIf="item.status !== '20'">--</span>
+        </td>
+        <td>
+          <ng-template [ngIf] = "item.documentId">
+            <!-- <button mat-icon-button matTooltip="preview document" matTooltipClass="example-tooltip-red" aria-label="Example icon-button with a preview icon" (click) = "openFilePreviewDialog(template)">
+              <mat-icon>preview</mat-icon>
+            </button> -->
+            <button mat-icon-button matTooltip="preview document" aria-label="Example icon-button with a preview icon" (click) = "openFilePreviewDialog(item)" >
+              <mat-icon>preview</mat-icon>
+            </button>
+          </ng-template>
+          <ng-template [ngIf] = "!item.documentId">
+            No
+          </ng-template>
         </td>
       </tr>
     </tbody>

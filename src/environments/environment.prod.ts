@@ -1,8 +1,8 @@
 import { version } from "package.json";
 
 export const environment = {
-  version : "0.0.4",
-  buildDate: '25/08/2020',
+  version : "0.0.7",
+  buildDate: '02/09/2020',
   production: true,
 
   projectId: "e1175c26fea511e8bb4f0050569c0a8e",
@@ -53,7 +53,8 @@ export const environment = {
     },
     whatsappReport: {
       workflowId: "54b48f28c6a511eab22b727d5ac274b2",
-      processId: "54d2fe86c6a511eab22b727d5ac274b2",
+      // processId: "54d2fe86c6a511eab22b727d5ac274b2",//OLD
+      processId:"9db7d912e5c911eaad68be9bade7af1e",//WORKING
     },
     createMessageTemplate: {
       projectId: "e45e9cf0d5a411eab60b727d5ac274b2",
@@ -101,7 +102,17 @@ export const environment = {
       projectId : "e45e9cf0d5a411eab60b727d5ac274b2",
       workflowId: "5a3bad14d6e511eab60b727d5ac274b2",
       processId: "e2942064dcb311ea81f946113bb841db", //UAT
-    }
+    },
+    fetchPromotionalDropDownData : {
+      projectId : "e45e9cf0d5a411eab60b727d5ac274b2",
+      workflowId : "2356727ad5a511eab60b727d5ac274b2",
+      processId : "dd2d9a6aec6211ea9c031a78550cd107",
+    },
+    fetchPreApprovedDropDownData : {
+      projectId : "e45e9cf0d5a411eab60b727d5ac274b2",
+      workflowId : "2356727ad5a511eab60b727d5ac274b2",
+      processId : "03ef3a3eec6611ea90b71a78550cd107",
+    },
   },
   host: "/appiyo",
   appiyoDrive: "/d/drive/upload/",

@@ -491,13 +491,17 @@ export class UserService {
     mobileNo: string,
     fromDate: string,
     toDate: string,
-    isDownload: boolean
+    downloadType: any,
+    isDownload: boolean,
+    from: number
   ) {
     const data = {
       mobileNo,
       fromDate,
       toDate,
+      downloadType,
       isDownload,
+      from
     };
     const {
       api: {
@@ -531,7 +535,9 @@ export class UserService {
     triggerTime: string,
     userId: string,
     uploadFlag: boolean,
-    documentId: any
+    documentId: any,
+    timeZone : any,
+    countryCode: any
   ) {
 
     const data = {
@@ -541,7 +547,9 @@ export class UserService {
       triggerTime,
       userId,
       uploadFlag,
-      documentId
+      documentId,
+      timeZone,
+      countryCode
     };
     const {
       api: {
@@ -574,7 +582,9 @@ export class UserService {
     triggerTime: string,
     userId: string,
     uploadFlag: boolean,
-    documentId: any
+    documentId: any,
+    timeZone : any,
+    countryCode : any
   ) {
     const data = {
       templateId,
@@ -584,7 +594,9 @@ export class UserService {
       userId,
       isPromotion: "true",
       uploadFlag,
-      documentId
+      documentId,
+      timeZone,
+      countryCode
     };
     const {
       api: {
@@ -611,16 +623,24 @@ export class UserService {
   }
 
   createPreapprovedOffer(
+    templateId : any,
+    template : string,
     startDate: string,
     endDate: string,
     triggerTime: string,
-    userId: string
+    userId: string,
+    timeZone: any,
+    countryCode : any
   ) {
     const data = {
+      templateId,
+      template,
       startDate,
       triggerTime,
       endDate,
       userId,
+      timeZone,
+      countryCode
     };
     const {
       api: {
@@ -686,13 +706,15 @@ export class UserService {
     userId: string,
     templateStatus: string,
     id: string,
-    reason?: string
+    previewUrl:string,
+    reason?: string,
   ) {
     const data = {
       userId,
       templateStatus,
       id,
       reason,
+      previewUrl
     };
     const {
       api: {
@@ -904,6 +926,61 @@ export class UserService {
     const formData = new FormData();
     formData.append('file[]',file,file.name); 
     return this.http.post(uri,formData,headers);
+  }
+
+
+  getPromotionalDropDown()
+  {
+    const data = {};
+    const {
+      api : {
+        fetchPromotionalDropDownData : {processId ,workflowId , projectId}
+      },
+    } = environment;
+
+    const requestEntity : RequestEntity = {
+      processId,
+      ProcessVariables : data,
+      workflowId,
+      projectId
+    }
+
+    const body = {
+      processVariables: JSON.stringify(requestEntity),
+    };
+
+    const formData = this.transform(body);
+
+    return this.http.post<EntityResponse>(
+      `${this.host}/appiyo/d/workflows/${workflowId}/execute?projectId=${projectId}`,formData
+    );
+  }
+  
+
+  getPreApprovedOffersDropDownData(){
+    const data = {};
+    const {
+      api : {
+        fetchPreApprovedDropDownData : {processId ,workflowId , projectId}
+      },
+    } = environment;
+
+    const requestEntity : RequestEntity = {
+      processId,
+      ProcessVariables : data,
+      workflowId,
+      projectId
+    }
+
+    const body = {
+      processVariables: JSON.stringify(requestEntity),
+    };
+
+    const formData = this.transform(body);
+
+    return this.http.post<EntityResponse>(
+      `${this.host}/appiyo/d/workflows/${workflowId}/execute?projectId=${projectId}`,formData
+    );
   }
 
 

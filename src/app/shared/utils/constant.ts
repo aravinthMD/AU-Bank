@@ -61,6 +61,7 @@ export enum TOASTER_MESSAGES {
   LABLE_MESSAGE = "Choose File",
   FILE_UPLOAD_SUCCESS = "SuccessFully Uploaded",
   FILE_UPLOAD_FAILURE = "File Upload Unsuccessfull",
+  DROP_DOWN_FAILURE = "Unable to fetch the data",
 }
 
 export enum DATE_FORMATS {
@@ -102,3 +103,4 @@ export enum BOOLEANS {
   TRUE = "true",
   FALSE = "false",
 }
+

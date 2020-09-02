@@ -71,12 +71,17 @@
             class="custom-select"
             formControlName="filterType"
             title="Filter Type"
-            id="role"
+            id="role" (change) = "onFilterTypeChange($event)"
           >
             <option *ngFor="let option of filterOptions" [value]="option.value"
             >{{ option.name }}</option>
           </select>
         </div>
+        <div>
+          <button matTooltip="Clear Filter" (click) = "clearFilter()" [disabled] = "!isFilterValid" mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+          <mat-icon>clear_all</mat-icon>
+          </button>
+          </div>
       </div>
     </form>
   </div>
@@ -92,14 +97,26 @@
     <tbody>
       <tr *ngFor="let template of templates">
         <td>{{ template.id }}</td>
-        <td>{{ template.startDate | date: "yyyy-MM-dd"}}</td>
+        <td>{{ template.template }}</td>
+        <td>{{ template.startDate | customDateFilter}}</td>
         <td>{{ template.triggerTime }}</td>
-        <td>{{ template.endDate | date: "yyyy-MM-dd" }}</td>
+        <td>{{ template.endDate | customDateFilter }}</td>
+        <td>
+          <ng-template [ngIf] = "template.isPromotion === '1'">
+            Promotional
+          </ng-template>
+          <ng-template [ngIf] = "template.isPromotion === '0'">
+            Message
+          </ng-template>
+          <ng-template [ngIf] = "template.isPromotion !=='1' && template.isPromotion !== '0'">
+            PreApproved Offers
+          </ng-template>
+        </td>
         <td>
           <button 
             type="button"
             class="btn shadow"
-            *ngif = "isActive === '1' "
+            *ngIf = "template.isActiveInput  === '1' "
             (click) = "deActivateTemplate(template)"
           >
             {{ deactivateButtonText }}
@@ -107,7 +124,7 @@
           <button
             type="button"
             class="btn shadow"
-            *ngif = "isActive === '0' "
+            *ngIf = "template.isActiveInput  === '0' "
             (click) = "activateTemplate(template)"
           >
             {{ activateButtonText }}
@@ -122,7 +139,30 @@
             {{ viewButtonText }}
           </button>
         </td>
+        <td>
+          <ng-template [ngIf] = "template.documentId">
+            <!-- <button mat-icon-button matTooltip="preview document" matTooltipClass="example-tooltip-red" aria-label="Example icon-button with a preview icon" (click) = "openFilePreviewDialog(template)">
+              <mat-icon>preview</mat-icon>
+            </button> -->
+            <button mat-icon-button matTooltip="preview document" aria-label="Example icon-button with a preview icon" (click) = "openFilePreviewDialog(template)" >
+              <mat-icon>preview</mat-icon>
+            </button>
+          </ng-template>
+          <ng-template [ngIf] = "!template.documentId">
+            No
+          </ng-template>
+        </td>
       </tr>
     </tbody>
   </table>
+  <div class="d-flex justify-content-center p-2">
+    <ngb-pagination
+      [boundaryLinks]="true"
+      [collectionSize]="collectionSize"
+      [(page)]="currentPage"
+      [pageSize]="pageSize"
+      (pageChange)="onPageChanged(currentPage)"
+    >
+    </ngb-pagination>
+  </div>
 </div>

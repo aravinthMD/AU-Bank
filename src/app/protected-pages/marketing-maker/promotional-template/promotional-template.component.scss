@@ -64,3 +64,67 @@ textarea {
 .xinput:focus, .xinput:active, .xinput:only-child, .xinput{
   z-index: 1;
 }
+
+.mat-input-element {
+  font: inherit;
+  background: transparent;
+  color: #495057;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  vertical-align: bottom;
+  text-align: inherit;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.multiselect-dropdown[_ngcontent-hvj-c161] .dropdown-btn[_ngcontent-hvj-c161] {
+  display: inline-block;
+  border: 1px solid #adadad;
+  width: 100%;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-weight: 400;
+  line-height: 1.52857143;
+  text-align: left;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  border-radius: 4px;
+  color: #495057;
+  font-size: 1rem;
+}
+
+.country-code{
+ 
+    color:  #495057;
+    font-weight: 400;
+    font-size: 1rem;
+    padding-bottom: 1.2rem;
+
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+
+.multiselect-dropdown[_ngcontent-kas-c161] .dropdown-btn[_ngcontent-kas-c161] .selected-item[_ngcontent-kas-c161] {
+  border: 1px solid #337ab7;
+  margin-right: 4px;
+  background:#97146b;
+  padding: 0 5px;
+  color: #fff;
+  border-radius: 2px;
+  float: left;
+}
+
+
+.mat-select-panel .mat-optgroup-label, .mat-select-panel .mat-option {
+  font-size: inherit;
+  line-height: 3em;
+  height: 2em;
+}

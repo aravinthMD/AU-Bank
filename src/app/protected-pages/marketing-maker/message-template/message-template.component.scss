@@ -63,3 +63,56 @@ textarea {
 .xinput:focus, .xinput:active, .xinput:only-child, .xinput{
   z-index: 1;
 }
+
+.alert{
+  padding: 0.50rem 1.25rem;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+.mat-input-element {
+  font: inherit;
+  background: transparent;
+  color: #495057;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  vertical-align: bottom;
+  text-align: inherit;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+// .multiselect-dropdown[_ngcontent-hvj-c161] .dropdown-btn[_ngcontent-hvj-c161] {
+//   display: inline-block;
+//   border: 1px solid #adadad;
+//   width: 100%;
+//   padding: 6px 12px;
+//   margin-bottom: 0;
+//   font-weight: 400;
+//   line-height: 1.52857143;
+//   text-align: left;
+//   vertical-align: middle;
+//   cursor: pointer;
+//   background-image: none;
+//   border-radius: 4px;
+//   color: #495057;
+//   font-size: 1rem;
+// }
+
+.country-code{
+ 
+    color:  #495057;
+    font-weight: 400;
+    font-size: 1rem;
+    padding-bottom: 1.2rem;
+
+}
+
+
+

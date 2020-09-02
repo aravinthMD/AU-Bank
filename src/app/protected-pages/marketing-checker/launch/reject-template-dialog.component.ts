@@ -41,7 +41,7 @@ export class RejectTemplateDialogComponent implements OnInit {
       .updateTemplate(
         String(this.userService.currentUserValue.userId),
         TEMPLATE_STATUS_CODES.REJECTED,
-        this.inputData.id,
+        this.inputData.id,null,
         this.form.value.reason
       )
       .subscribe(

@@ -36,6 +36,7 @@ fetchViewTemplate(inputData)
   let id = inputData.id
   this.userService.fetchViewTemplate(id).subscribe((response) =>
   {
+
     console.log(response);
     const {
       ProcessVariables: { status },
@@ -46,7 +47,8 @@ fetchViewTemplate(inputData)
     this.sent = response.ProcessVariables.sent;
     this.total = response.ProcessVariables.total;
     this.code = response.ProcessVariables.code;
-    this.launchedOn = response.ProcessVariables.launchedOn;
+    const launchedOnDate = response.ProcessVariables.launchedOn;
+    this.launchedOn = launchedOnDate ? new Date(launchedOnDate).toLocaleDateString() : "";
 
     }
     else{

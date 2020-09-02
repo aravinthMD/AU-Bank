@@ -10,7 +10,8 @@ import { ApproveTemplateDialogComponent } from "./launch/approve-template-dialog
 import { RejectTemplateDialogComponent } from "./launch/reject-template-dialog.component";
 import {MaterialModule} from "src/app/material/material.module";
 import { FilePreviewDialogComponent } from './launch-dashboard/file-preview-dialog/file-preview-dialog.component';
-import { FilePreviewDialogBoxComponent } from './launch/file-preview-dialog-box/file-preview-dialog-box.component'
+import { FilePreviewDialogBoxComponent } from './launch/file-preview-dialog-box/file-preview-dialog-box.component';
+import { CustomDateFilterPipe } from './shared/customPipe/custom-date-filter.pipe'
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { FilePreviewDialogBoxComponent } from './launch/file-preview-dialog-box/
     RejectTemplateDialogComponent,
     FilePreviewDialogComponent,
     FilePreviewDialogBoxComponent,
+    CustomDateFilterPipe,
   ],
   imports: [CommonModule, SharedModule, MarketingCheckerRoutingModule,MaterialModule],
   entryComponents: [

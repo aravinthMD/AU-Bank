@@ -64,8 +64,14 @@
                 <i class="fa fa-calendar-check-o"></i>
               </button>
             </div>
+            <div>
+              <button matTooltip="Clear Filter" (click) = "clearFilter()" [disabled] = "!isFilterValid" mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+              <mat-icon>clear_all</mat-icon>
+              </button>
+              </div>
           </div>
         </div>
+        
         <!-- <div class="col">
           <select
             class="custom-select"
@@ -102,10 +108,21 @@
           {{ template.template }}
         </td>
         <td>
-          {{ template.startDate | date: "yyyy-MM-dd" }}
+          {{ template.startDate | customDateFilter }}
         </td>
           <td>{{ template.triggerTime }}</td>
-          <td>{{ template.endDate | date: "yyyy-MM-dd" }}</td>  
+          <td>{{ template.endDate | customDateFilter }}</td>  
+          <td>
+            <ng-template [ngIf] = "template.isPromotion === '1'">
+              Promotional
+            </ng-template>
+            <ng-template [ngIf] = "template.isPromotion === '0'">
+              Message
+            </ng-template>
+            <ng-template [ngIf] = "template.isPromotion !=='1' && template.isPromotion !== '0'">
+              PreApproved Offers
+            </ng-template>
+          </td>
         
         <td>
           <div class="btn-group" role="group" aria-label="Basic example">
@@ -141,6 +158,7 @@
             </button>
           </div>
         </td>
+        
         <td>
           <ng-template [ngIf] = "template.documentId">
             <!-- <button mat-icon-button matTooltip="preview document" matTooltipClass="example-tooltip-red" aria-label="Example icon-button with a preview icon" (click) = "openFilePreviewDialog(template)">

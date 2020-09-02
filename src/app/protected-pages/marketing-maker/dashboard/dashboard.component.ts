@@ -5,6 +5,11 @@ import { ReferenceService } from "src/app/shared/services/reference.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ToasterService } from "src/app/shared/services/toaster.service";
 import { TEMPLATE_STATUS_CODES } from "src/app/shared/utils/constant";
+import {environment} from "src/environments/environment";
+import {MatDialog} from '@angular/material/dialog';
+import {FilePreviewDialogBoxComponent} from './file-preview-dialog-box/file-preview-dialog-box/file-preview-dialog-box.component';
+import { from } from 'rxjs';
+
 
 @Component({
   selector: "app-dashboard",
@@ -33,16 +38,21 @@ export class DashboardComponent implements OnInit {
     { name: "REJECTED", value: "20" },
   ];
 
-  tableHeaders = ["Template Id", "Template", "Schedule", "Status","Reason"];
+  previewFileUrl : any;
+  host : any = environment.host;
+  newAppiyoDrive  = environment.newAppiyoDrive;
+
+  tableHeaders = ["Template Id", "Template", "Campaign StartDate","Trigger Time","Campaign EndDate","Template Type","Status","Reason","Document"];
 
   constructor(
     private formBuilder: FormBuilder,
     private referenceService: ReferenceService,
     private userService: UserService,
-    private toasterService: ToasterService
+    private toasterService: ToasterService,
+    private previewDialog: MatDialog,
   ) {
     this.form = this.formBuilder.group({
-      fromDate: [null, Validators.required],
+      fromDate: [null,Validators.required],
       toDate: [null, Validators.required],
       filterType: [TEMPLATE_STATUS_CODES.ALL, Validators.required],
     });
@@ -69,21 +79,21 @@ export class DashboardComponent implements OnInit {
   onFromDateChange(event: NgbDate): void {
     const { year, month, day } = event;
     this.toMinDate = { year, month, day };
-    this.validate();
+    this.validate(false);
   }
 
   onToDateChange(event: NgbDate): void {
     const { year, month, day } = event;
     this.fromMaxDate = { year, month, day };
-    this.validate();
+    this.validate(false);
   }
 
   onFilterTypeChange(event: any) {
-    this.validate();
+    this.validate(true);
   }
 
-  validate() {
-    if (this.form.valid) {
+  validate(filterFlag) {
+    if (this.form.valid || filterFlag) {
       this.isFilterValid = true;
       this.fetchFilteredTemplates();
     } else {
@@ -108,8 +118,8 @@ export class DashboardComponent implements OnInit {
     const fromDate = fieldControls.fromDate.value;
     const toDate = fieldControls.toDate.value;
 
-    const formattedFromDate = `${fromDate.year}-${fromDate.month}-${fromDate.day}`;
-    const formattedToDate = `${toDate.year}-${toDate.month}-${toDate.day}`;
+    const formattedFromDate =  fromDate ? `${fromDate.year}-${fromDate.month}-${fromDate.day}` : "";
+    const formattedToDate =  toDate ? `${toDate.year}-${toDate.month}-${toDate.day}` : "";
     const filterType = fieldControls.filterType.value;
 
     const statusCode =
@@ -168,4 +178,25 @@ export class DashboardComponent implements OnInit {
       }
     );
   }
+
+  openFilePreviewDialog(Template : any)
+  {
+    this.previewFileUrl = this.host+this.newAppiyoDrive+Template.documentId;
+    console.log("Preview Url"+this.previewFileUrl)
+    const dialogRef = this.previewDialog.open(FilePreviewDialogBoxComponent,{
+      data: {previewData : this.previewFileUrl,
+              templateId : Template.id},
+      width: '1000px',
+    });
+  }
+
+  clearFilter()
+  {
+    this.form.reset();
+    this.form.controls['filterType'].patchValue(TEMPLATE_STATUS_CODES.ALL);
+
+    this.isFilterValid = false;
+    this.fetchTemplates();
+  }
+
 }

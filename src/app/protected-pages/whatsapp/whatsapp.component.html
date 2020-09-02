@@ -96,15 +96,15 @@
               title="Filter Type"
               id="role"
             >
-              <option *ngFor="let option of filterOptions" [value]="option">{{
-                option | uppercase
+              <option *ngFor="let option of filterOptions" [value]="option.value">{{
+                option.name
               }}</option>
             </select>
           </div>
           <div class="col search_btn">
             <button
               class="shadow"
-              (click)="downloadReport()"
+              (click)="downloadReport(0)"
               [disabled]="form.invalid || reportLoading"
             >
               <span
@@ -120,6 +120,8 @@
         </div>
       </form>
     </div>
+    {{Local | date}}
+
   </div>
 
   <div class="table-responsive">

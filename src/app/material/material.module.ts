@@ -5,8 +5,11 @@ import {MatInputModule }from '@angular/material/input';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatButtonModule} from '@angular/material/button';
+import {MatSelectModule} from '@angular/material/select';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
-const MaterialComponents = [MatProgressSpinnerModule,MatIconModule,MatInputModule,MatDialogModule,MatTooltipModule,MatButtonModule];
+const MaterialComponents = [MatProgressSpinnerModule,MatIconModule,MatInputModule,MatDialogModule,MatTooltipModule,MatButtonModule,MatSelectModule,
+  MatAutocompleteModule];
 @NgModule({
   imports: [MaterialComponents],
   exports: [MaterialComponents]

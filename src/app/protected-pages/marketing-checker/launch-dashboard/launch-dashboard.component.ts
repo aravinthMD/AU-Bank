@@ -35,16 +35,21 @@ export class LaunchDashboardComponent implements OnInit {
   pageSize = 10;
   collectionSize : number;
 
-  doucumentPreviewUrl = environment.newAppiyoDrive;
+  newAppiyoDrive  = environment.newAppiyoDrive;
   host = environment.host;
+
+  previewFileUrl:any;
 
   tableHeaders = [
     "Template Id",
-    "Created On",
+    "Template",
+    "Campaign Start Date",
     "Upload Time",
     "Campaign End Date",
+    "Campaign Type",
     "Action",
     "Audit",
+    "Document"
   ];
 
   //filterOptions = ["All", "Active", "Inactive"];
@@ -62,7 +67,6 @@ export class LaunchDashboardComponent implements OnInit {
   fromMaxDate: any;
   toMinDate: any;
   toMaxDate: any;
-  previewDatas:any = "http://178.128.125.44/appiyo/d/drive/docs/5f3e9f47f2903d7b8d41f20c" ;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -118,14 +122,14 @@ export class LaunchDashboardComponent implements OnInit {
   onFromDateChange(event: NgbDate): void {
     const { year, month, day } = event;
     this.toMinDate = { year, month, day };
-    this.validate();
+    this.validate(false);
 
   }
 
   onToDateChange(event: NgbDate): void {
     const { year, month, day } = event;
     this.fromMaxDate = { year, month, day };
-    this.validate();
+    this.validate(false);
 
   }
 
@@ -140,7 +144,7 @@ export class LaunchDashboardComponent implements OnInit {
   }
 
   onFilterTypeChange(event: any) {
-    this.validate();
+    this.validate(true);
   }
 
   openTemplateHistoryDialog(template : any): void {
@@ -148,9 +152,9 @@ export class LaunchDashboardComponent implements OnInit {
     dialog.componentInstance.inputData = template;
   }
 
-  validate()
+  validate(filterFalg)
   {
-    if(this.form.valid)
+    if(this.form.valid || filterFalg)
     {
       this.isFilterValid = true;
       this.fetchFilteredLauchDashBoardTemplates();
@@ -169,8 +173,8 @@ export class LaunchDashboardComponent implements OnInit {
     const fromDate = feildControls.fromDate.value;
     const toDate = feildControls.toDate.value;
 
-    const formattedFromDate = `${fromDate.year}-${fromDate.month}-${fromDate.day}`;
-    const formattedToDate = `${toDate.year}-${toDate.month}-${toDate.day}`;
+    const formattedFromDate = fromDate ?  `${fromDate.year}-${fromDate.month}-${fromDate.day}` : "";
+    const formattedToDate =  toDate ? `${toDate.year}-${toDate.month}-${toDate.day}` : "";
     const filterType = feildControls.filterType.value;
     const isActiveStatus = filterType === "2" ? "" : filterType;
 
@@ -304,12 +308,20 @@ export class LaunchDashboardComponent implements OnInit {
   
   openFilePreviewDialog(Template : any)
   {
-    debugger;
+    this.previewFileUrl = this.host+this.newAppiyoDrive+Template.documentId;
     const dialogRef = this.previewDialog.open(FilePreviewDialogComponent,{
-      data: {previewData : this.domSanitizer.bypassSecurityTrustResourceUrl(this.previewDatas),
+      data: {previewData : this.previewFileUrl,
               templateId : Template.id},
       width: '1000px',
     });
+  }
+
+  clearFilter()
+  {
+    this.form.reset();
+    this.form.controls['filterType'].patchValue(this.filterOptions[0].value);
+    this.isFilterValid = false;
+    this.fetchLauchDashBoardTemplate();
   }
 
 }
