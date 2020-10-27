@@ -26,6 +26,20 @@ const routes: Routes = [
             (m) => m.ManageUsersModule
           ),
       },
+      // {
+      //   path : "configure-triggerTime",
+      //   loadChildren: () =>
+      //       (m) => m.ConfigureTriggerTimeModule
+      //       ),
+      // },
+      {
+        path : "configure-triggerTime",
+        loadChildren : () => 
+        import("./protected-pages/configure-trigger-time/configure-trigger-time.module").then(
+          (m) => m.ConfigureTriggerTimeModule
+      
+        ),
+      },
       {
         path: "view-whatsapp",
         loadChildren: () =>

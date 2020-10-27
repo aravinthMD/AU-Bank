@@ -62,6 +62,8 @@ export enum TOASTER_MESSAGES {
   FILE_UPLOAD_SUCCESS = "SuccessFully Uploaded",
   FILE_UPLOAD_FAILURE = "File Upload Unsuccessfull",
   DROP_DOWN_FAILURE = "Unable to fetch the data",
+  UPDATE_BLOCK_TIME_SUCCESS = "Update Successfully",
+  UPDATE_BLOCK_TIME_FAILURE = "Failed to Update",
 }
 
 export enum DATE_FORMATS {

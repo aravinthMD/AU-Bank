@@ -32,6 +32,9 @@
   <span class="text-message"
     >Do you want to approve the template?</span
   >
+  <div *ngIf = "!triggerTimeValidFlag" class = "WarningTab">
+    <small *ngIf = "!triggerTimeValidFlag" class="medium form-text text-danger">Warning !!! Your Are Scheduling the templates during the blocked time</small>
+  </div>
 </div>
 <div class="modal-footer">
   <button

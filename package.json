@@ -31,6 +31,7 @@
     "ng-multiselect-dropdown": "^0.2.10",
     "ng-select2": "^1.2.2",
     "ng2-timezone-selector": "^0.2.4",
+    "ngx-csv-parser": "0.0.6",
     "rxjs": "~6.5.4",
     "select2": "^4.0.13",
     "tslib": "^1.10.0",

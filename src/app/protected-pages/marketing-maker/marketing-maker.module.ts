@@ -11,7 +11,8 @@ import {MaterialModule} from "src/app/material/material.module";
 import { FilePreviewDialogBoxComponent } from './dashboard/file-preview-dialog-box/file-preview-dialog-box/file-preview-dialog-box.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { CustomDateFilterPipe } from './shared/CustomPipe/custom-date-filter.pipe';
-
+import { WarningDialogBoxComponent} from './warning-dialog-box/warning-dialog-box.component';
+import { NgxCsvParserModule } from 'ngx-csv-parser';
 
 @NgModule({
   declarations: [
@@ -22,8 +23,9 @@ import { CustomDateFilterPipe } from './shared/CustomPipe/custom-date-filter.pip
     PreApprovedOffersComponent,
     FilePreviewDialogBoxComponent,
     CustomDateFilterPipe,
+    WarningDialogBoxComponent
   ],
-  imports: [CommonModule, MarketingMakerRoutingModule, SharedModule,MaterialModule,NgMultiSelectDropDownModule.forRoot()],
-  entryComponents : [FilePreviewDialogBoxComponent],
+  imports: [CommonModule, MarketingMakerRoutingModule, SharedModule,MaterialModule,NgMultiSelectDropDownModule.forRoot(),NgxCsvParserModule],
+  entryComponents : [FilePreviewDialogBoxComponent,WarningDialogBoxComponent],
 })
 export class MarketingMakerModule {}

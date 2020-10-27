@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef, Input } from "@angular/core";
 import { FormGroup, FormBuilder, Validators ,AbstractControl, ValidatorFn } from "@angular/forms";
 import { BUTTON_TEXTS, TOASTER_MESSAGES } from "src/app/shared/utils/constant";
 import { NgbDate } from "@ng-bootstrap/ng-bootstrap";
@@ -9,6 +9,12 @@ import timeZones from 'src/app/shared/JsonFiles/timeZone.json'
 import countryCodes from 'src/app/shared/JsonFiles/countryCodes.json';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import {MatDialog,MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { WarningDialogBoxComponent } from '../warning-dialog-box/warning-dialog-box.component';
+// import { NgxCsvParser } from 'projects/ngx-csv-parser/src/public-api';
+// import { NgxCSVParserError } from 'projects/ngx-csv-parser/src/public-api';
+import { NgxCsvParser } from 'ngx-csv-parser';
+import { NgxCSVParserError } from 'ngx-csv-parser';
 
 @Component({
   selector: "app-message-template",
@@ -18,7 +24,16 @@ import {map, startWith} from 'rxjs/operators';
 export class MessageTemplateComponent implements OnInit {
 
   @ViewChild("labelImport") labelImport: ElementRef;
+  @ViewChild("labelImportCSV") labelImportCSV : ElementRef;
+  @Input('BlockedFrom') fromBlockTime : any;
+  @Input('BlockedTo') toBlockTime : any;
+  @ViewChild('fileImportInput', { static: false }) fileImportInput: any;
 
+  FromBlockTimeHour : any;
+  FromBlockTimeMinute : any;
+  ToBlockTimeHour : any;
+  ToBlockTimeMinute : any;
+ 
   submitButtonText = BUTTON_TEXTS.SUBMIT_BUTTON_TEXT;
 
   form: FormGroup;
@@ -33,20 +48,34 @@ export class MessageTemplateComponent implements OnInit {
 
   loading = false;
   fileToUpload: any;
+  pdfFileToUploadFlag : boolean;
+  csvfileToUpload : boolean;
   fileUploadFlag : boolean;
   documentUploadId : any;
+  csvdocumentUploadId : any;
+  disableTemplateFlag : boolean;
   defaultTime = { hour: new Date().getHours(), minute: new Date().getMinutes() };
   timeZones:any = timeZones;
   countryCodeList:any = countryCodes;
   filteredOptions: Observable<string[]>;
-  
+  csvRecords : any[];
+  csvfileFlag:boolean = false
+  errorCountArray : string[]  = [];
+  stringErrorArray : string;
 
 
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
     private toasterService: ToasterService,
+    private warningDialog : MatDialog,
+    private ngxCsvParser: NgxCsvParser
   ) {
+  }
+
+  ngOnInit(): void {
+    this.setValidators();
+    this.configurable();
     this.form = this.formBuilder.group({
       template: [null, Validators.required],
       campaignStartDate: [new Date(), Validators.required],
@@ -55,17 +84,8 @@ export class MessageTemplateComponent implements OnInit {
       timeZone: ["",Validators.required],
       countryCodes: ["",Validators.required],
       importFile: [null],
+      importCSVFile : [null],
     });
-
-
-    //changes
-
-    
-    
-  }
-
-  ngOnInit(): void {
-    this.setValidators();
 
     this.dropdownSettings = {
       singleSelection: false,
@@ -176,6 +196,7 @@ export class MessageTemplateComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
+      debugger;
       this.loading = true;
       const fieldControls = this.form.controls;
       const campaignStartDate = fieldControls.campaignStartDate.value;
@@ -194,7 +215,7 @@ export class MessageTemplateComponent implements OnInit {
           transformedStartDate,
           transformedEndDate,
           `${triggerTime.hour}:${triggerTime.minute}:00`,
-          String(this.userService.currentUserValue.userId),this.fileUploadFlag,this.documentUploadId,timeZones,countryCodes
+          String(this.userService.currentUserValue.userId),this.fileUploadFlag,this.documentUploadId,this.csvdocumentUploadId,timeZones,countryCodes
         )
         .subscribe(
           (createdMessageTemplate) => {
@@ -209,9 +230,16 @@ export class MessageTemplateComponent implements OnInit {
               this.form.reset();
               this.form.controls['timeZone'].setValue("");
               this.labelImport.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
+              this.labelImportCSV.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
               this.documentUploadId = null;
+              this.csvdocumentUploadId = null;
+              this.disableTemplateFlag = false;
+              this.errorCountArray = [];
               this.loading = false;
               this.fileToUpload = null
+              this.csvfileFlag = false;
+              this.csvfileToUpload = false;
+              this.pdfFileToUploadFlag  =false;
             } else {
               this.loading = false;
               this.toasterService.showError(message.value);
@@ -235,13 +263,20 @@ export class MessageTemplateComponent implements OnInit {
   //   }
   // }
 
-  onFileChange(files: FileList) {
+  onFileChange(files: FileList,type : any) {
     debugger;
+    if(type === 'PDF'){
     this.labelImport.nativeElement.innerText = Array.from(files)
       .map((f) => f.name)
       .join(", ");
+      this.pdfFileToUploadFlag = true
+    }else if(type === "CSV"){
+      this.labelImportCSV.nativeElement.innerText = Array.from(files)
+      .map((f) => f.name)
+      .join(", ");
+    }
     this.fileToUpload = files.item(0);
-    if(this.fileToUpload["type"] == "application/pdf"){
+    if(this.fileToUpload["type"]){
       this.onlyPdf = false;
       console.log("FiletoUpload"+this.fileToUpload);
     const userId = String(this.userService.currentUserValue.userId);
@@ -251,7 +286,7 @@ export class MessageTemplateComponent implements OnInit {
     });
     modifiedFile["name"] = userId + "-" + new Date().getTime() + "-" + modifiedFile["name"];
     console.log(modifiedFile);
-    this.uploadToAppiyoDrive(modifiedFile);
+    this.uploadToAppiyoDrive(modifiedFile,type);
     }else{
       this.onlyPdf = true;
     }
@@ -265,8 +300,19 @@ export class MessageTemplateComponent implements OnInit {
     this.fileToUpload = null;
     this.fileUploadFlag = false
     this.documentUploadId = null;
+    this.pdfFileToUploadFlag = false
     this.labelImport.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
     this.onlyPdf = false;
+  }
+
+  cancelCSVFileUpload(){
+    this.form.controls['importCSVFile'].reset();
+    this.csvfileToUpload = false;
+    this.csvdocumentUploadId = null;
+    this.disableTemplateFlag = false
+    this.labelImportCSV.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
+    this.csvfileFlag = false;
+    this.errorCountArray = [];
   }
 
   getFileSize(size: any) {
@@ -299,7 +345,7 @@ export class MessageTemplateComponent implements OnInit {
     }
   }
 
-  uploadToAppiyoDrive(file : any)
+  uploadToAppiyoDrive(file : any,flag : string)
   {
     this.userService.uploadToAppiyoDrive(file).subscribe(
       (response) =>
@@ -307,7 +353,8 @@ export class MessageTemplateComponent implements OnInit {
         console.log(response)
         if(response["ok"])
         {
-          this.documentUploadId = response["info"]["id"];
+          
+          this.setUploadId(response,flag);
           this.toasterService.showSuccess(TOASTER_MESSAGES.FILE_UPLOAD_SUCCESS);
         }
         else{
@@ -321,6 +368,169 @@ export class MessageTemplateComponent implements OnInit {
       }
     );
   }
+
+  setUploadId(response : any,flag : string){
+    if(flag === 'PDF'){
+      this.documentUploadId = response["info"]["id"]; //FOR PDF
+    }
+
+          if(flag === 'CSV'){
+          this.csvdocumentUploadId = response["info"]["id"]; //FOR CSV
+          this.disableTemplateFlag = true;
+          }
+  }
+
+  configurable(){
+    let FromBlockTimeArr = this.fromBlockTime ? this.fromBlockTime.split(":") : null
+    let ToBlockTimeArr = this.toBlockTime ? this.toBlockTime.split(":") : null;
+ 
+    this.FromBlockTimeHour  = FromBlockTimeArr ? Number(FromBlockTimeArr[0]) : null;
+    this.FromBlockTimeMinute  = FromBlockTimeArr ? Number(FromBlockTimeArr[1]) : null;
+
+    this.ToBlockTimeHour = ToBlockTimeArr ? Number(ToBlockTimeArr[0]) : null;
+    this.ToBlockTimeMinute = ToBlockTimeArr ? Number(ToBlockTimeArr[1]) : null;
+   }
+
+   triggerTimeValidator(){
+     debugger;
+     const fieldControls = this.form.controls["triggerTime"].value;
+     const validateHour : number = fieldControls.hour ? Number(fieldControls.hour) : null;
+     const validateMinute : number = fieldControls.minute ? Number(fieldControls.minute) : null;
+
+     if(validateHour > this.FromBlockTimeHour && validateHour < this.ToBlockTimeHour){
+        this.warningPopUp();
+     }
+     else if(validateHour == this.FromBlockTimeHour || validateHour == this.ToBlockTimeHour){
+       if(validateHour == this.FromBlockTimeHour && validateMinute >= this.FromBlockTimeMinute){
+        this.warningPopUp();
+        }
+       if(validateHour == this.ToBlockTimeHour && validateMinute <= this.ToBlockTimeMinute)
+       {
+        this.warningPopUp();
+       }
+     }
+   }
+
+
+   warningPopUp(){
+    const dialogRef = this.warningDialog.open(WarningDialogBoxComponent,{
+      width : '500px',
+      data : {fromTime:this.fromBlockTime,toTime:this.toBlockTime}
+    })
+    dialogRef.afterClosed().subscribe((result) =>{
+      if(result){
+        return;
+      }
+    })
+   }
+
+ 
+   // input change listener for the CSV File
+   fileChangeListener($event: any): void {
+     debugger
+     const files : FileList= $event.srcElement.files;
+     this.labelImportCSV.nativeElement.innerText = Array.from(files)
+      .map((f) => f.name)
+      .join(", ");
+     this.csvfileToUpload = true;
+    const arr : any[] = this.validatorMethod();
+     // Select the files from the event
+     
+  
+     // Parse the file you want to select for the operation along with the configuration
+     this.ngxCsvParser.parse(files[0], { header: false, delimiter: ',' })
+       .pipe().subscribe((result: Array<any>) => {
+  
+         console.log('Result', result);
+
+         let fileHeaderArray : any[] = result ? (result[0] ? result[0] : null) : null;
+
+         if(!fileHeaderArray.includes("mobile")){
+
+           this.errorCountArray.push("mobile");
+         }
+         if(!(!arr.some(ele => !fileHeaderArray.includes(ele)))){
+              this.codeLineParser(arr,fileHeaderArray);
+         }
+
+         if(this.errorCountArray.length > 0){
+         this.stringErrorArray =  this.errorMessageConstructor(this.errorCountArray);
+         this.csvfileFlag = true;
+         return
+         }
+
+          this.onFileChange(files,'CSV')
+         this.csvRecords = result;
+       }, (error: NgxCSVParserError) => {
+         console.log('Error', error);
+       });
+  
+   }
+
+
+   errorMessageConstructor(errorCountArray : string[]) : string{
+     let stringArray : string  = '';
+     if(errorCountArray.length > 0){
+          for(let i =0 ;i < errorCountArray.length ; i++){
+            if(i != errorCountArray.length-1){
+            stringArray = stringArray+errorCountArray[i]+ ",";
+            }else{
+              stringArray = stringArray+errorCountArray[i];
+            }
+
+          }
+     }
+
+     return stringArray;
+   }
+
+   //File read error message constructor
+    codeLineParser(arrayA : string[],arrayB : string[]){
+      debugger;
+      for(let i =0 ; i < arrayA.length ;i++){
+            if(!arrayB.includes(arrayA[i])){
+              this.errorCountArray.push(arrayA[i]);
+            }
+            
+      }
+
+    }
+
+
+
+   templateParser(){
+
+
+     const templteMessage = this.form.controls['template'].value;
+     const result = templteMessage.match(/{([^}]+)}/g)
+                    .map(res => res.replace(/{|}/g , ''))
+   }
+
+   validatorMethod(): any{
+    var found = [],          // an array to collect the strings that are found
+    rxp = /{([^}]+)}/g,
+    templteMessage = this.form.controls['template'].value,
+    // str = "a {string} with {curly} braces",
+    
+    curMatch;
+
+  while( curMatch = rxp.exec( templteMessage ) ) {
+    found.push( curMatch[1] );
+}
+
+console.log( found );
+return found    // ["string", "curly"]
+   }
+
+
+
+   //Getting Block time
+
+   getBlockTIme(TimeZoneId ? : any){
+     if(TimeZoneId){
+       //UserService
+     }
+   }
 
   
 }

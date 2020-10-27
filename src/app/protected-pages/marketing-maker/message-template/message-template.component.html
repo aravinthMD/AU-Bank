@@ -3,11 +3,12 @@
     <form [formGroup]="form">
       <div class="form-group">
         <label for="template">Template</label>
-        <textarea
+        <textarea 
           class="form-control"
           formControlName="template"
           id="template"
           rows="3"
+          [readonly] = "disableTemplateFlag"
         ></textarea>
       </div>
       <!-- <div class="form-group">
@@ -88,7 +89,8 @@
         <ngb-timepicker
           formControlName="triggerTime"
           [meridian]="false"
-          [spinners]="false"
+          [spinners]="false" 
+          (ngModelChange) = "triggerTimeValidator()"
         ></ngb-timepicker>
         <!-- <small *ngIf = "triggerTimeExceedCurrentTime" class="medium form-text text-danger">Time sholud not be less than current time</small> -->
         <div class = "alert alert-danger" *ngIf = "form.get('triggerTime').invalid && (form.get('triggerTime').dirty || form.get('triggerTime').touched)">
@@ -128,17 +130,17 @@
       </div> -->
 
       <div class="form-group">
-        <label>Choose File</label>
+        <label>Choose PDF File</label>
         <div class="input-group">
           <div class="custom-file">
-            <input
+            <input accept="application/pdf"
               type="file"
               class="custom-file-input xinput"
               id="inputGroupFile"
               formControlName="importFile"
-              (change)="onFileChange($event.target.files)" />
+              (change)="onFileChange($event.target.files,'PDF')" />
               <!-- <div class="Xbox"> --> 
-                <button class = "custom-button Xbox"  *ngIf = "fileToUpload" type="button" (click) = "cancelFileUpload()">X</button>
+                <button class = "custom-button Xbox"  *ngIf = "pdfFileToUploadFlag" type="button" (click) = "cancelFileUpload()">X</button>
               <!-- </div> -->
             <!-- </input> -->
             <label class="custom-file-label" for="inputGroupFile" #labelImport>Choose file</label>
@@ -149,6 +151,48 @@
       </div>
         <!-- <button class = "custom-button" *ngIf = "fileToUpload" type="button" (click) = "cancelFileUpload()">Cancel</button> -->
       </div>
+
+      <div class="form-group">
+        <label>Choose CSV File</label>
+        <div class="input-group">
+          <div class="custom-file">
+            <input accept  = "application/vnd.ms-excel"
+              type="file"
+              class="custom-file-input xinput"
+              id="csvFileUpload"
+              formControlName="importCSVFile"
+              (change)="fileChangeListener($event)" #fileImportInput accept=".csv" />
+              <!-- <div class="Xbox"> --> 
+                <button class = "custom-button Xbox"  *ngIf = "csvfileToUpload" type="button" (click) = "cancelCSVFileUpload()">X</button>
+              <!-- </div> -->
+            <!-- </input> -->
+            <label class="custom-file-label" for="csvFileUpload" #labelImportCSV>Choose file</label>
+          </div>
+        </div>
+        <div *ngIf = "csvfileFlag" class="alert alert-danger">
+        <small *ngIf = "csvfileFlag" class="medium form-text text-danger">File Upload failed Missing columns {{stringErrorArray}}</small>
+      </div>
+        <!-- <button class = "custom-button" *ngIf = "fileToUpload" type="button" (click) = "cancelFileUpload()">Cancel</button> -->
+      </div>
+
+      <!-- <div class="csv-file-chooser-section"> -->
+
+
+        <!-- <label> -->
+          <!-- Csv -->
+        <!-- </label> -->
+        <!-- <input type="file" #fileImportInput name="File Upload" id="csvFileUpload" (change)="fileChangeListener($event)" -->
+          <!-- accept=".csv" /> -->
+      
+        
+        <!-- <select aria-placeholder="Parse headers?" [(ngModel)]="header">
+          <option [value]="true">Yes</option>
+          <option [value]="false">No</option>
+        </select> -->
+        <!-- <div *ngIf = "csvfileFlag" class="alert alert-danger"> -->
+          <!-- <small *ngIf = "csvfileFlag" class="medium form-text text-danger">Cross Verify the headers</small> -->
+        <!-- </div> -->
+      <!-- </div> -->
 
       <button
         type="button"

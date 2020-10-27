@@ -38,6 +38,13 @@ export class DashboardComponent implements OnInit {
     { name: "REJECTED", value: "20" },
   ];
 
+  filterTemplateOptions = [
+    {name : "ALL" ,value:"0"},
+    {name:"Message",value :"1"},
+    {name : "Promotional",value:"2"},
+    {name : "PreApproved",value:"3"}
+  ]
+
   previewFileUrl : any;
   host : any = environment.host;
   newAppiyoDrive  = environment.newAppiyoDrive;
@@ -55,6 +62,7 @@ export class DashboardComponent implements OnInit {
       fromDate: [null,Validators.required],
       toDate: [null, Validators.required],
       filterType: [TEMPLATE_STATUS_CODES.ALL, Validators.required],
+      filterTemplateType : [this.filterTemplateOptions[0].value,Validators.required]
     });
   }
 
@@ -121,6 +129,7 @@ export class DashboardComponent implements OnInit {
     const formattedFromDate =  fromDate ? `${fromDate.year}-${fromDate.month}-${fromDate.day}` : "";
     const formattedToDate =  toDate ? `${toDate.year}-${toDate.month}-${toDate.day}` : "";
     const filterType = fieldControls.filterType.value;
+    const filterTemplateType = fieldControls.filterTemplateType.value;
 
     const statusCode =
       filterType === TEMPLATE_STATUS_CODES.ALL ? "" : filterType;
@@ -129,7 +138,8 @@ export class DashboardComponent implements OnInit {
         this.currentPage,
         formattedFromDate,
         formattedToDate,
-        statusCode
+        statusCode,
+        filterTemplateType
       )
       .subscribe(
         (fetchedTemplates) => {
@@ -157,7 +167,7 @@ export class DashboardComponent implements OnInit {
     this.templates = null;
     window.scroll(0, 0);
     this.loading = true;
-    this.userService.fetchTemplates(this.currentPage, "", "", "").subscribe(
+    this.userService.fetchTemplates(this.currentPage, "", "", "","").subscribe(
       (fetchedTemplates) => {
         const {
           ProcessVariables: { status },
@@ -194,7 +204,7 @@ export class DashboardComponent implements OnInit {
   {
     this.form.reset();
     this.form.controls['filterType'].patchValue(TEMPLATE_STATUS_CODES.ALL);
-
+    this.form.controls['filterTemplateType'].patchValue(this.filterTemplateOptions[0].value);
     this.isFilterValid = false;
     this.fetchTemplates();
   }

@@ -1,0 +1,74 @@
+<div class="main">
+    <h2>Configure Block Time</h2>
+        <!-- <div class = "user shadow-lg"> -->
+            <div class="container">
+            <div class="user shadow-lg">
+            <div class="card-header text-center">
+                Block Time
+            </div>
+            <div class="p-4">
+            <form [formGroup]="forms">
+                <div class="row d-flex">
+                <div class="col-6">
+                <div class="form-group">
+                    <label for = "fromTimePicker">From Time</label>
+                        <ngb-timepicker id = "fromTimePicker"
+                        formControlName = "FromTime"
+                 >
+            </ngb-timepicker>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="toTimePicker">To Time</label>
+                            <ngb-timepicker id = "toTimePicker"
+                            formControlName = "ToTime"
+                        >
+                    </ngb-timepicker>
+                </div>
+            </div>
+        </div>
+                <!-- <div>
+                <button class="shadow"  [disabled] = "forms.invalid" (click) = "OnSubmit()">Submit</button>
+                </div> -->
+        <div>
+        <button class="btn submit-btn shadow" [disabled] = "forms.invalid" (click) = "OnEdit()">
+        <span
+          *ngIf="loading"
+          class="spinner-border"
+          style="width: 2rem; height: 2rem;"
+          aria-hidden="true"
+        >
+        </span>
+        <span *ngIf="!loading">Submit</span></button>
+        </div>
+                <!-- {{forms.controls['FromTime'].value | json}} -->
+        </form>
+        </div>
+        <!-- </div> -->
+    </div>
+</div>
+
+
+<!-- <div class="table-responsive">
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col" *ngFor="let header of tableHeaders">{{ header }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of templates">
+          
+          <td>
+            {{ item.timeZones }}
+          </td>
+          <td class="contenteditable"><input  type="text" [value]="item.fromBlockTime" [(ngModel)] = "fromTimeVar"></td>
+          <td class="contenteditable"><input  type="text" [value]="item.toBlockTime" [(ngModel)] = "toTimeVar"></td>
+          <td><button (click) = "OnSave()">Edit</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div> -->
+
+</div>

@@ -74,6 +74,7 @@ export class UserService {
       : environment.host;
   }
 
+
   public get currentUserValue(): LoginProcessVariables {
     return this.currentUserSubject.value;
   }
@@ -536,10 +537,10 @@ export class UserService {
     userId: string,
     uploadFlag: boolean,
     documentId: any,
+    csvDocId :  any,
     timeZone : any,
     countryCode: any
   ) {
-
     const data = {
       template,
       startDate,
@@ -548,6 +549,7 @@ export class UserService {
       userId,
       uploadFlag,
       documentId,
+      csvDocId,
       timeZone,
       countryCode
     };
@@ -583,6 +585,7 @@ export class UserService {
     userId: string,
     uploadFlag: boolean,
     documentId: any,
+    csvDocId : any,
     timeZone : any,
     countryCode : any
   ) {
@@ -595,6 +598,7 @@ export class UserService {
       isPromotion: "true",
       uploadFlag,
       documentId,
+      csvDocId,
       timeZone,
       countryCode
     };
@@ -629,6 +633,8 @@ export class UserService {
     endDate: string,
     triggerTime: string,
     userId: string,
+    uploadFlag : boolean,
+    documentId : any,
     timeZone: any,
     countryCode : any
   ) {
@@ -640,7 +646,9 @@ export class UserService {
       endDate,
       userId,
       timeZone,
-      countryCode
+      countryCode,
+      documentId,
+      uploadFlag
     };
     const {
       api: {
@@ -670,13 +678,15 @@ export class UserService {
     currentPage: number,
     fromDate: string,
     toDate: string,
-    templateStatus: string
+    templateStatus: string,
+    templateType : string
   ) {
     const data = {
       fromDate,
       toDate,
       templateStatus,
       currentPage,
+      templateType
     };
     const {
       api: {
@@ -840,7 +850,8 @@ export class UserService {
     toDate : string,
     templateStatus : string,
     checkerLogin : string,
-    isActiveInput :string
+    isActiveInput :string,
+    templateType : string
   )
   {
 
@@ -850,7 +861,8 @@ export class UserService {
       templateStatus,
       currentPage,
       checkerLogin,
-      isActiveInput
+      isActiveInput,
+      templateType
     }
 
     const {
@@ -945,14 +957,25 @@ export class UserService {
       projectId
     }
 
+    // const body = {"processId":"dd2d9a6aec6211ea9c031a78550cd107",
+    //               "ProcessVariables":{},
+    //               "workflowId":"2356727ad5a511eab60b727d5ac274b2",
+    //               "projectId":"e45e9cf0d5a411eab60b727d5ac274b2"};
     const body = {
       processVariables: JSON.stringify(requestEntity),
     };
 
+    // var myJson = JSON.stringify(requestEntity);
+    // const body = {
+    //        requestEntity,
+    //     };
+
+    // var Obj = JSON.stringify(body);
+
     const formData = this.transform(body);
 
     return this.http.post<EntityResponse>(
-      `${this.host}/appiyo/d/workflows/${workflowId}/execute?projectId=${projectId}`,formData
+      `${this.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,formData
     );
   }
   
@@ -979,7 +1002,61 @@ export class UserService {
     const formData = this.transform(body);
 
     return this.http.post<EntityResponse>(
-      `${this.host}/appiyo/d/workflows/${workflowId}/execute?projectId=${projectId}`,formData
+      `${this.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,formData
+    );
+  }
+
+  getTriggerTimeBlock(id:any){
+    const data = {id};
+    const {
+      api : {
+        getTriggerTimeBlocked : {processId ,workflowId , projectId}
+      },
+    } = environment;
+
+    const requestEntity : RequestEntity = {
+      processId,
+      ProcessVariables : data,
+      workflowId,
+      projectId
+    }
+
+    const body = {
+      processVariables: JSON.stringify(requestEntity),
+    };
+
+    const formData = this.transform(body);
+
+    return this.http.post<EntityResponse>(
+      `${this.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,formData
+      );
+
+  }
+
+  updateBlockTriggerTime(blockedFrom,blockedTo,userId,id){
+    const data = {
+      blockedFrom,
+      blockedTo,
+      id,
+      userId
+    };
+    const {
+      api : {
+        updateBlockTriggerTimeApi : {processId ,workflowId , projectId}
+      },
+    } = environment
+    const requestEntity : RequestEntity = {
+      processId,
+      ProcessVariables : data,
+      workflowId,
+      projectId
+    }
+    const body = {
+      processVariables: JSON.stringify(requestEntity),
+    };
+    const formData = this.transform(body);
+    return this.http.post<EntityResponse>(
+      `${this.host}/d/workflows/${workflowId}/execute?projectId=${projectId}`,formData
     );
   }
 

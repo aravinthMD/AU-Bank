@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit ,ViewChild,ElementRef,Input} from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { BUTTON_TEXTS, TOASTER_MESSAGES } from "src/app/shared/utils/constant";
 import { NgbDate } from "@ng-bootstrap/ng-bootstrap";
@@ -10,6 +10,9 @@ import countryCodes from 'src/app/shared/JsonFiles/countryCodes.json';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { error } from 'protractor';
+import {MatDialog} from '@angular/material/dialog';
+import { WarningDialogBoxComponent } from '../warning-dialog-box/warning-dialog-box.component';
+
 
 
 @Component({
@@ -18,6 +21,10 @@ import { error } from 'protractor';
   styleUrls: ["./pre-approved-offers.component.scss"],
 })
 export class PreApprovedOffersComponent implements OnInit {
+  @ViewChild("labelImport") labelImport: ElementRef;
+  @Input('BlockedFrom') fromBlockTime : any;
+  @Input('BlockedTo') toBlockTime : any;
+
   submitButtonText = BUTTON_TEXTS.SUBMIT_BUTTON_TEXT;
 
   form: FormGroup;
@@ -26,6 +33,12 @@ export class PreApprovedOffersComponent implements OnInit {
   fromMaxDate: any;
   toMinDate: any;
   toMaxDate: any;
+
+
+  FromBlockTimeHour : any;
+  FromBlockTimeMinute : any;
+  ToBlockTimeHour : any;
+  ToBlockTimeMinute : any;
 
   loading = false;
 
@@ -38,11 +51,20 @@ export class PreApprovedOffersComponent implements OnInit {
   defaultTime = { hour: 12, minute: 0 };
   templateDropDown : any[] = [];
   showTemplateMessageFlag : boolean;
+  fileToUpload: any;
+  onlyPdf:boolean = false;
+  documentUploadId : any;
+  fileUploadFlag : boolean;
+
+
+
+
 
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private toasterService: ToasterService
+    private toasterService: ToasterService,
+    private warningDialog : MatDialog
   ) {
     this.form = this.formBuilder.group({
       templateId : [null],
@@ -52,12 +74,13 @@ export class PreApprovedOffersComponent implements OnInit {
       campaignStartDate: [new Date(), Validators.required],
       campaignEndDate: [null, Validators.required],
       triggerTime: [null, [Validators.required,TriggerTimeValidator()]],
+      importFile: [null],
     });
   }
 
   ngOnInit(): void {
     this.setValidators();
-
+    this.configurable();
     this.fetchPreApprovedOffersDropDown();
 
     this.dropdownSettings = {
@@ -142,6 +165,8 @@ export class PreApprovedOffersComponent implements OnInit {
       const templateObj = fieldControls.templateId.value ? fieldControls.templateId.value : "";
       const templateId = templateObj ? templateObj.templateId : ""; 
       const template = fieldControls.template.value ? fieldControls.template.value : "";
+      this.fileUploadFlag = fieldControls.importFile.value ? true : false;
+
       // tslint:disable-next-line: max-line-length
       const transformedStartDate = `${campaignStartDate.year}-${campaignStartDate.month}-${campaignStartDate.day}`;
       const transformedEndDate = `${campaignEndDate.year}-${campaignEndDate.month}-${campaignEndDate.day}`;
@@ -152,7 +177,7 @@ export class PreApprovedOffersComponent implements OnInit {
           transformedStartDate,
           transformedEndDate,
           `${triggerTime.hour}:${triggerTime.minute}:00`,
-          String(this.userService.currentUserValue.userId),timeZones,countryCodes
+          String(this.userService.currentUserValue.userId),this.fileUploadFlag,this.documentUploadId,timeZones,countryCodes
         )
         .subscribe(
           (createdOffer) => {
@@ -166,8 +191,11 @@ export class PreApprovedOffersComponent implements OnInit {
               );
               this.form.reset();
               this.form.controls['timeZone'].patchValue('');
+              this.labelImport.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
+              this.documentUploadId = null;
               this.showTemplateMessageFlag = false;
               this.loading = false;
+              this.fileToUpload = null
             } else {
               this.loading = false;
               this.toasterService.showError(message.value);
@@ -203,5 +231,108 @@ export class PreApprovedOffersComponent implements OnInit {
       console.log(error);
     });
   }
+
+  onFileChange(files: FileList) {
+    this.labelImport.nativeElement.innerText = Array.from(files)
+      .map((f) => f.name)
+      .join(", ");
+    this.fileToUpload = files.item(0);
+    if(this.fileToUpload["type"] == "application/pdf"){
+      this.onlyPdf = false;
+      console.log("FiletoUpload"+this.fileToUpload);
+    const userId = String(this.userService.currentUserValue.userId);
+    const modifiedFile = Object.defineProperty(this.fileToUpload, "name", {
+      writable: true,
+      value: this.fileToUpload["name"]
+    });
+    modifiedFile["name"] = userId + "-" + new Date().getTime() + "-" + modifiedFile["name"];
+    console.log(modifiedFile);
+    this.uploadToAppiyoDrive(modifiedFile);
+    }else{
+      this.onlyPdf = true;
+    }
+    
+  }
+
+  uploadToAppiyoDrive(file : any)
+  {
+    this.userService.uploadToAppiyoDrive(file).subscribe(
+      (response) =>
+      {
+        console.log(response)
+        if(response["ok"])
+        {
+          this.documentUploadId = response["info"]["id"];
+          this.toasterService.showSuccess(TOASTER_MESSAGES.FILE_UPLOAD_SUCCESS);
+        }
+        else{
+          this.toasterService.showError(TOASTER_MESSAGES.FILE_UPLOAD_FAILURE);
+        }
+      },
+      (error) =>
+      {
+        this.toasterService.showError(TOASTER_MESSAGES.FILE_UPLOAD_FAILURE);
+        console.log(error);
+      }
+    );
+  }
+
+  cancelFileUpload()
+  {
+   // this.form.setValue({importFile : ''});
+    this.form.controls['importFile'].reset();
+    this.fileToUpload = null;
+    this.fileUploadFlag = false
+    this.documentUploadId = null;
+    this.labelImport.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
+    this.onlyPdf = false;
+  }
+
+  configurable(){
+    let FromBlockTimeArr = this.fromBlockTime ? this.fromBlockTime.split(":") : null
+    let ToBlockTimeArr = this.toBlockTime ? this.toBlockTime.split(":") : null;
+ 
+    this.FromBlockTimeHour = FromBlockTimeArr ? Number(FromBlockTimeArr[0]) : null;
+    this.FromBlockTimeMinute  = FromBlockTimeArr ? Number(FromBlockTimeArr[1]) : null;
+
+    this.ToBlockTimeHour = ToBlockTimeArr ? Number(ToBlockTimeArr[0]) : null;
+    this.ToBlockTimeMinute = ToBlockTimeArr ? Number(ToBlockTimeArr[1]) : null;
+   }
+
+   triggerTimeValidator(){
+    const fieldControls = this.form.controls["triggerTime"].value;
+    const validateHour : number = fieldControls.hour ? Number(fieldControls.hour) : null;
+    const validateMinute : number= fieldControls.minute ? Number(fieldControls.minute) : null;
+
+    if(validateHour > this.FromBlockTimeHour && validateHour < this.ToBlockTimeHour){
+      this.warningPopUp();
+    }
+    else if(validateHour == this.FromBlockTimeHour || validateHour == this.ToBlockTimeHour){
+      if(validateHour == this.FromBlockTimeHour && validateMinute >= this.FromBlockTimeMinute){
+        this.warningPopUp();
+      }
+      if(validateHour == this.ToBlockTimeHour && validateMinute <= this.ToBlockTimeMinute)
+      {
+        this.warningPopUp();
+      }
+
+    }
+
+
+    
+
+  }
+
+  warningPopUp(){
+    const dialogRef = this.warningDialog.open(WarningDialogBoxComponent,{
+      width : '500px'
+    })
+    dialogRef.afterClosed().subscribe((result) =>{
+      if(result){
+        return;
+      }
+    })
+   }
+
 
 }

@@ -60,6 +60,13 @@ export class LaunchDashboardComponent implements OnInit {
     {name : "Inactive" , value : "0"}
   ];
 
+  filterTemplateOptions = [
+    {name : "ALL" ,value:"0"},
+    {name:"Message",value :"1"},
+    {name : "Promotional",value:"2"},
+    {name : "PreApproved",value:"3"}
+  ]
+
 
   today = new Date();
 
@@ -80,6 +87,7 @@ export class LaunchDashboardComponent implements OnInit {
       fromDate: [null, Validators.required],
       toDate: [null, Validators.required],
       filterType: [this.filterOptions[0].value, Validators.required],
+      filterTemplateType: [this.filterTemplateOptions[0].value,Validators.required]
     });
     this.setValidators();
   }
@@ -177,8 +185,9 @@ export class LaunchDashboardComponent implements OnInit {
     const formattedToDate =  toDate ? `${toDate.year}-${toDate.month}-${toDate.day}` : "";
     const filterType = feildControls.filterType.value;
     const isActiveStatus = filterType === "2" ? "" : filterType;
+    const filterTemplateType = feildControls.filterTemplateType.value;
 
-    this.userService.fetchCheckerScreenTemplates(this.currentPage,formattedFromDate,formattedToDate,"",this.checkerLogin,isActiveStatus)
+    this.userService.fetchCheckerScreenTemplates(this.currentPage,formattedFromDate,formattedToDate,"",this.checkerLogin,isActiveStatus,filterTemplateType)
     .subscribe((fetchedTemplates) =>{
       const {
         ProcessVariables: { status },
@@ -208,7 +217,7 @@ export class LaunchDashboardComponent implements OnInit {
     this.templates = null;
     window.scroll(0,0);
     this.loading = true;
-    this.userService.fetchCheckerScreenTemplates(this.currentPage,"","","",this.checkerLogin,"").subscribe(
+    this.userService.fetchCheckerScreenTemplates(this.currentPage,"","","",this.checkerLogin,"","").subscribe(
       (fetchedTemplates) =>{
           const {
             ProcessVariables : {status},
@@ -320,6 +329,7 @@ export class LaunchDashboardComponent implements OnInit {
   {
     this.form.reset();
     this.form.controls['filterType'].patchValue(this.filterOptions[0].value);
+    this.form.controls['filterTemplateType'].patchValue(this.filterTemplateOptions[0].value);
     this.isFilterValid = false;
     this.fetchLauchDashBoardTemplate();
   }

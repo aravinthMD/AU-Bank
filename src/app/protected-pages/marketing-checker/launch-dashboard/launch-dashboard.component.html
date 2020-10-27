@@ -77,6 +77,21 @@
             >{{ option.name }}</option>
           </select>
         </div>
+        <div class="col">
+          <select
+            class="custom-select"
+            formControlName="filterTemplateType"
+            title="Filter templateType"
+            id="role"
+            (change)="onFilterTypeChange($event)"
+          >
+            <option
+              *ngFor="let option of filterTemplateOptions"
+              [value]="option.value"
+              >{{ option.name }}</option
+            >
+          </select>
+        </div>
         <div>
           <button matTooltip="Clear Filter" (click) = "clearFilter()" [disabled] = "!isFilterValid" mat-icon-button aria-label="Example icon button with a vertical three dot icon">
           <mat-icon>clear_all</mat-icon>
@@ -96,7 +111,14 @@
     </thead>
     <tbody>
       <tr *ngFor="let template of templates">
-        <td>{{ template.id }}</td>
+        <td>
+          <ng-template [ngIf] = "!template.templateId">
+          <a>{{ template.id }}</a>
+          </ng-template>
+          <ng-template [ngIf] = "template.templateId">
+          <a>{{ template.templateId }}</a>
+          </ng-template>
+        </td>
         <td>{{ template.template }}</td>
         <td>{{ template.startDate | customDateFilter}}</td>
         <td>{{ template.triggerTime }}</td>

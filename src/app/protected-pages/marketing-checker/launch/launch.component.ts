@@ -40,6 +40,16 @@ export class LaunchComponent implements OnInit {
   toMinDate: any;
   toMaxDate: any;
 
+  blockedFrom : any ;
+  blockedTo : any;
+  blockedBy : any;
+  id : any;
+
+  FromBlockTimeHour : number;
+  FromBlockTimeMinute : number;
+  ToBlockTimeHour : number;
+  ToBlockTimeMinute : number;
+
   previewFileUrl : any;
   host : any = environment.host;
   newAppiyoDrive  = environment.newAppiyoDrive;
@@ -49,6 +59,13 @@ export class LaunchComponent implements OnInit {
     { name: "SUBMITTED", value: "10" },
     { name: "APPROVED", value: "30" },
     { name: "REJECTED", value: "20" },
+  ];
+
+  filterTemplateOptions = [
+    {name : "ALL" ,value:"0"},
+    {name:"Message",value :"1"},
+    {name : "Promotional",value:"2"},
+    {name : "PreApproved",value:"3"}
   ];
 
   tableHeaders = ["Template Id", "Template", "Campaign Start Date", "Upload Time","Campaign End Date","Campaign Type","Action","Document"];
@@ -66,10 +83,12 @@ export class LaunchComponent implements OnInit {
       fromDate: [null, Validators.required],
       toDate: [null, Validators.required],
       // filterType: [TEMPLATE_STATUS_CODES.ALL, Validators.required],
+      filterTemplateType : [this.filterTemplateOptions[0].value,Validators.required]
     });
   }
 
   ngOnInit(): void {
+    this.getBlockTriggerTime();
     this.setValidators();
     this.fetchTemplates();
   }
@@ -131,8 +150,10 @@ export class LaunchComponent implements OnInit {
     const fromDate = fieldControls.fromDate.value;
     const toDate = fieldControls.toDate.value;
 
-    const formattedFromDate = `${fromDate.year}-${fromDate.month}-${fromDate.day}`;
-    const formattedToDate = `${toDate.year}-${toDate.month}-${toDate.day}`;
+    const formattedFromDate = fromDate ? `${fromDate.year}-${fromDate.month}-${fromDate.day}` : "";
+    const formattedToDate = toDate ? `${toDate.year}-${toDate.month}-${toDate.day}` : "";
+    const filterTemplateType = fieldControls.filterTemplateType.value;
+
     // const filterType = fieldControls.filterType.value;
 
     // const statusCode =
@@ -143,7 +164,8 @@ export class LaunchComponent implements OnInit {
         this.currentPage,
         formattedFromDate,
         formattedToDate,
-        statusCode,"",""
+        statusCode,"","",
+        filterTemplateType
       )
       .subscribe(
         (fetchedTemplates) => {
@@ -172,7 +194,7 @@ export class LaunchComponent implements OnInit {
     this.templates = null;
     window.scroll(0, 0);
     this.loading = true;
-    this.userService.fetchCheckerScreenTemplates(this.currentPage, "", "", "","","").subscribe(
+    this.userService.fetchCheckerScreenTemplates(this.currentPage, "", "", "","","","").subscribe(
       (fetchedTemplates) => {
         debugger;
         const {
@@ -195,7 +217,12 @@ export class LaunchComponent implements OnInit {
     );
   }
   openApproveTemplateDialog(template: any): void {
-    debugger;
+    let triggerTimeValidFlag : boolean;
+    if(this.triggerTimeValidator(template)){
+      triggerTimeValidFlag = false
+    }else{
+      triggerTimeValidFlag = true;
+    }
     const dialog = this.ngbModal.open(ApproveTemplateDialogComponent, {
       centered: true,
     });
@@ -208,6 +235,7 @@ export class LaunchComponent implements OnInit {
     }
     dialog.componentInstance.inputData = template;
     dialog.componentInstance.previewUrl = this.previewFileUrl;
+    dialog.componentInstance.triggerTimeValidFlag = triggerTimeValidFlag;
     dialog.result.then((response) => {
       if (response === RESPONSES.SUCCESS) {
         if (this.isFilterValid) {
@@ -250,7 +278,85 @@ export class LaunchComponent implements OnInit {
   clearFilter()
   {
     this.form.reset();
+    this.form.controls['filterTemplateType'].patchValue(this.filterTemplateOptions[0].value);
     this.isFilterValid = false;
     this.fetchTemplates();
   }
+
+  getBlockTriggerTime(){
+    this.userService.getTriggerTimeBlock("1").subscribe((response) =>{
+      console.log(response);
+      const {
+        ProcessVariables: {  message = {} },
+      } = response;
+      if(true){
+        const {
+          ProcessVariables : {blockedBy ,blockedFrom,blockedTo,id }
+        } = response;
+        this.blockedBy = blockedBy;
+        this.blockedFrom = blockedFrom;
+        this.blockedTo = blockedTo;
+        this.id = id;
+        this.configurable();
+      }else{
+
+      }
+    })
+  }
+
+  configurable(){
+    let FromBlockTimeArr = this.blockedFrom ? this.blockedFrom.split(":") : null
+    let ToBlockTimeArr = this.blockedTo ? this.blockedTo.split(":") : null;
+ 
+    this.FromBlockTimeHour = FromBlockTimeArr ? Number(FromBlockTimeArr[0]) : null;
+    this.FromBlockTimeMinute  = FromBlockTimeArr ? Number(FromBlockTimeArr[1]) : null;
+
+    this.ToBlockTimeHour = ToBlockTimeArr ? Number(ToBlockTimeArr[0]) : null;
+    this.ToBlockTimeMinute = ToBlockTimeArr ? Number(ToBlockTimeArr[1]) : null;
+   }
+
+
+  //  triggerTimeValidator(){
+  //   const fieldControls = this.form.controls["triggerTime"].value;
+  //   const validateHour : number = fieldControls.hour ? Number(fieldControls.hour) : null;
+  //   const validateMinute : number= fieldControls.minute ? Number(fieldControls.minute) : null;
+
+  //   if(validateHour > this.FromBlockTimeHour && validateHour < this.ToBlockTimeHour){
+  //     this.warningPopUp();
+  //   }
+  //   else if(validateHour == this.FromBlockTimeHour || validateHour == this.ToBlockTimeHour){
+  //     if(validateHour == this.FromBlockTimeHour && validateMinute >= this.FromBlockTimeMinute){
+  //      this.warningPopUp();
+  //     }
+  //     if(validateHour == this.ToBlockTimeHour && validateMinute <= this.ToBlockTimeMinute)
+  //     {
+  //       this.warningPopUp();
+  //     }
+
+  //   }
+  // }
+
+
+   triggerTimeValidator(template : any) : boolean{
+     debugger
+     const triggerTime = template ? (template.triggerTime ? template.triggerTime : null) : null;
+      let triggerTimeArray = triggerTime ? triggerTime.split(":") : null;
+      let fromBlockTimeHour = triggerTimeArray ? Number(triggerTimeArray[0]) : null;
+      let FromBlockTimeMinute = triggerTimeArray ? Number(triggerTimeArray[1]) : null;
+
+      if(fromBlockTimeHour > this.FromBlockTimeHour && fromBlockTimeHour < this.ToBlockTimeHour){
+        return true;
+      }
+      else if(fromBlockTimeHour == this.FromBlockTimeHour || fromBlockTimeHour == this.ToBlockTimeHour){
+        if(fromBlockTimeHour == this.FromBlockTimeHour && FromBlockTimeMinute >= this.FromBlockTimeMinute){
+          return true
+        }
+        if(fromBlockTimeHour == this.ToBlockTimeHour && FromBlockTimeMinute <= this.ToBlockTimeMinute)
+        {
+          return true;
+        }
+  
+      }
+      
+   }
 }

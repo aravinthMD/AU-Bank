@@ -1,8 +1,8 @@
 import { version } from "package.json";
 
 export const environment = {
-  version : "0.0.7",
-  buildDate: '02/09/2020',
+  version : "0.1.0",
+  buildDate: '27/10/2020',
   production: true,
 
   projectId: "e1175c26fea511e8bb4f0050569c0a8e",
@@ -95,8 +95,8 @@ export const environment = {
     fetchcheckerScreenTemplates : {
       projectId: "e45e9cf0d5a411eab60b727d5ac274b2",
       workflowId: "102df80ed5a911eab60b727d5ac274b2",
-      processId: "34c44c92dbbf11eab60d727d5ac274b2", //LOCAL
-      // processId:  "eab3b07cdcb111ea854a46113bb841db" //Production
+      // processId: "34c44c92dbbf11eab60d727d5ac274b2", //LOCAL
+      processId:  "eab3b07cdcb111ea854a46113bb841db" //Production
     },
     fetchViewTemplate : {
       projectId : "e45e9cf0d5a411eab60b727d5ac274b2",
@@ -106,12 +106,24 @@ export const environment = {
     fetchPromotionalDropDownData : {
       projectId : "e45e9cf0d5a411eab60b727d5ac274b2",
       workflowId : "2356727ad5a511eab60b727d5ac274b2",
-      processId : "dd2d9a6aec6211ea9c031a78550cd107",
+      processId : "dd2d9a6aec6211ea9c031a78550cd107",//PRODUCTION
+      // processId : "cf6a0986ed0c11eab613727d5ac274b2",//LOCAL
     },
     fetchPreApprovedDropDownData : {
       projectId : "e45e9cf0d5a411eab60b727d5ac274b2",
       workflowId : "2356727ad5a511eab60b727d5ac274b2",
-      processId : "03ef3a3eec6611ea90b71a78550cd107",
+      processId : "03ef3a3eec6611ea90b71a78550cd107",//PRODUCTION
+      // processId : "093e269ced0d11eab613727d5ac274b2",//LOCAL
+    },
+    getTriggerTimeBlocked : {
+      projectId : "e45e9cf0d5a411eab60b727d5ac274b2",
+      workflowId : "d9710a7af8e611eab613727d5ac274b2",
+      processId : "ca265cb0f8ea11eab613727d5ac274b2"
+    },
+    updateBlockTriggerTimeApi : {
+      projectId : "e45e9cf0d5a411eab60b727d5ac274b2",
+      workflowId : "d9710a7af8e611eab613727d5ac274b2",
+      processId : "d9a17f98f8e611eab613727d5ac274b2"
     },
   },
   host: "/appiyo",

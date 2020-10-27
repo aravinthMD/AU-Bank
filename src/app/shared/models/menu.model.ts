@@ -18,4 +18,6 @@ export const SUPER_ADMIN_MENU_ITEMS = [
 export const ADMIN_MENU_ITEMS = [
   new Menu(10, "User Creation", "/user-creation", false, 0),
   new Menu(20, "Manage Users", "/manage-users", false, 0),
+  new Menu(30, "Configure TriggerTime","/configure-triggerTime",false,0)
+
 ];

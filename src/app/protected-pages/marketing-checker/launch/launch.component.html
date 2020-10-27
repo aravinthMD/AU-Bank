@@ -64,13 +64,29 @@
                 <i class="fa fa-calendar-check-o"></i>
               </button>
             </div>
-            <div>
-              <button matTooltip="Clear Filter" (click) = "clearFilter()" [disabled] = "!isFilterValid" mat-icon-button aria-label="Example icon button with a vertical three dot icon">
-              <mat-icon>clear_all</mat-icon>
-              </button>
-              </div>
+            
           </div>
         </div>
+        <div class="col">
+          <select
+            class="custom-select"
+            formControlName="filterTemplateType"
+            title="Filter templateType"
+            id="role"
+            (change)="onFilterTypeChange($event)"
+          >
+            <option
+              *ngFor="let option of filterTemplateOptions"
+              [value]="option.value"
+              >{{ option.name }}</option
+            >
+          </select>
+        </div>
+        <div>
+          <button matTooltip="Clear Filter" (click) = "clearFilter()" [disabled] = "!isFilterValid" mat-icon-button aria-label="Example icon button with a vertical three dot icon">
+          <mat-icon>clear_all</mat-icon>
+          </button>
+          </div>
         
         <!-- <div class="col">
           <select
@@ -102,7 +118,12 @@
     <tbody>
       <tr *ngFor="let template of templates">
         <td>
+          <ng-template [ngIf] = "!template.templateId">
           <a>{{ template.id }}</a>
+          </ng-template>
+          <ng-template [ngIf] = "template.templateId">
+          <a>{{ template.templateId }}</a>
+          </ng-template>
         </td>
         <td>
           {{ template.template }}

@@ -3,6 +3,7 @@ import { ValidatorFn, AbstractControl } from '@angular/forms';
 
 // }
 export function TriggerTimeValidator() : ValidatorFn{
+
     return (control : AbstractControl) : {[key:string] : boolean} | null => {
     const date = new Date();
     const currentHour : number = date.getHours();
@@ -10,6 +11,7 @@ export function TriggerTimeValidator() : ValidatorFn{
     console.log("Current Date:"+date.getHours());
     
     const triggerTime = control.value;
+ 
     if(control.touched && control.dirty){
             console.log("triggerTime :"+triggerTime);
             const selectedtimeHour  = Number(`${triggerTime.hour}`);

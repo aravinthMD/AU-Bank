@@ -49,6 +49,10 @@ export interface EntityResponse {
     launchedOn:any;
     more:boolean;
     templateIdList: any[]
+    blockedFrom : any;
+    blockedTo : any;
+    blockedBy : any;
+    id : any;
   };
 
   Status: string;

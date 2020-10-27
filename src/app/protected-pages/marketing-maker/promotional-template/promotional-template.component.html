@@ -26,7 +26,7 @@
         <mat-form-field floatLabel = "never" class="example-full-width">
           <mat-select placeholder = "select the id" formControlName="templateId" (selectionChange) = "onTemplateIdChange()">
             <mat-option>None</mat-option>
-            <mat-option *ngFor="let data of templateDropDown" [value]="data">{{data.templateId}}-{{data.templateName}}</mat-option>
+            <mat-option *ngFor="let data of templateDropDown" [value]="data">{{data.templateId}}-{{data.template_name}}</mat-option>
           </mat-select>
         </mat-form-field>
         </div>
@@ -83,7 +83,7 @@
             ngbDatepicker
             [minDate] = "minDate"
             readonly
-            #fromDate="ngbDatepicker"
+            #fromDate="ngbDatepicker" 
           />
           <div class="input-group-append">
             <button
@@ -103,6 +103,7 @@
           formControlName="triggerTime"
           [meridian]="false"
           [spinners]="false"
+          (ngModelChange) = "triggerTimeValidator()"
         ></ngb-timepicker>
         <div class = "alert alert-danger" *ngIf = "form.get('triggerTime').invalid && (form.get('triggerTime').dirty || form.get('triggerTime').touched)">
         <small *ngIf = "form.get('triggerTime').hasError('triggerTimeError') && form.get('triggerTime').errors.triggerTimeError" class="medium form-text text-danger">Time sholud not be less than current time</small>
@@ -110,7 +111,7 @@
       </div>
 
       <div class="form-group">
-        <label>Choose File</label>
+        <label>Choose PDF File</label>
         <div class="input-group">
           <div class="custom-file">
             <input
@@ -118,7 +119,7 @@
               class="custom-file-input xinput"
               id="inputGroupFile"
               formControlName="importFile"
-              (change)="onFileChange($event.target.files)" />
+              (change)="onFileChange($event.target.files,'PDF')" />
               <!-- <div class="Xbox"> --> 
                 <button class = "custom-button Xbox" *ngIf = "fileToUpload" type="button" (click) = "cancelFileUpload()">X</button>
               <!-- </div> -->
@@ -128,6 +129,25 @@
         </div>
         <!-- <button class = "custom-button" *ngIf = "fileToUpload" type="button" (click) = "cancelFileUpload()">Cancel</button> -->
       </div>
+
+      <!-- <div class="form-group">
+        <label>Choose CSV File</label>
+        <div class="input-group">
+          <div class="custom-file">
+            <input accept  = "application/vnd.ms-excel"
+              type="file"
+              class="custom-file-input xinput"
+              id="csvFileUpload"
+              formControlName="importCSVFile"
+              (change)="fileChangeListener($event)" #fileImportInput accept=".csv" />
+                <button class = "custom-button Xbox"  *ngIf = "csvfileToUpload" type="button" (click) = "cancelCSVFileUpload()">X</button>
+            <label class="custom-file-label" for="csvFileUpload" #labelImportCSV>Choose file</label>
+          </div>
+        </div>
+        <div *ngIf = "csvfileFlag" class="alert alert-danger">
+        <small *ngIf = "csvfileFlag" class="medium form-text text-danger">File Upload failed Missing columns {{stringErrorArray}}</small>
+      </div>
+      </div> -->
 
       <button
         type="button"
