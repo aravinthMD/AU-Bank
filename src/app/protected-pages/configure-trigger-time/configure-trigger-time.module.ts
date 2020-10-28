@@ -7,11 +7,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from 'src/app/shared/shared.module';
 import {MaterialModule} from "src/app/material/material.module";
 import { WarningAlertDialogBoxComponent } from './warning-alert-dialog-box/warning-alert-dialog-box.component';
+import { UpdateTriggerTimePopUpComponent } from './update-trigger-time-pop-up/update-trigger-time-pop-up.component';
 
 
 
 @NgModule({
-  declarations: [ConfigureTriggerTimeComponent, WarningAlertDialogBoxComponent],
+  declarations: [ConfigureTriggerTimeComponent, WarningAlertDialogBoxComponent, UpdateTriggerTimePopUpComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -21,6 +22,6 @@ import { WarningAlertDialogBoxComponent } from './warning-alert-dialog-box/warni
     MaterialModule
   ],
   exports: [ConfigureTriggerTimeComponent],
-  entryComponents : [WarningAlertDialogBoxComponent]
+  entryComponents : [WarningAlertDialogBoxComponent,UpdateTriggerTimePopUpComponent]
 })
 export class ConfigureTriggerTimeModule { }

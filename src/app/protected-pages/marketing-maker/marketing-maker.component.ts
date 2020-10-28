@@ -14,8 +14,11 @@ export class MarketingMakerComponent implements OnInit {
   blockedTo : any;
   blockedBy : any;
   id : any;
+
+  timeZonesList : any[] = [];
   ngOnInit(): void {
-    this.getBlockTriggerTime();
+    // this.getBlockTriggerTime();
+    this.fetchTimeZonesBasedBlockedTimes();
   }
 
 
@@ -35,6 +38,21 @@ export class MarketingMakerComponent implements OnInit {
         this.id = id;
       }else{
 
+      }
+    })
+  }
+
+  fetchTimeZonesBasedBlockedTimes(){
+    this.userService.fetchTimeZonesBasedBlockedTimes().subscribe((response) =>{
+      debugger;
+      if(true){
+        const {
+          ProcessVariables : {id ,timeZones}
+        } = response;
+        console.log(timeZones);
+        if(timeZones){
+          this.timeZonesList = timeZones;
+        }
       }
     })
   }

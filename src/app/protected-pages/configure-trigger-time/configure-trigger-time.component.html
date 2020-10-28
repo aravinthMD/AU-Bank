@@ -1,7 +1,6 @@
-<div class="main">
-    <h2>Configure Block Time</h2>
-        <!-- <div class = "user shadow-lg"> -->
-            <div class="container">
+<div class="col-md-10 main">
+    <h2 class="header">Configure Block Time</h2>
+            <!-- <div class="container">
             <div class="user shadow-lg">
             <div class="card-header text-center">
                 Block Time
@@ -28,9 +27,7 @@
                 </div>
             </div>
         </div>
-                <!-- <div>
-                <button class="shadow"  [disabled] = "forms.invalid" (click) = "OnSubmit()">Submit</button>
-                </div> -->
+                
         <div>
         <button class="btn submit-btn shadow" [disabled] = "forms.invalid" (click) = "OnEdit()">
         <span
@@ -42,33 +39,87 @@
         </span>
         <span *ngIf="!loading">Submit</span></button>
         </div>
-                <!-- {{forms.controls['FromTime'].value | json}} -->
         </form>
         </div>
-        <!-- </div> -->
     </div>
-</div>
+</div> -->
 
-
-<!-- <div class="table-responsive">
+<!-- <div class="container">
+<div class="table-responsive">
     <table class="table">
       <thead class="thead-light">
         <tr>
-          <th scope="col" *ngFor="let header of tableHeaders">{{ header }}</th>
+          <th scope="col" *ngFor="let header of tableHeaders;">{{ header }}</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of templates">
-          
+        <tr *ngFor="let timeZone of timeZonesList;index as i">
+          <td>{{ i+1 }}</td>
           <td>
-            {{ item.timeZones }}
+            {{ timeZone.text }}
           </td>
-          <td class="contenteditable"><input  type="text" [value]="item.fromBlockTime" [(ngModel)] = "fromTimeVar"></td>
-          <td class="contenteditable"><input  type="text" [value]="item.toBlockTime" [(ngModel)] = "toTimeVar"></td>
-          <td><button (click) = "OnSave()">Edit</button></td>
+          <td> {{ timeZone.blockedFrom}} </td>
+          <td>{{ timeZone.blockedTo}}</td>
+          <td><button class="shadow" >
+            edit
+          </button></td>
         </tr>
       </tbody>
     </table>
-  </div> -->
+    <div class="d-flex justify-content-center p-2">
+  
 
+      <ngb-pagination 
+      [collectionSize]="collectionSize" 
+      [(page)]="page" 
+      [pageSize]="pageSize" 
+      >
+      </ngb-pagination>
+    </div>
+  </div>
+</div> -->
+
+<div class="col-md-12">
+  <mat-form-field>
+    <input (keyup) = "applyFilter($event.target.value)" matInput placeholder="filter">
+  </mat-form-field>
+  <div class="mat-elevation-z8">
+   
+    <table mat-table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="S.NO">
+            <th mat-header-cell *matHeaderCellDef> User ID </th>
+            <td mat-cell *matCellDef="let element; let i = index"> {{i+1}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="TimeZones">
+            <th mat-header-cell *matHeaderCellDef> Time Zones </th>
+            <td mat-cell *matCellDef="let element"> {{element.text}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="FromBlockedTime">
+            <th mat-header-cell *matHeaderCellDef> From Blocked Time </th>
+            <td mat-cell *matCellDef="let element"> {{element.blockedFrom}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="ToBlockedTime">
+            <th mat-header-cell *matHeaderCellDef> To Blocked Time </th>
+            <td mat-cell *matCellDef="let element"> {{element.blockedTo}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="Action">
+            <th mat-header-cell *matHeaderCellDef> Action </th>
+            <td mat-cell *matCellDef="let element"> <button (click) = "OpenDialog(element)">Edit</button> </td>
+        </ng-container>
+
+        
+
+        <tr mat-header-row *matHeaderRowDef="tableHeaders"></tr>
+        <tr mat-row *matRowDef="let row; columns: tableHeaders;" class="example-element-row"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
+</div>
 </div>

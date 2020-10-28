@@ -53,6 +53,7 @@ export interface EntityResponse {
     blockedTo : any;
     blockedBy : any;
     id : any;
+    timeZones ?: any[]
   };
 
   Status: string;

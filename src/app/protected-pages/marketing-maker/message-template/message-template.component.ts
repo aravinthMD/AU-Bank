@@ -25,8 +25,7 @@ export class MessageTemplateComponent implements OnInit {
 
   @ViewChild("labelImport") labelImport: ElementRef;
   @ViewChild("labelImportCSV") labelImportCSV : ElementRef;
-  @Input('BlockedFrom') fromBlockTime : any;
-  @Input('BlockedTo') toBlockTime : any;
+  @Input('timeZonesList') timeZonesListArr : any[];
   @ViewChild('fileImportInput', { static: false }) fileImportInput: any;
 
   FromBlockTimeHour : any;
@@ -75,7 +74,6 @@ export class MessageTemplateComponent implements OnInit {
 
   ngOnInit(): void {
     this.setValidators();
-    this.configurable();
     this.form = this.formBuilder.group({
       template: [null, Validators.required],
       campaignStartDate: [new Date(), Validators.required],
@@ -114,16 +112,22 @@ export class MessageTemplateComponent implements OnInit {
   private _filter(value: string): string[] {
 
     const filterValue = value ? value.toLowerCase() : "";
-
-    return this.timeZones.filter(timeZone => timeZone.text.toLowerCase().includes(filterValue));
+    console.log(this.timeZonesListArr.filter(timeZone => timeZone.text.toLowerCase().includes(filterValue)));
+    return this.timeZonesListArr.filter(timeZone => timeZone.text.toLowerCase().includes(filterValue));
   }
 
 
   displayFn(SelectedId){
+    debugger;
     if(!SelectedId) return '';
-    let index = this.timeZones.findIndex(timeZone => timeZone.utc[0] === SelectedId);
-    return this.timeZones[index].text;
+    let index = this.timeZonesListArr.findIndex(timeZone => timeZone.utc === SelectedId);
 
+    return this.timeZonesListArr[index].text;
+
+  }
+
+  configure(timeZone : any){
+    
   }
 
   
@@ -380,9 +384,9 @@ export class MessageTemplateComponent implements OnInit {
           }
   }
 
-  configurable(){
-    let FromBlockTimeArr = this.fromBlockTime ? this.fromBlockTime.split(":") : null
-    let ToBlockTimeArr = this.toBlockTime ? this.toBlockTime.split(":") : null;
+  configurable(fromBlockTime : any,toBlockTime :  any){
+    let FromBlockTimeArr = fromBlockTime ? fromBlockTime.split(":") : null
+    let ToBlockTimeArr =  toBlockTime ?  toBlockTime.split(":") : null;
  
     this.FromBlockTimeHour  = FromBlockTimeArr ? Number(FromBlockTimeArr[0]) : null;
     this.FromBlockTimeMinute  = FromBlockTimeArr ? Number(FromBlockTimeArr[1]) : null;
@@ -415,7 +419,7 @@ export class MessageTemplateComponent implements OnInit {
    warningPopUp(){
     const dialogRef = this.warningDialog.open(WarningDialogBoxComponent,{
       width : '500px',
-      data : {fromTime:this.fromBlockTime,toTime:this.toBlockTime}
+     // data : {fromTime:this.fromBlockTime,toTime:this.toBlockTime}
     })
     dialogRef.afterClosed().subscribe((result) =>{
       if(result){
@@ -526,11 +530,7 @@ return found    // ["string", "curly"]
 
    //Getting Block time
 
-   getBlockTIme(TimeZoneId ? : any){
-     if(TimeZoneId){
-       //UserService
-     }
-   }
+   
 
   
 }

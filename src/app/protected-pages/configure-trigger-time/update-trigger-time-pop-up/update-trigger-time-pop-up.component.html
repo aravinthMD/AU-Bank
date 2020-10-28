@@ -1,0 +1,42 @@
+    <div class="user shadow-lg">
+    <div class="card-header text-center">
+        {{timeZoneText}}
+    </div>
+    <div class="p-4">
+    <form [formGroup]="forms">
+        <div class="row d-flex">
+        <div class="col-6">
+        <div class="form-group">
+            <label for = "fromTimePicker">From Time</label>
+                <ngb-timepicker id = "fromTimePicker"
+                formControlName = "FromTime"
+                [spinners]="false"
+         >
+    </ngb-timepicker>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="form-group">
+            <label for="toTimePicker">To Time</label>
+                    <ngb-timepicker id = "toTimePicker"
+                    formControlName = "ToTime" [spinners]="false" 
+                >
+            </ngb-timepicker>
+        </div>
+    </div>
+</div>
+        
+<div>
+<button class="btn submit-btn shadow" [disabled] = "forms.invalid" (click) = OnEdit()>
+<!-- <span
+  *ngIf="loading"
+  class="spinner-border"
+  style="width: 2rem; height: 2rem;"
+  aria-hidden="true"
+>
+</span> -->
+<span >Submit</span></button>
+</div>
+</form>
+</div>
+</div>

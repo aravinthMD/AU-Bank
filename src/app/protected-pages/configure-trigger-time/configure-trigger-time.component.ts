@@ -1,18 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild,AfterViewInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import {UserService} from 'src/app/shared/services/user.service'
 import { ToasterService } from "src/app/shared/services/toaster.service";
 import { BUTTON_TEXTS, TOASTER_MESSAGES } from "src/app/shared/utils/constant";
-import { error } from 'protractor';
-
-
+import {MatTableDataSource} from '@angular/material/table';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatDialog,MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {UpdateTriggerTimePopUpComponent} from './update-trigger-time-pop-up/update-trigger-time-pop-up.component'
 
 @Component({
   selector: 'app-configure-trigger-time',
   templateUrl: './configure-trigger-time.component.html',
   styleUrls: ['./configure-trigger-time.component.scss']
 })
-export class ConfigureTriggerTimeComponent implements OnInit {
+export class ConfigureTriggerTimeComponent implements OnInit,AfterViewInit {
 
  
   fromTime = {hour: 13, minute: 30};
@@ -26,14 +27,17 @@ export class ConfigureTriggerTimeComponent implements OnInit {
   flag : boolean;
   fromTimeVar : any;
   toTimeVar : any;
+  timeZonesList :  any[] = [];
 
 
-  constructor(private formBuilder : FormBuilder,private userService : UserService,private toasterService:ToasterService) 
+  dataSource : any = new MatTableDataSource<any[]>();
+
+  @ViewChild(MatPaginator,{static:true}) paginator: MatPaginator;
+
+
+  constructor(private formBuilder : FormBuilder,private userService : UserService,private toasterService:ToasterService,private dialog: MatDialog) 
   {
-    // this.forms = this.formBuilder.group({
-    //   fromTime : [null],
-    //   toTime : [null]
-    // });
+    
    }
 
    forms = this.formBuilder.group({
@@ -43,23 +47,13 @@ export class ConfigureTriggerTimeComponent implements OnInit {
 
   ngOnInit(): void {
     this.getBlockTriggerTime();
+    this.fetchTimeZonesBasedBlockedTimes();
 
   }
+  ngAfterViewInit(){
+  }
 
-  tableHeaders = ["TimeZones" , "FromBlocKTIme","ToBlockTIme","Action"]
-
-  templates = [
-    {timeZones : "(UTC-12:00) International Date Line West",fromBlockTime : "10:00:00",toBlockTime : "22:00:00"},
-    {timeZones : "(UTC-10:00) Hawaii",fromBlockTime : "10:00:00",toBlockTime : "22:00:00"},
-    {timeZones : "(UTC-09:00) Alaska",fromBlockTime : "10:00:00",toBlockTime : "22:00:00"},
-    {timeZones : "(UTC-07:00) Arizona",fromBlockTime : "10:00:00",toBlockTime : "22:00:00"},
-    {timeZones : "(UTC-07:00) Mountain Time (US & Canada)",fromBlockTime : "10:00:00",toBlockTime : "22:00:00"},
-    {timeZones : "(UTC-06:00) Central Time (US & Canada)",fromBlockTime : "10:00:00",toBlockTime : "22:00:00"},
-    {timeZones : "(UTC-06:00) Guadalajara, Mexico City, Monterrey",fromBlockTime : "10:00:00",toBlockTime : "22:00:00"},
-    {timeZones : "(UTC-12:00) International Date Line West",fromBlockTime : "10:00:00",toBlockTime : "22:00:00"},
-    {timeZones : "(UTC-12:00) International Date Line West",fromBlockTime : "10:00:00",toBlockTime : "22:00:00"},
-
-  ]
+  tableHeaders = ["S.NO","TimeZones" , "FromBlockedTime","ToBlockedTime","Action"]
 
   OnSubmit(){
     const fieldControls = this.forms.controls;
@@ -151,5 +145,29 @@ export class ConfigureTriggerTimeComponent implements OnInit {
     this.forms.controls['ToTime'].setValue({hour:ToHour,minute : ToMin})
   }
 
+  fetchTimeZonesBasedBlockedTimes(){
+    this.userService.fetchTimeZonesBasedBlockedTimes().subscribe((response) => {
+      if(true){
+        const {
+          ProcessVariables : { id ,timeZones}
+        } = response;
+        console.log(timeZones);
+        if(timeZones){
+          this.dataSource = new MatTableDataSource<any[]>(timeZones);
+          this.dataSource.paginator = this.paginator;
+        }
+      }
+    })
+  }
+
+
+  applyFilter(filterValue : string){
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+
+  OpenDialog(formObject : any){
+    const dialogRef = this.dialog.open(UpdateTriggerTimePopUpComponent,{width:'100%',data:formObject});
+  }
 
 }

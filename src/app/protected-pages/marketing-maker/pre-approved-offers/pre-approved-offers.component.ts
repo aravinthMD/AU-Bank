@@ -325,7 +325,8 @@ export class PreApprovedOffersComponent implements OnInit {
 
   warningPopUp(){
     const dialogRef = this.warningDialog.open(WarningDialogBoxComponent,{
-      width : '500px'
+      width : '500px',
+      data : {fromTime:this.fromBlockTime,toTime:this.toBlockTime}
     })
     dialogRef.afterClosed().subscribe((result) =>{
       if(result){

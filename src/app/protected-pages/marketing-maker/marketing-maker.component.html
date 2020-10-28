@@ -16,7 +16,7 @@
               <span class="tab-title">Message Template</span>
             </ng-template>
             <ng-template ngbTabContent
-              ><app-message-template [BlockedFrom] = "blockedFrom" [BlockedTo] = "blockedTo"></app-message-template>
+              ><app-message-template [timeZonesList] = "timeZonesList" ></app-message-template>
             </ng-template>
           </ngb-tab>
           <ngb-tab>
@@ -24,7 +24,7 @@
               <span class="tab-title">Promotional Template</span>
             </ng-template>
             <ng-template ngbTabContent
-              ><app-promotional-template [BlockedFrom] = "blockedFrom" [BlockedTo] = "blockedTo"></app-promotional-template>
+              ><app-promotional-template></app-promotional-template>
             </ng-template>
           </ngb-tab>
           <ngb-tab>
@@ -32,7 +32,7 @@
               <span class="tab-title">Pre Approved Offers</span>
             </ng-template>
             <ng-template ngbTabContent
-              ><app-pre-approved-offers [BlockedFrom] = "blockedFrom" [BlockedTo] = "blockedTo"></app-pre-approved-offers>
+              ><app-pre-approved-offers></app-pre-approved-offers>
             </ng-template>
           </ngb-tab>
         </ngb-tabset>

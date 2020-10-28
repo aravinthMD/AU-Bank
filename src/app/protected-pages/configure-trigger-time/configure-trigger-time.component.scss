@@ -1,13 +1,8 @@
 @import "../../shared/styles/variables.scss";
 
 button {
-    width: -webkit-fill-available;
     color: $white-color;
-    background-color: $maroon-color;
-    border: 1px solid $maroon-color;
-    padding: 10px;
-    margin-top: 10px;
-    font-size: 18px;
+    border-radius: 3px;
   }
 
   .card-header {
@@ -18,4 +13,44 @@ button {
     border-top-right-radius: unset;
   }
 
-  
+
+tr {
+  td {
+    vertical-align: middle;
+    font-size: 14px;
+    a {
+      cursor: pointer;
+      color: $maroon-color;
+      font-size: 14px;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  }
+
+  th {
+    vertical-align: middle;
+    color: $maroon-color !important;
+    font-size: 15px;
+  }
+}
+
+
+
+table button {
+  color: $white-color;
+  font-size: 14px;
+  background-color: $maroon-color;
+  border: 1px solid $maroon-color;
+}
+
+table {
+  width: 100%;
+  margin-bottom: 0rem !important;
+
+}
+
+.header{
+  padding-left: 18px;
+  padding-bottom: 24px;
+}

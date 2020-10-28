@@ -32,7 +32,7 @@
                    formControlName = "timeZone"
                    [matAutocomplete]="auto" class="form-control">
             <mat-autocomplete #auto="matAutocomplete" [displayWith] = "displayFn.bind(this)">
-              <mat-option *ngFor="let timeZone of filteredOptions | async " [value]="timeZone.utc[0]">
+              <mat-option *ngFor="let timeZone of filteredOptions | async " [value]="timeZone.utc">
                 {{timeZone.text}}
               </mat-option>
             </mat-autocomplete>

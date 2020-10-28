@@ -95,8 +95,8 @@ export const environment = {
     fetchcheckerScreenTemplates : {
       projectId: "e45e9cf0d5a411eab60b727d5ac274b2",
       workflowId: "102df80ed5a911eab60b727d5ac274b2",
-      // processId: "34c44c92dbbf11eab60d727d5ac274b2", //LOCAL
-      processId:  "eab3b07cdcb111ea854a46113bb841db" //Production
+      processId: "34c44c92dbbf11eab60d727d5ac274b2", //LOCAL
+      // processId:  "eab3b07cdcb111ea854a46113bb841db" //Production
     },
     fetchViewTemplate : {
       projectId : "e45e9cf0d5a411eab60b727d5ac274b2",
@@ -106,14 +106,14 @@ export const environment = {
     fetchPromotionalDropDownData : {
       projectId : "e45e9cf0d5a411eab60b727d5ac274b2",
       workflowId : "2356727ad5a511eab60b727d5ac274b2",
-      processId : "dd2d9a6aec6211ea9c031a78550cd107",//PRODUCTION
-      // processId : "cf6a0986ed0c11eab613727d5ac274b2",//LOCAL
+      // processId : "dd2d9a6aec6211ea9c031a78550cd107",//PRODUCTION
+      processId : "cf6a0986ed0c11eab613727d5ac274b2",//LOCAL
     },
     fetchPreApprovedDropDownData : {
       projectId : "e45e9cf0d5a411eab60b727d5ac274b2",
       workflowId : "2356727ad5a511eab60b727d5ac274b2",
-      processId : "03ef3a3eec6611ea90b71a78550cd107",//PRODUCTION
-      // processId : "093e269ced0d11eab613727d5ac274b2",//LOCAL
+      // processId : "03ef3a3eec6611ea90b71a78550cd107",//PRODUCTION
+      processId : "093e269ced0d11eab613727d5ac274b2",//LOCAL
     },
     getTriggerTimeBlocked : {
       projectId : "e45e9cf0d5a411eab60b727d5ac274b2",
@@ -125,6 +125,16 @@ export const environment = {
       workflowId : "d9710a7af8e611eab613727d5ac274b2",
       processId : "d9a17f98f8e611eab613727d5ac274b2"
     },
+    fetchTimeZonesBasedBlockedTimeApi : {
+      projectId : "e45e9cf0d5a411eab60b727d5ac274b2",
+      workflowId: "c901855c186211ebb651727d5ac274b2",
+      processId : "dc587340186211ebb651727d5ac274b2"
+    },
+    timeZonesBasedBlockedTimeUpdateApi : {
+      projectId :"e45e9cf0d5a411eab60b727d5ac274b2",
+      workflowId:"c901855c186211ebb651727d5ac274b2",
+      processId: "e9c170b8186211ebb651727d5ac274b2"
+    }
   },
   host: "/appiyo",
   appiyoDrive: "/d/drive/upload/",
