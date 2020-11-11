@@ -635,6 +635,7 @@ export class UserService {
     userId: string,
     uploadFlag : boolean,
     documentId : any,
+    csvDocId : any,
     timeZone: any,
     countryCode : any
   ) {
@@ -648,6 +649,7 @@ export class UserService {
       timeZone,
       countryCode,
       documentId,
+      csvDocId,
       uploadFlag
     };
     const {
@@ -1123,5 +1125,82 @@ export class UserService {
       formData
     );
   }
+
+
+  //Admin - Creating PreApproved and Promotional Tempaltes 
+
+  createAdminTemplates(
+    templateId :  string,
+    templateName :  string,
+    templateMessage : string,
+    templateType : string
+  ){
+
+    const data = {
+      templateId,
+      templateMessage,
+      templateName,
+      templateType
+    }
+
+    const { 
+      api : {
+        createAdminPromotionalAndPreApprovedTemplate : { processId,workflowId,projectId },
+      },
+    } = environment;
+
+
+    const requestEntity: RequestEntity = {
+      processId,
+      ProcessVariables: data,
+      workflowId,
+      projectId,
+    };
+
+
+    const body = {
+      processVariables: JSON.stringify(requestEntity)
+    };
+
+    const formData = this.transform(body);
+
+    return this.http.post<EntityResponse>(
+      `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
+
+
+    }
+
+
+    fetchAdminTemplates(){
+      const data = {};
+
+      const {
+        api : {
+          fetchAdminTemplateApi :{ processId ,workflowId, projectId},
+        } ,
+      } = environment;
+
+      const requestEntity: RequestEntity = {
+        processId,
+        ProcessVariables: data,
+        workflowId,
+        projectId,
+      };
+
+      const body = {
+        processVariables: JSON.stringify(requestEntity)
+      };
+
+      const formData = this.transform(body);
+
+    return this.http.post<EntityResponse>(
+      `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
+
+    }
+  
 
 }

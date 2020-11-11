@@ -14,6 +14,7 @@ import { ChangePasswordComponent } from "./public-pages/change-password/change-p
 import { WINDOW_INTERCEPTOR } from "./shared/interceptors/window.interceptor";
 import {MaterialModule} from "./material/material.module";
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,7 +31,7 @@ import {MaterialModule} from "./material/material.module";
     AppRoutingModule,
     SharedModule,
     NgbModule,
-    MaterialModule
+    MaterialModule,
   ],
   providers: [
     {

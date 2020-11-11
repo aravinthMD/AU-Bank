@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { UserService } from "src/app/shared/services/user.service";
+import { ToasterService } from "src/app/shared/services/toaster.service";
+import { BUTTON_TEXTS, TOASTER_MESSAGES } from "src/app/shared/utils/constant";
 
 @Component({
   selector: "app-marketing-maker",
@@ -7,7 +9,7 @@ import { UserService } from "src/app/shared/services/user.service";
   styleUrls: ["./marketing-maker.component.scss"],
 })
 export class MarketingMakerComponent implements OnInit {
-  constructor(private userService : UserService) {}
+  constructor(private userService : UserService,private toasterService : ToasterService) {}
 
 
   blockedFrom : any ;
@@ -44,14 +46,22 @@ export class MarketingMakerComponent implements OnInit {
 
   fetchTimeZonesBasedBlockedTimes(){
     this.userService.fetchTimeZonesBasedBlockedTimes().subscribe((response) =>{
-      debugger;
-      if(true){
+      if(response){
+        console.log(response);
+
         const {
-          ProcessVariables : {id ,timeZones}
+          ProcessVariables : {id ,status,timeZones}
         } = response;
         console.log(timeZones);
-        if(timeZones){
-          this.timeZonesList = timeZones;
+        if(status){ //For Local Testing
+          if(timeZones){
+            this.timeZonesList = timeZones;
+          }
+        }
+        else{
+          this.toasterService.showError(
+            TOASTER_MESSAGES.DROP_DOWN_FAILURE
+          )
         }
       }
     })

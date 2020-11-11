@@ -62,8 +62,12 @@ export enum TOASTER_MESSAGES {
   FILE_UPLOAD_SUCCESS = "SuccessFully Uploaded",
   FILE_UPLOAD_FAILURE = "File Upload Unsuccessfull",
   DROP_DOWN_FAILURE = "Unable to fetch the data",
-  UPDATE_BLOCK_TIME_SUCCESS = "Update Successfully",
-  UPDATE_BLOCK_TIME_FAILURE = "Failed to Update",
+  UPDATE_BLOCK_TIME_SUCCESS = "Scheduled Block Time Successfully",
+  UPDATE_BLOCK_TIME_FAILURE = "Failed to Schedule to the Block Time",
+  PRMOTIONAL_TEMPLATE_ADMIN_FAIL  = "Failed to Create Promotional Template",
+  PREAPPROVED_TEMPLATE_ADMIN_FAIL  = "Failed to Create PreApproved Offer",
+  PREAPPROVED_DUPLICATE_CHECK = "Already Exists",
+  DASHBOARD_DETAILS_FAIL = "Failed to Fetch Data"
 }
 
 export enum DATE_FORMATS {

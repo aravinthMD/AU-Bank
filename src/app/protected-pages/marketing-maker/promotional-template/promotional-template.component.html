@@ -52,7 +52,7 @@
                  formControlName = "timeZone"
                  [matAutocomplete]="auto" class="form-control">
           <mat-autocomplete #auto="matAutocomplete" [displayWith] = "displayFn.bind(this)">
-            <mat-option *ngFor="let timeZone of filteredOptions | async " [value]="timeZone.utc[0]">
+            <mat-option *ngFor="let timeZone of filteredOptions | async " [value]="timeZone.utc">
               {{timeZone.text}}
             </mat-option>
           </mat-autocomplete>
@@ -121,7 +121,7 @@
               formControlName="importFile"
               (change)="onFileChange($event.target.files,'PDF')" />
               <!-- <div class="Xbox"> --> 
-                <button class = "custom-button Xbox" *ngIf = "fileToUpload" type="button" (click) = "cancelFileUpload()">X</button>
+                <button class = "custom-button Xbox" *ngIf = "pdfFileToUploadFlag" type="button" (click) = "cancelFileUpload()">X</button>
               <!-- </div> -->
             <!-- </input> -->
             <label class="custom-file-label" for="inputGroupFile" #labelImport>Choose file</label>
@@ -130,7 +130,7 @@
         <!-- <button class = "custom-button" *ngIf = "fileToUpload" type="button" (click) = "cancelFileUpload()">Cancel</button> -->
       </div>
 
-      <!-- <div class="form-group">
+      <div class="form-group">
         <label>Choose CSV File</label>
         <div class="input-group">
           <div class="custom-file">
@@ -147,7 +147,7 @@
         <div *ngIf = "csvfileFlag" class="alert alert-danger">
         <small *ngIf = "csvfileFlag" class="medium form-text text-danger">File Upload failed Missing columns {{stringErrorArray}}</small>
       </div>
-      </div> -->
+      </div>
 
       <button
         type="button"

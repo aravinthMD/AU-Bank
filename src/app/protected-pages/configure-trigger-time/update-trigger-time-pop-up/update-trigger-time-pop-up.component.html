@@ -1,33 +1,41 @@
-    <div class="user shadow-lg">
-    <div class="card-header text-center">
-        {{timeZoneText}}
+    <div class="header p-2">
+        <h3>Schedule Block Time</h3>
+    
     </div>
-    <div class="p-4">
-    <form [formGroup]="forms">
-        <div class="row d-flex">
+    <h4 class="mt-2 mb-3">Time Zone </h4> 
+        <span>{{timeZoneText}}</span>
+    <form [formGroup]="forms" class="mt-4">
+        <div class="col-12 row d-flex p-0">
         <div class="col-6">
-        <div class="form-group">
-            <label for = "fromTimePicker">From Time</label>
+        <div class="form-group pl-4">
+            <label for = "fromTimePicker"><b>From Time</b></label>
                 <ngb-timepicker id = "fromTimePicker"
                 formControlName = "FromTime"
-                [spinners]="false"
+                [spinners] = "false"
+                
          >
     </ngb-timepicker>
         </div>
     </div>
     <div class="col-6">
         <div class="form-group">
-            <label for="toTimePicker">To Time</label>
+            <label for="toTimePicker"><b>To Time</b></label>
                     <ngb-timepicker id = "toTimePicker"
-                    formControlName = "ToTime" [spinners]="false" 
+                    formControlName = "ToTime"  
+                    [spinners] = "false"
                 >
             </ngb-timepicker>
         </div>
     </div>
 </div>
         
-<div>
-<button class="btn submit-btn shadow" [disabled] = "forms.invalid" (click) = OnEdit()>
+
+</form>
+<div class="mt-3">
+    <div class="row col-12 d-flex justify-content-center">
+<button class="btn submit-btn shadow header text-white mr-2" [disabled] = "forms.invalid || !forms.dirty" (click) = OnEdit()>Schedule</button>
+    <button class="btn submit-btn shadow header text-white" mat-dialog-close>Close</button>
+    </div>
 <!-- <span
   *ngIf="loading"
   class="spinner-border"
@@ -35,8 +43,5 @@
   aria-hidden="true"
 >
 </span> -->
-<span >Submit</span></button>
-</div>
-</form>
-</div>
+
 </div>

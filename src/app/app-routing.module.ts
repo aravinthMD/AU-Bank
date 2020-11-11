@@ -39,6 +39,12 @@ const routes: Routes = [
           (m) => m.ConfigureTriggerTimeModule
       
         ),
+      },{
+        path : "template/master",
+        loadChildren : () => 
+          import("./protected-pages/promotional-admin/promotional-admin.module").then(
+            (m) =>m.PromotionalAdminModule
+          )
       },
       {
         path: "view-whatsapp",

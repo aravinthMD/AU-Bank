@@ -88,7 +88,7 @@ export class LaunchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getBlockTriggerTime();
+    // this.getBlockTriggerTime(); //New
     this.setValidators();
     this.fetchTemplates();
   }
@@ -107,7 +107,6 @@ export class LaunchComponent implements OnInit {
   }
 
   onFromDateChange(event: NgbDate): void {
-    debugger;
     const { year, month, day } = event;
     this.toMinDate = { year, month, day };
     this.validate(false);
@@ -133,7 +132,6 @@ export class LaunchComponent implements OnInit {
   }
 
   onPageChanged(currentPage: number) {
-    debugger;
     this.currentPage = currentPage;
     if (this.isFilterValid) {
       this.fetchFilteredTemplates();
@@ -190,13 +188,11 @@ export class LaunchComponent implements OnInit {
   }
 
   fetchTemplates() {
-    debugger;
     this.templates = null;
     window.scroll(0, 0);
     this.loading = true;
     this.userService.fetchCheckerScreenTemplates(this.currentPage, "", "", "","","","").subscribe(
       (fetchedTemplates) => {
-        debugger;
         const {
           ProcessVariables: { status },
           ProcessVariables: { message = {} },
@@ -248,7 +244,6 @@ export class LaunchComponent implements OnInit {
   }
 
   openRejectTemplateDialog(template: any): void {
-    debugger;
     const dialog = this.ngbModal.open(RejectTemplateDialogComponent, {
       centered: true,
     });
@@ -338,7 +333,6 @@ export class LaunchComponent implements OnInit {
 
 
    triggerTimeValidator(template : any) : boolean{
-     debugger
      const triggerTime = template ? (template.triggerTime ? template.triggerTime : null) : null;
       let triggerTimeArray = triggerTime ? triggerTime.split(":") : null;
       let fromBlockTimeHour = triggerTimeArray ? Number(triggerTimeArray[0]) : null;

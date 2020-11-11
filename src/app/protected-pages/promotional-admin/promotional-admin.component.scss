@@ -1,0 +1,98 @@
+@import "../../shared/styles/variables.scss";
+
+form {
+    width: 50%;
+    margin: auto;
+    text-align: left;
+    border-radius: 14px;
+  }
+
+  .header{
+    padding-left: 18px;
+    padding-bottom: 24px;
+  }
+
+  .mat-form-field-flex {
+    width: 193%;
+}
+
+.example-full-width {
+    width: 100%;
+  }
+
+  .mat-tab-label.mat-tab-label-active {
+    background-color: #e3e7e8 !important;
+  }
+
+  // ::ng-deep .mat-tab-label {
+  //   border-style: ridge;
+  //   border-color: #c0cad4 !important;
+  //   border-radius: 8px;
+  // }
+
+  ::ng-deep .mat-tab-label {
+    min-width: 25px !important;
+    padding: 5px;
+    background-color: transparent;
+    font-weight: 700;
+}
+
+::ng-deep .mat-ink-bar {
+  background-color:$maroon-color !important;
+}
+
+
+::ng-deep .mat-tab-label-active {
+  background-color:$maroon-color !important;
+  color: #fff;
+  opacity: 1 !important;
+  border-color: $maroon-color;
+
+    // background-color: ;
+}
+
+:host ::ng-deep .mat-tab-label{
+  border-radius: 2px;
+ border-style: ridge;
+}
+
+.submit-btn {
+  width: -webkit-fill-available;
+  color: $white-color;
+  background-color: $maroon-color;
+  border: 1px solid $maroon-color;
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+
+table {
+  width: 100%;
+}
+
+textarea.mat-input-element {
+  height: 130px;
+}
+
+
+tr {
+  td {
+    vertical-align: middle;
+    font-size: 14px;
+    a {
+      cursor: pointer;
+      color: $maroon-color;
+      font-size: 14px;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  }
+
+  th {
+    vertical-align: middle;
+    color: $maroon-color !important;
+    font-size: 15px;
+  }
+}

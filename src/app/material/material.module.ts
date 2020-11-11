@@ -10,10 +10,12 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatTabsModule} from '@angular/material/tabs';
+
 
 
 const MaterialComponents = [MatProgressSpinnerModule,MatIconModule,MatInputModule,MatDialogModule,MatTooltipModule,MatButtonModule,MatSelectModule,
-  MatAutocompleteModule,MatTableModule,MatPaginatorModule,MatFormFieldModule];
+  MatAutocompleteModule,MatTableModule,MatPaginatorModule,MatFormFieldModule,MatTabsModule];
 @NgModule({
   imports: [MaterialComponents],
   exports: [MaterialComponents]

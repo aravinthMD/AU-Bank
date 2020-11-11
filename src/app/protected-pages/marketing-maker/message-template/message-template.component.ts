@@ -33,6 +33,10 @@ export class MessageTemplateComponent implements OnInit {
   ToBlockTimeHour : any;
   ToBlockTimeMinute : any;
  
+  fromBlockTime : any;
+  toBlockTime :  any;
+  timeZoneText : string;
+
   submitButtonText = BUTTON_TEXTS.SUBMIT_BUTTON_TEXT;
 
   form: FormGroup;
@@ -118,16 +122,23 @@ export class MessageTemplateComponent implements OnInit {
 
 
   displayFn(SelectedId){
-    debugger;
     if(!SelectedId) return '';
     let index = this.timeZonesListArr.findIndex(timeZone => timeZone.utc === SelectedId);
-
+    this.configure(this.timeZonesListArr[index]);
     return this.timeZonesListArr[index].text;
 
   }
 
   configure(timeZone : any){
-    
+
+    this.form.controls['triggerTime'].reset(); //For Setting Time Zone as Null
+
+    if(timeZone){
+      this.fromBlockTime = timeZone['blockedFrom'] ? timeZone['blockedFrom'] : null;
+      this.toBlockTime = timeZone['blockedTo'] ? timeZone['blockedTo'] : null;
+      this.timeZoneText = timeZone['text'] ? timeZone['text'] : '';
+      this.configurable(this.fromBlockTime,this.toBlockTime);
+    }
   }
 
   
@@ -200,7 +211,6 @@ export class MessageTemplateComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
-      debugger;
       this.loading = true;
       const fieldControls = this.form.controls;
       const campaignStartDate = fieldControls.campaignStartDate.value;
@@ -268,20 +278,21 @@ export class MessageTemplateComponent implements OnInit {
   // }
 
   onFileChange(files: FileList,type : any) {
-    debugger;
     if(type === 'PDF'){
     this.labelImport.nativeElement.innerText = Array.from(files)
       .map((f) => f.name)
       .join(", ");
       this.pdfFileToUploadFlag = true
+      console.log("PDF Label");
     }else if(type === "CSV"){
       this.labelImportCSV.nativeElement.innerText = Array.from(files)
       .map((f) => f.name)
       .join(", ");
+      console.log("CSV Label");
+
     }
     this.fileToUpload = files.item(0);
-    if(this.fileToUpload["type"]){
-      this.onlyPdf = false;
+    if(this.fileToUpload){
       console.log("FiletoUpload"+this.fileToUpload);
     const userId = String(this.userService.currentUserValue.userId);
     const modifiedFile = Object.defineProperty(this.fileToUpload, "name", {
@@ -291,8 +302,6 @@ export class MessageTemplateComponent implements OnInit {
     modifiedFile["name"] = userId + "-" + new Date().getTime() + "-" + modifiedFile["name"];
     console.log(modifiedFile);
     this.uploadToAppiyoDrive(modifiedFile,type);
-    }else{
-      this.onlyPdf = true;
     }
     
   }
@@ -306,7 +315,6 @@ export class MessageTemplateComponent implements OnInit {
     this.documentUploadId = null;
     this.pdfFileToUploadFlag = false
     this.labelImport.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
-    this.onlyPdf = false;
   }
 
   cancelCSVFileUpload(){
@@ -354,7 +362,7 @@ export class MessageTemplateComponent implements OnInit {
     this.userService.uploadToAppiyoDrive(file).subscribe(
       (response) =>
       {
-        console.log(response)
+        console.log("Response from upload drive"+response)
         if(response["ok"])
         {
           
@@ -388,38 +396,40 @@ export class MessageTemplateComponent implements OnInit {
     let FromBlockTimeArr = fromBlockTime ? fromBlockTime.split(":") : null
     let ToBlockTimeArr =  toBlockTime ?  toBlockTime.split(":") : null;
  
-    this.FromBlockTimeHour  = FromBlockTimeArr ? Number(FromBlockTimeArr[0]) : null;
-    this.FromBlockTimeMinute  = FromBlockTimeArr ? Number(FromBlockTimeArr[1]) : null;
+    this.FromBlockTimeHour  = FromBlockTimeArr ? Number(FromBlockTimeArr[0]) : 0;
+    this.FromBlockTimeMinute  = FromBlockTimeArr ? Number(FromBlockTimeArr[1]) : 0;
 
-    this.ToBlockTimeHour = ToBlockTimeArr ? Number(ToBlockTimeArr[0]) : null;
-    this.ToBlockTimeMinute = ToBlockTimeArr ? Number(ToBlockTimeArr[1]) : null;
+    this.ToBlockTimeHour = ToBlockTimeArr ? Number(ToBlockTimeArr[0]) : 0;
+    this.ToBlockTimeMinute = ToBlockTimeArr ? Number(ToBlockTimeArr[1]) : 0;
    }
 
    triggerTimeValidator(){
-     debugger;
      const fieldControls = this.form.controls["triggerTime"].value;
-     const validateHour : number = fieldControls.hour ? Number(fieldControls.hour) : null;
-     const validateMinute : number = fieldControls.minute ? Number(fieldControls.minute) : null;
-
-     if(validateHour > this.FromBlockTimeHour && validateHour < this.ToBlockTimeHour){
-        this.warningPopUp();
-     }
-     else if(validateHour == this.FromBlockTimeHour || validateHour == this.ToBlockTimeHour){
-       if(validateHour == this.FromBlockTimeHour && validateMinute >= this.FromBlockTimeMinute){
-        this.warningPopUp();
+     if(fieldControls){
+      const validateHour : number = fieldControls.hour ? Number(fieldControls.hour) : 0;
+      const validateMinute : number = fieldControls.minute ? Number(fieldControls.minute) : 0;
+ 
+      if(validateHour > this.FromBlockTimeHour || validateHour < this.ToBlockTimeHour){
+         this.warningPopUp();
+      }
+      else if(validateHour == this.FromBlockTimeHour || validateHour == this.ToBlockTimeHour){
+        if(validateHour == this.FromBlockTimeHour && validateMinute >= this.FromBlockTimeMinute){
+         this.warningPopUp();
+         }
+        if(validateHour == this.ToBlockTimeHour && validateMinute <= this.ToBlockTimeMinute)
+        {
+         this.warningPopUp();
         }
-       if(validateHour == this.ToBlockTimeHour && validateMinute <= this.ToBlockTimeMinute)
-       {
-        this.warningPopUp();
-       }
+      }
      }
+    
    }
 
 
    warningPopUp(){
     const dialogRef = this.warningDialog.open(WarningDialogBoxComponent,{
       width : '500px',
-     // data : {fromTime:this.fromBlockTime,toTime:this.toBlockTime}
+      data : {fromTime:this.fromBlockTime,toTime:this.toBlockTime,timeZoneText : this.timeZoneText}
     })
     dialogRef.afterClosed().subscribe((result) =>{
       if(result){
@@ -431,7 +441,6 @@ export class MessageTemplateComponent implements OnInit {
  
    // input change listener for the CSV File
    fileChangeListener($event: any): void {
-     debugger
      const files : FileList= $event.srcElement.files;
      this.labelImportCSV.nativeElement.innerText = Array.from(files)
       .map((f) => f.name)
@@ -449,9 +458,10 @@ export class MessageTemplateComponent implements OnInit {
 
          let fileHeaderArray : any[] = result ? (result[0] ? result[0] : null) : null;
 
-         if(!fileHeaderArray.includes("mobile")){
+         if(!fileHeaderArray.includes("phoneNumber")){
 
-           this.errorCountArray.push("mobile");
+           this.errorCountArray.push("phoneNumber");
+           console.log("Mobile Mandatory check")
          }
          if(!(!arr.some(ele => !fileHeaderArray.includes(ele)))){
               this.codeLineParser(arr,fileHeaderArray);
@@ -462,7 +472,7 @@ export class MessageTemplateComponent implements OnInit {
          this.csvfileFlag = true;
          return
          }
-
+          console.log("file validation condtions bypassed")
           this.onFileChange(files,'CSV')
          this.csvRecords = result;
        }, (error: NgxCSVParserError) => {
@@ -484,27 +494,24 @@ export class MessageTemplateComponent implements OnInit {
 
           }
      }
-
+     console.log("Error Msg Constructor :"+stringArray);
      return stringArray;
    }
 
    //File read error message constructor
     codeLineParser(arrayA : string[],arrayB : string[]){
-      debugger;
       for(let i =0 ; i < arrayA.length ;i++){
             if(!arrayB.includes(arrayA[i])){
               this.errorCountArray.push(arrayA[i]);
             }
             
       }
-
+      console.log("Code Line Parser ")
     }
 
 
 
    templateParser(){
-
-
      const templteMessage = this.form.controls['template'].value;
      const result = templteMessage.match(/{([^}]+)}/g)
                     .map(res => res.replace(/{|}/g , ''))

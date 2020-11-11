@@ -135,13 +135,33 @@ export const environment = {
     },
     fetchTimeZonesBasedBlockedTimeApi : {
       projectId : "e45e9cf0d5a411eab60b727d5ac274b2",
-      workflowId: "c901855c186211ebb651727d5ac274b2",
-      processId : "dc587340186211ebb651727d5ac274b2"
+      workflowId: "c901855c186211ebb651727d5ac274b2", //Local
+      // workflowId : "af56a80e181b11eba15bce6815002bdf" , //Production
+      processId : "dc587340186211ebb651727d5ac274b2", //Local
+      // processId : "790a6676182711eba7dbce6815002bdf", //Production
     },
     timeZonesBasedBlockedTimeUpdateApi : {
       projectId :"e45e9cf0d5a411eab60b727d5ac274b2",
-      workflowId:"c901855c186211ebb651727d5ac274b2",
-      processId: "e9c170b8186211ebb651727d5ac274b2"
+      workflowId:"c901855c186211ebb651727d5ac274b2",//Local
+      // workflowId:"af56a80e181b11eba15bce6815002bdf", //Production
+      processId: "e9c170b8186211ebb651727d5ac274b2", //Local
+      // processId : "bd93bbe0183a11eb957bce6815002bdf", //Production
+
+    },
+    createAdminPromotionalAndPreApprovedTemplate : {
+      projectId : "e45e9cf0d5a411eab60b727d5ac274b2", 
+      workflowId : "a91de9a81a8611ebb6ba727d5ac274b2", //Local
+      // workflowId : "a32cb58a1ce611eb916c4adb402d20cb", //Production
+      processId : "a948a86e1a8611ebb6ba727d5ac274b2" //Local
+      // processId : "e0b1c8301ce811eba2384adb402d20cb", //Production
+
+    },
+    fetchAdminTemplateApi : {
+      projectId : "e45e9cf0d5a411eab60b727d5ac274b2",
+      workflowId : "a91de9a81a8611ebb6ba727d5ac274b2",//Local
+      // workflowId : "a32cb58a1ce611eb916c4adb402d20cb", //Production
+      processId : "9849ae4a1b6311ebb6bc727d5ac274b2", //Local
+      // processId : "a34778981ce611eb8d2a4adb402d20cb" //Production
     }
 
   },

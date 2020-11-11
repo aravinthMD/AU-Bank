@@ -24,7 +24,7 @@
               <span class="tab-title">Promotional Template</span>
             </ng-template>
             <ng-template ngbTabContent
-              ><app-promotional-template></app-promotional-template>
+              ><app-promotional-template [timeZonesList] = "timeZonesList"></app-promotional-template>
             </ng-template>
           </ngb-tab>
           <ngb-tab>
@@ -32,7 +32,7 @@
               <span class="tab-title">Pre Approved Offers</span>
             </ng-template>
             <ng-template ngbTabContent
-              ><app-pre-approved-offers></app-pre-approved-offers>
+              ><app-pre-approved-offers [timeZonesList] = "timeZonesList"></app-pre-approved-offers>
             </ng-template>
           </ngb-tab>
         </ngb-tabset>

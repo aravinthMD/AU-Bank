@@ -12,7 +12,8 @@ import {map, startWith} from 'rxjs/operators';
 import { error } from 'protractor';
 import {MatDialog} from '@angular/material/dialog';
 import { WarningDialogBoxComponent } from '../warning-dialog-box/warning-dialog-box.component';
-
+import { NgxCsvParser } from 'ngx-csv-parser';
+import { NgxCSVParserError } from 'ngx-csv-parser';
 
 
 @Component({
@@ -22,8 +23,12 @@ import { WarningDialogBoxComponent } from '../warning-dialog-box/warning-dialog-
 })
 export class PreApprovedOffersComponent implements OnInit {
   @ViewChild("labelImport") labelImport: ElementRef;
-  @Input('BlockedFrom') fromBlockTime : any;
-  @Input('BlockedTo') toBlockTime : any;
+  // @Input('BlockedFrom') fromBlockTime : any;
+  // @Input('BlockedTo') toBlockTime : any;
+  @Input('timeZonesList') timeZonesListArr : any[];
+  @ViewChild("labelImportCSV") labelImportCSV : ElementRef;
+  
+
 
   submitButtonText = BUTTON_TEXTS.SUBMIT_BUTTON_TEXT;
 
@@ -33,6 +38,7 @@ export class PreApprovedOffersComponent implements OnInit {
   fromMaxDate: any;
   toMinDate: any;
   toMaxDate: any;
+  errorCountArray : string[]  = [];
 
 
   FromBlockTimeHour : any;
@@ -57,14 +63,29 @@ export class PreApprovedOffersComponent implements OnInit {
   fileUploadFlag : boolean;
 
 
+  fromBlockTime : any;
+  toBlockTime :  any;
+  timeZoneText : string;
+  stringErrorArray : string;
+  csvfileFlag:boolean = false
+  csvRecords : any[];
+  csvdocumentUploadId : any;
+  disableTemplateFlag : boolean;
+  pdfFileToUploadFlag : boolean;
 
+
+
+
+
+  csvfileToUpload : boolean;
 
 
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
     private toasterService: ToasterService,
-    private warningDialog : MatDialog
+    private warningDialog : MatDialog,
+    private ngxCsvParser : NgxCsvParser
   ) {
     this.form = this.formBuilder.group({
       templateId : [null],
@@ -75,12 +96,12 @@ export class PreApprovedOffersComponent implements OnInit {
       campaignEndDate: [null, Validators.required],
       triggerTime: [null, [Validators.required,TriggerTimeValidator()]],
       importFile: [null],
+      importCSVFile : [null],
     });
   }
 
   ngOnInit(): void {
     this.setValidators();
-    this.configurable();
     this.fetchPreApprovedOffersDropDown();
 
     this.dropdownSettings = {
@@ -107,14 +128,27 @@ export class PreApprovedOffersComponent implements OnInit {
 
     const filterValue = value ? value.toLowerCase() : "";
 
-    return this.timeZones.filter(timeZone => timeZone.text.toLowerCase().includes(filterValue));
+    return this.timeZonesListArr.filter(timeZone => timeZone.text.toLowerCase().includes(filterValue));
   }
 
   displayFn(SelectedId){
     if(!SelectedId) return '';
-    let index = this.timeZones.findIndex(timeZone => timeZone.utc[0] === SelectedId);
-    return this.timeZones[index].text;
+    let index = this.timeZonesListArr.findIndex(timeZone => timeZone.utc === SelectedId);
+    this.configure(this.timeZonesListArr[index]);
+    return this.timeZonesListArr[index].text;
 
+  }
+
+  configure(timeZone : any){
+
+    this.form.controls['triggerTime'].reset(); //For Setting Time Zone as Null
+
+    if(timeZone){
+      this.fromBlockTime = timeZone['blockedFrom'] ? timeZone['blockedFrom'] : null;
+      this.toBlockTime = timeZone['blockedTo'] ? timeZone['blockedTo'] : null;
+      this.timeZoneText = timeZone['text'] ? timeZone['text'] : '';
+      this.configurable(this.fromBlockTime,this.toBlockTime);
+    }
   }
 
   setValidators(): void {
@@ -177,7 +211,7 @@ export class PreApprovedOffersComponent implements OnInit {
           transformedStartDate,
           transformedEndDate,
           `${triggerTime.hour}:${triggerTime.minute}:00`,
-          String(this.userService.currentUserValue.userId),this.fileUploadFlag,this.documentUploadId,timeZones,countryCodes
+          String(this.userService.currentUserValue.userId),this.fileUploadFlag,this.documentUploadId,this.csvdocumentUploadId,timeZones,countryCodes
         )
         .subscribe(
           (createdOffer) => {
@@ -192,10 +226,17 @@ export class PreApprovedOffersComponent implements OnInit {
               this.form.reset();
               this.form.controls['timeZone'].patchValue('');
               this.labelImport.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
+              this.labelImportCSV.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
               this.documentUploadId = null;
+              this.csvdocumentUploadId = null;
               this.showTemplateMessageFlag = false;
               this.loading = false;
               this.fileToUpload = null
+              this.pdfFileToUploadFlag  =false;
+              this.csvfileToUpload = false;
+              this.csvfileFlag = false;
+              this.errorCountArray = [];
+              
             } else {
               this.loading = false;
               this.toasterService.showError(message.value);
@@ -232,12 +273,22 @@ export class PreApprovedOffersComponent implements OnInit {
     });
   }
 
-  onFileChange(files: FileList) {
-    this.labelImport.nativeElement.innerText = Array.from(files)
-      .map((f) => f.name)
-      .join(", ");
+  onFileChange(files: FileList,type :  any) {
+    if(type === 'PDF'){
+      this.labelImport.nativeElement.innerText = Array.from(files)
+        .map((f) => f.name)
+        .join(", ");
+        this.pdfFileToUploadFlag = true
+        console.log("PDF Label");
+      }else if(type === "CSV"){
+        this.labelImportCSV.nativeElement.innerText = Array.from(files)
+        .map((f) => f.name)
+        .join(", ");
+        console.log("CSV Label");
+  
+      }
     this.fileToUpload = files.item(0);
-    if(this.fileToUpload["type"] == "application/pdf"){
+    if(this.fileToUpload){
       this.onlyPdf = false;
       console.log("FiletoUpload"+this.fileToUpload);
     const userId = String(this.userService.currentUserValue.userId);
@@ -247,14 +298,66 @@ export class PreApprovedOffersComponent implements OnInit {
     });
     modifiedFile["name"] = userId + "-" + new Date().getTime() + "-" + modifiedFile["name"];
     console.log(modifiedFile);
-    this.uploadToAppiyoDrive(modifiedFile);
-    }else{
-      this.onlyPdf = true;
+    this.uploadToAppiyoDrive(modifiedFile,type);
     }
     
   }
 
-  uploadToAppiyoDrive(file : any)
+  cancelCSVFileUpload(){
+    this.form.controls['importCSVFile'].reset();
+    this.csvfileToUpload = false;
+    this.csvdocumentUploadId = null;
+    // this.disableTemplateFlag = false
+    this.labelImportCSV.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
+    this.csvfileFlag = false;
+    this.errorCountArray = [];
+  }
+
+
+  fileChangeListener($event :  any) : void {
+    const files : FileList = $event.srcElement.files;
+    this.labelImportCSV.nativeElement.innerText = Array.from(files)
+      .map((f) => f.name)
+      .join(", ");
+      this.csvfileToUpload = true;
+      const arr : any[] = this.validatorMethod();
+
+       // Select the files from the event
+     
+  
+     // Parse the file you want to select for the operation along with the configuration
+     this.ngxCsvParser.parse(files[0], { header: false, delimiter: ',' })
+     .pipe().subscribe((result: Array<any>) => {
+
+       console.log('Result', result);
+
+       let fileHeaderArray : any[] = result ? (result[0] ? result[0] : null) : null;
+
+       if(!fileHeaderArray.includes("phoneNumber")){
+
+         this.errorCountArray.push("phoneNumber");
+         console.log("Mobile Mandatory check")
+       }
+       if(!(!arr.some(ele => !fileHeaderArray.includes(ele)))){
+            this.codeLineParser(arr,fileHeaderArray);
+       }
+
+       if(this.errorCountArray.length > 0){
+       this.stringErrorArray =  this.errorMessageConstructor(this.errorCountArray);
+       this.csvfileFlag = true;
+       return
+       }
+        console.log("file validation condtions bypassed")
+        this.onFileChange(files,'CSV')
+       this.csvRecords = result;
+     }, (error: NgxCSVParserError) => {
+       console.log('Error', error);
+     });
+
+
+  }
+
+  uploadToAppiyoDrive(file : any,flag : string)
   {
     this.userService.uploadToAppiyoDrive(file).subscribe(
       (response) =>
@@ -262,7 +365,7 @@ export class PreApprovedOffersComponent implements OnInit {
         console.log(response)
         if(response["ok"])
         {
-          this.documentUploadId = response["info"]["id"];
+          this.setUploadId(response,flag);
           this.toasterService.showSuccess(TOASTER_MESSAGES.FILE_UPLOAD_SUCCESS);
         }
         else{
@@ -277,6 +380,18 @@ export class PreApprovedOffersComponent implements OnInit {
     );
   }
 
+  setUploadId(response : any,flag : string){
+    if(flag === 'PDF'){
+      this.documentUploadId = response["info"]["id"]; //FOR PDF
+    }
+
+          if(flag === 'CSV'){
+          this.csvdocumentUploadId = response["info"]["id"]; //FOR CSV
+          this.disableTemplateFlag = true;
+          }
+  }
+
+
   cancelFileUpload()
   {
    // this.form.setValue({importFile : ''});
@@ -284,41 +399,42 @@ export class PreApprovedOffersComponent implements OnInit {
     this.fileToUpload = null;
     this.fileUploadFlag = false
     this.documentUploadId = null;
+    this.pdfFileToUploadFlag = false;
     this.labelImport.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
-    this.onlyPdf = false;
+    // this.onlyPdf = false;
   }
 
-  configurable(){
-    let FromBlockTimeArr = this.fromBlockTime ? this.fromBlockTime.split(":") : null
-    let ToBlockTimeArr = this.toBlockTime ? this.toBlockTime.split(":") : null;
+  configurable(fromBlockTime :  any,toBlockTime :  any){
+    let FromBlockTimeArr = fromBlockTime ? fromBlockTime.split(":") : null
+    let ToBlockTimeArr = toBlockTime ? toBlockTime.split(":") : null;
  
-    this.FromBlockTimeHour = FromBlockTimeArr ? Number(FromBlockTimeArr[0]) : null;
-    this.FromBlockTimeMinute  = FromBlockTimeArr ? Number(FromBlockTimeArr[1]) : null;
+    this.FromBlockTimeHour = FromBlockTimeArr ? Number(FromBlockTimeArr[0]) : 0;
+    this.FromBlockTimeMinute  = FromBlockTimeArr ? Number(FromBlockTimeArr[1]) : 0;
 
-    this.ToBlockTimeHour = ToBlockTimeArr ? Number(ToBlockTimeArr[0]) : null;
-    this.ToBlockTimeMinute = ToBlockTimeArr ? Number(ToBlockTimeArr[1]) : null;
+    this.ToBlockTimeHour = ToBlockTimeArr ? Number(ToBlockTimeArr[0]) : 0;
+    this.ToBlockTimeMinute = ToBlockTimeArr ? Number(ToBlockTimeArr[1]) : 0;
    }
 
    triggerTimeValidator(){
     const fieldControls = this.form.controls["triggerTime"].value;
-    const validateHour : number = fieldControls.hour ? Number(fieldControls.hour) : null;
-    const validateMinute : number= fieldControls.minute ? Number(fieldControls.minute) : null;
-
-    if(validateHour > this.FromBlockTimeHour && validateHour < this.ToBlockTimeHour){
-      this.warningPopUp();
-    }
-    else if(validateHour == this.FromBlockTimeHour || validateHour == this.ToBlockTimeHour){
-      if(validateHour == this.FromBlockTimeHour && validateMinute >= this.FromBlockTimeMinute){
+    if(fieldControls){
+      const validateHour : number = fieldControls.hour ? Number(fieldControls.hour) : null;
+      const validateMinute : number= fieldControls.minute ? Number(fieldControls.minute) : null;
+  
+      if(validateHour > this.FromBlockTimeHour || validateHour < this.ToBlockTimeHour){
         this.warningPopUp();
       }
-      if(validateHour == this.ToBlockTimeHour && validateMinute <= this.ToBlockTimeMinute)
-      {
-        this.warningPopUp();
+      else if(validateHour == this.FromBlockTimeHour || validateHour == this.ToBlockTimeHour){
+        if(validateHour == this.FromBlockTimeHour && validateMinute >= this.FromBlockTimeMinute){
+          this.warningPopUp();
+        }
+        if(validateHour == this.ToBlockTimeHour && validateMinute <= this.ToBlockTimeMinute)
+        {
+          this.warningPopUp();
+        }
+  
       }
-
     }
-
-
     
 
   }
@@ -326,7 +442,7 @@ export class PreApprovedOffersComponent implements OnInit {
   warningPopUp(){
     const dialogRef = this.warningDialog.open(WarningDialogBoxComponent,{
       width : '500px',
-      data : {fromTime:this.fromBlockTime,toTime:this.toBlockTime}
+      data : {fromTime:this.fromBlockTime,toTime:this.toBlockTime,timeZoneText : this.timeZoneText}
     })
     dialogRef.afterClosed().subscribe((result) =>{
       if(result){
@@ -334,6 +450,51 @@ export class PreApprovedOffersComponent implements OnInit {
       }
     })
    }
+
+
+   validatorMethod(): any{
+    var found = [],          // an array to collect the strings that are found
+    rxp = /{([^}]+)}/g,
+    templteMessage = this.form.controls['template'].value,
+    // str = "a {string} with {curly} braces",
+    
+    curMatch;
+
+  while( curMatch = rxp.exec( templteMessage ) ) {
+    found.push( curMatch[1] );
+}
+
+console.log( found );
+return found    // ["string", "curly"]
+   }
+
+     //File read error message constructor
+     codeLineParser(arrayA : string[],arrayB : string[]){
+      for(let i =0 ; i < arrayA.length ;i++){
+            if(!arrayB.includes(arrayA[i])){
+              this.errorCountArray.push(arrayA[i]);
+            }
+            
+      }
+      console.log("Code Line Parser ")
+    }
+
+    errorMessageConstructor(errorCountArray : string[]) : string{
+      let stringArray : string  = '';
+      if(errorCountArray.length > 0){
+           for(let i =0 ;i < errorCountArray.length ; i++){
+             if(i != errorCountArray.length-1){
+             stringArray = stringArray+errorCountArray[i]+ ",";
+             }else{
+               stringArray = stringArray+errorCountArray[i];
+             }
+ 
+           }
+      }
+      console.log("Error Msg Constructor :"+stringArray);
+      return stringArray;
+    }
+
 
 
 }

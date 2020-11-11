@@ -28,6 +28,7 @@ export class ConfigureTriggerTimeComponent implements OnInit,AfterViewInit {
   fromTimeVar : any;
   toTimeVar : any;
   timeZonesList :  any[] = [];
+  filterVal : string = '';
 
 
   dataSource : any = new MatTableDataSource<any[]>();
@@ -46,8 +47,8 @@ export class ConfigureTriggerTimeComponent implements OnInit,AfterViewInit {
    })
 
   ngOnInit(): void {
-    this.getBlockTriggerTime();
-    this.fetchTimeZonesBasedBlockedTimes();
+    // this.getBlockTriggerTime();
+    this.fetchTimeZonesBasedBlockedTimes(false);
 
   }
   ngAfterViewInit(){
@@ -145,17 +146,30 @@ export class ConfigureTriggerTimeComponent implements OnInit,AfterViewInit {
     this.forms.controls['ToTime'].setValue({hour:ToHour,minute : ToMin})
   }
 
-  fetchTimeZonesBasedBlockedTimes(){
+  fetchTimeZonesBasedBlockedTimes(filterFalg ?: boolean){
     this.userService.fetchTimeZonesBasedBlockedTimes().subscribe((response) => {
-      if(true){
+      if(response){
+        console.log(response);
         const {
-          ProcessVariables : { id ,timeZones}
+          ProcessVariables : { id,status ,timeZones}
         } = response;
         console.log(timeZones);
-        if(timeZones){
-          this.dataSource = new MatTableDataSource<any[]>(timeZones);
-          this.dataSource.paginator = this.paginator;
+        if(status){
+           if(timeZones){
+            this.dataSource = new MatTableDataSource<any[]>(timeZones);
+            
+            if(filterFalg)
+            this.applyFilter(this.filterVal)
+
+            this.dataSource.paginator = this.paginator;
+
+          }
+        }else{
+          this.toasterService.showError(
+            TOASTER_MESSAGES.DROP_DOWN_FAILURE
+          )
         }
+        
       }
     })
   }
@@ -167,7 +181,20 @@ export class ConfigureTriggerTimeComponent implements OnInit,AfterViewInit {
 
 
   OpenDialog(formObject : any){
-    const dialogRef = this.dialog.open(UpdateTriggerTimePopUpComponent,{width:'100%',data:formObject});
+    const dialogRef = this.dialog.open(UpdateTriggerTimePopUpComponent,
+      { width:'30%', height:'50%',
+       data:formObject
+      });
+
+     dialogRef.afterClosed().subscribe((result) =>{
+
+      if(result){
+        this.fetchTimeZonesBasedBlockedTimes(true);
+        // this.applyFilter(this.filterVal);
+        // this.filterVal = '';
+      }
+
+     }) 
   }
 
 }

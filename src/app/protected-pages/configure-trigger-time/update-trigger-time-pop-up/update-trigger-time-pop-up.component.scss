@@ -1,0 +1,16 @@
+@import "../../../shared/styles/variables.scss";
+
+.header{
+    background-color: $maroon-color;
+}
+h3{
+    color: #ffffff;
+}
+.mat-dialog-container{
+    width:70% !important;
+    height:70% !important;
+}
+
+span {
+    margin-bottom: 20px;
+}

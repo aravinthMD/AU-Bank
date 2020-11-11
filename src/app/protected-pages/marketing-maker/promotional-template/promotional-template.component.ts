@@ -14,7 +14,12 @@ import {MatDialog} from '@angular/material/dialog';
 import { NgxCSVParserError } from 'ngx-csv-parser';
 import { WarningDialogBoxComponent } from '../warning-dialog-box/warning-dialog-box.component';
 import { NgxCsvParser } from 'ngx-csv-parser';
-
+import { csvFileValidator} from '../../marketing-checker/shared/CSV_File_Validator';
+import {validateObj} from 'src/app/shared/models/utill-model';
+import {uploadToAppiyoDrive} from 'src/app/shared/functions/uploadToDrive';
+import {uploadType} from 'src/app/shared/models/utill-model'
+import { type } from 'os';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: "app-promotional-template",
@@ -26,14 +31,20 @@ export class PromotionalTemplateComponent implements OnInit {
   @ViewChild("labelImport") labelImport: ElementRef;
   @ViewChild("labelImportCSV") labelImportCSV : ElementRef;
 
-  @Input('BlockedFrom') fromBlockTime : any;
-  @Input('BlockedTo') toBlockTime : any;
+  // @Input('BlockedFrom') fromBlockTime : any;
+  // @Input('BlockedTo') toBlockTime : any;
+
+  @Input('timeZonesList') timeZonesListArr : any[];
 
 
   FromBlockTimeHour : number;
   FromBlockTimeMinute : number;
   ToBlockTimeHour : number;
   ToBlockTimeMinute : number;
+
+  fromBlockTime : any;
+  toBlockTime :  any;
+  timeZoneText : string;
 
   submitButtonText = BUTTON_TEXTS.SUBMIT_BUTTON_TEXT;
 
@@ -61,6 +72,7 @@ export class PromotionalTemplateComponent implements OnInit {
   csvdocumentUploadId : any;
   csvRecords : any[];
   disableTemplateFlag : boolean;
+  pdfFileToUploadFlag : boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -77,6 +89,7 @@ export class PromotionalTemplateComponent implements OnInit {
       campaignDate: [new Date(), Validators.required],
       triggerTime: [null, [Validators.required,TriggerTimeValidator()]],
       importFile: [null],
+      importCSVFile : [null]
     });
   }
 
@@ -84,7 +97,6 @@ export class PromotionalTemplateComponent implements OnInit {
 
   ngOnInit(): void {
     this.setMinDate();
-    this.configurable();
     this.dropdownSettings = {
       singleSelection: false,
       idField: "dial_code",
@@ -112,14 +124,28 @@ export class PromotionalTemplateComponent implements OnInit {
 
     const filterValue = value ? value.toLowerCase() : "";
 
-    return this.timeZones.filter(timeZone => timeZone.text.toLowerCase().includes(filterValue));
+    return this.timeZonesListArr.filter(timeZone => timeZone.text.toLowerCase().includes(filterValue));
   }
 
   displayFn(SelectedId){
     if(!SelectedId) return '';
-    let index = this.timeZones.findIndex(timeZone => timeZone.utc[0] === SelectedId);
-    return this.timeZones[index].text;
+    let index = this.timeZonesListArr.findIndex(timeZone => timeZone.utc === SelectedId);
+    this.configure(this.timeZonesListArr[index]);
+    return this.timeZonesListArr[index].text;
 
+  }
+
+
+  configure(timeZone : any){
+
+    this.form.controls['triggerTime'].reset(); //For Setting Time Zone as Null
+
+    if(timeZone){
+      this.fromBlockTime = timeZone['blockedFrom'] ? timeZone['blockedFrom'] : null;
+      this.toBlockTime = timeZone['blockedTo'] ? timeZone['blockedTo'] : null;
+      this.timeZoneText = timeZone['text'] ? timeZone['text'] : '';
+      this.configurable(this.fromBlockTime,this.toBlockTime);
+    }
   }
 
   setMinDate()
@@ -171,11 +197,18 @@ export class PromotionalTemplateComponent implements OnInit {
             );
             this.form.reset();
             this.form.controls['timeZone'].patchValue('');
+            this.form.controls['countryCodes'].patchValue('');
             this.showTemplateMessageFlag = false;
             this.labelImport.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
+            this.labelImportCSV.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
             this.documentUploadId = null;
+            this.csvdocumentUploadId = null;
             this.loading = false;
             this.fileToUpload = null
+            this.pdfFileToUploadFlag = false;
+            this.errorCountArray = [];
+            this.csvfileFlag = false;
+            this.csvfileToUpload  =false;
           } else {
             this.loading = false;
             this.toasterService.showError(message.value);
@@ -193,6 +226,7 @@ export class PromotionalTemplateComponent implements OnInit {
       this.labelImport.nativeElement.innerText = Array.from(files)
         .map((f) => f.name)
         .join(", ");
+        this.pdfFileToUploadFlag = true;
       }else if(type === "CSV"){
         this.labelImportCSV.nativeElement.innerText = Array.from(files)
         .map((f) => f.name)
@@ -217,6 +251,8 @@ export class PromotionalTemplateComponent implements OnInit {
     this.fileToUpload = null;
     this.fileUploadFlag = false
     this.documentUploadId = null;
+    this.pdfFileToUploadFlag = false;
+
     this.labelImport.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
   }
 
@@ -280,23 +316,24 @@ export class PromotionalTemplateComponent implements OnInit {
     });
   }
 
-  configurable(){
-    let FromBlockTimeArr = this.fromBlockTime ? this.fromBlockTime.split(":") : null
-    let ToBlockTimeArr = this.toBlockTime ? this.toBlockTime.split(":") : null;
+  configurable(fromBlockTime :  any,toBlockTime :  any){
+    let FromBlockTimeArr = fromBlockTime ? fromBlockTime.split(":") : null
+    let ToBlockTimeArr = toBlockTime ? toBlockTime.split(":") : null;
  
-    this.FromBlockTimeHour = FromBlockTimeArr ? Number(FromBlockTimeArr[0]) : null;
-    this.FromBlockTimeMinute  = FromBlockTimeArr ? Number(FromBlockTimeArr[1]) : null;
+    this.FromBlockTimeHour = FromBlockTimeArr ? Number(FromBlockTimeArr[0]) : 0;
+    this.FromBlockTimeMinute  = FromBlockTimeArr ? Number(FromBlockTimeArr[1]) : 0;
 
-    this.ToBlockTimeHour = ToBlockTimeArr ? Number(ToBlockTimeArr[0]) : null;
-    this.ToBlockTimeMinute = ToBlockTimeArr ? Number(ToBlockTimeArr[1]) : null;
+    this.ToBlockTimeHour = ToBlockTimeArr ? Number(ToBlockTimeArr[0]) : 0;
+    this.ToBlockTimeMinute = ToBlockTimeArr ? Number(ToBlockTimeArr[1]) : 0;
    }
 
    triggerTimeValidator(){
     const fieldControls = this.form.controls["triggerTime"].value;
-    const validateHour : number = fieldControls.hour ? Number(fieldControls.hour) : null;
-    const validateMinute : number= fieldControls.minute ? Number(fieldControls.minute) : null;
+    if(fieldControls){
+      const validateHour : number = fieldControls.hour ? Number(fieldControls.hour) : 0;
+    const validateMinute : number= fieldControls.minute ? Number(fieldControls.minute) : 0;
 
-    if(validateHour > this.FromBlockTimeHour && validateHour < this.ToBlockTimeHour){
+    if(validateHour > this.FromBlockTimeHour || validateHour < this.ToBlockTimeHour){
       this.warningPopUp();
     }
     else if(validateHour == this.FromBlockTimeHour || validateHour == this.ToBlockTimeHour){
@@ -309,12 +346,14 @@ export class PromotionalTemplateComponent implements OnInit {
       }
 
     }
+    }
+    
   }
 
   warningPopUp(){
     const dialogRef = this.warningDialog.open(WarningDialogBoxComponent,{
       width : '500px',
-      data : {fromTime:this.fromBlockTime,toTime:this.toBlockTime}
+      data : {fromTime:this.fromBlockTime,toTime:this.toBlockTime,timeZoneText : this.timeZoneText}
     })
     dialogRef.afterClosed().subscribe((result) =>{
       if(result){
@@ -324,12 +363,12 @@ export class PromotionalTemplateComponent implements OnInit {
    }
 
    fileChangeListener($event: any): void {
-    debugger
     const files : FileList= $event.srcElement.files;
     this.labelImportCSV.nativeElement.innerText = Array.from(files)
      .map((f) => f.name)
      .join(", ");
     this.csvfileToUpload = true;
+
    const arr : any[] = this.validatorMethod();
     // Select the files from the event
     
@@ -342,9 +381,11 @@ export class PromotionalTemplateComponent implements OnInit {
 
         let fileHeaderArray : any[] = result ? (result[0] ? result[0] : null) : null;
 
-        if(!fileHeaderArray.includes("mobile")){
+        if(!fileHeaderArray.includes("phoneNumber")){
+          
+          this.errorCountArray.push("phoneNumber");
+          console.log("Mobile Mandatory check")
 
-          this.errorCountArray.push("mobile");
         }
         if(!(!arr.some(ele => !fileHeaderArray.includes(ele)))){
              this.codeLineParser(arr,fileHeaderArray);
@@ -362,6 +403,47 @@ export class PromotionalTemplateComponent implements OnInit {
         console.log('Error', error);
       });
  
+  }
+
+
+  fileChangeListener1($event: any){
+    const files : FileList= $event.srcElement.files;
+    this.labelImportCSV.nativeElement.innerText = Array.from(files)
+     .map((f) => f.name)
+     .join(", ");
+     this.csvfileToUpload = true;
+     const templteMessage = this.form.controls['template'].value;
+
+    const ValidateObj : validateObj = csvFileValidator(this.ngxCsvParser,files,templteMessage)
+    if(ValidateObj){
+      if(ValidateObj['validateFlag']){
+        const UploadObj : uploadType = uploadToAppiyoDrive(files[0],"csv",this.userService);
+        if(UploadObj['uploadFlag']){
+          this.toasterService.showSuccess(TOASTER_MESSAGES.FILE_UPLOAD_SUCCESS);
+          this.csvdocumentUploadId = UploadObj['documentUploadId'] ? UploadObj['documentUploadId'] : "";
+          this.disableTemplateFlag = true;
+        }else if(!UploadObj['uploadFlag']){
+          
+          if(UploadObj['errorMsg'])
+          console.log("Error "+UploadObj['errorMsg']);
+          this.toasterService.showError(TOASTER_MESSAGES.FILE_UPLOAD_FAILURE);
+          
+        }
+
+      }
+      else if(!ValidateObj['validateFlag']){
+
+        if(ValidateObj['errorMsg']){
+        }
+
+        if(ValidateObj['errorString']){
+          this.stringErrorArray = ValidateObj['errorString'] ? ValidateObj['errorString'] : '';
+          this.csvfileFlag = true;
+        }
+
+      }
+    }
+
   }
 
   //Validator for CSV
@@ -382,13 +464,13 @@ return found    // ["string", "curly"]
    }
 
    codeLineParser(arrayA : string[],arrayB : string[]){
-    debugger;
     for(let i =0 ; i < arrayA.length ;i++){
           if(!arrayB.includes(arrayA[i])){
             this.errorCountArray.push(arrayA[i]);
           }
           
     }
+    console.log("Code Line Parser ")
 
   }
 
@@ -404,7 +486,7 @@ return found    // ["string", "curly"]
 
          }
     }
-
+    console.log("Error Msg Constructor :"+stringArray);
     return stringArray;
   }
 

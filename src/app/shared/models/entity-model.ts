@@ -53,7 +53,11 @@ export interface EntityResponse {
     blockedTo : any;
     blockedBy : any;
     id : any;
-    timeZones ?: any[]
+    timeZones ?: any[],
+    errorMessage ? : any,
+    templateDetails ? : any[],
+    dupTempId ?: string;
+    dupTempName ?: string;
   };
 
   Status: string;

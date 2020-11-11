@@ -116,7 +116,6 @@ export class WhatsappComponent implements OnInit {
   }
 
   fetchUserByMobileNumber(mobileNumber: string): void {
-    debugger;
     this.searchLoading = true;
     this.userService.fetchUserByMobileNumber(mobileNumber).subscribe(
       (response) => {
@@ -162,6 +161,7 @@ export class WhatsappComponent implements OnInit {
   }
 
   downloadReport(fromVal ?: number): void {
+    debugger;
     this.reportLoading = true;
     const fromDate = this.fieldControls.fromDate.value;
     const toDate = this.fieldControls.toDate.value;
@@ -206,7 +206,7 @@ export class WhatsappComponent implements OnInit {
               this.toasterService.showSuccess(
                 TOASTER_MESSAGES.REPORT_DOWNLOAD_SUCCESS
               );
-              this.downLoadContentConcat = null; 
+              this.downLoadContentConcat = ''; 
               }
               // if(!this.val){
               // this.saveFile(this.downLoadContentConcat);

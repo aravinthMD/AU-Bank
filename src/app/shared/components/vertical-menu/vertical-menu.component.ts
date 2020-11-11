@@ -21,6 +21,7 @@ export class VerticalMenuComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    debugger;
     this.parentMenu = this.menuItems.filter(item => item.parentId === this.menuParentId);
   }
 
