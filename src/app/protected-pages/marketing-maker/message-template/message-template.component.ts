@@ -57,7 +57,7 @@ export class MessageTemplateComponent implements OnInit {
   documentUploadId : any;
   csvdocumentUploadId : any;
   disableTemplateFlag : boolean;
-  defaultTime = { hour: new Date().getHours(), minute: new Date().getMinutes() };
+  // defaultTime = { hour: new Date().getHours(), minute: new Date().getMinutes() };
   timeZones:any = timeZones;
   countryCodeList:any = countryCodes;
   filteredOptions: Observable<string[]>;
@@ -66,6 +66,7 @@ export class MessageTemplateComponent implements OnInit {
   errorCountArray : string[]  = [];
   stringErrorArray : string;
 
+  defaultTime = {hour :  12,minute : 0}
 
   constructor(
     private formBuilder: FormBuilder,
@@ -82,7 +83,9 @@ export class MessageTemplateComponent implements OnInit {
       template: [null, Validators.required],
       campaignStartDate: [new Date(), Validators.required],
       campaignEndDate: [null, Validators.required],
-      triggerTime: [null, [Validators.required,TriggerTimeValidator()]],
+      triggerTime: [this.defaultTime, [Validators.required,
+        // TriggerTimeValidator()
+      ]],
       timeZone: ["",Validators.required],
       countryCodes: ["",Validators.required],
       importFile: [null],
@@ -102,14 +105,11 @@ export class MessageTemplateComponent implements OnInit {
 
     //AutoComplete
 
-    
     this.filteredOptions = this.form.controls['timeZone'].valueChanges
       .pipe(
         startWith(''),
         map(value => this._filter(value))
       );
-  
-     
 
   }
 
@@ -131,7 +131,7 @@ export class MessageTemplateComponent implements OnInit {
 
   configure(timeZone : any){
 
-    this.form.controls['triggerTime'].reset(); //For Setting Time Zone as Null
+    this.form.controls['triggerTime'].setValue(this.defaultTime) //For Setting Time Zone as Null
 
     if(timeZone){
       this.fromBlockTime = timeZone['blockedFrom'] ? timeZone['blockedFrom'] : null;

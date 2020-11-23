@@ -110,3 +110,7 @@ export enum BOOLEANS {
   FALSE = "false",
 }
 
+export enum SMSTEXT {
+  smsMsgText = "WhatsApp Banking services are blocked basis your request.  To reactivate, give a missed call on 7036165000 or SMS 'START' to 7036165000 after 24 hours.",
+}
+

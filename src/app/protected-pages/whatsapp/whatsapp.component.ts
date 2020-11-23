@@ -227,16 +227,16 @@ export class WhatsappComponent implements OnInit {
   transform(response, remaining: number, sent: number) {
     console.log(remaining);
     // let contentToDownload: string;
-    // const savedData = localStorage.getItem("contentToDownload");
+    // const savedData = sessionStorage.getItem("contentToDownload");
 
     // if (remaining > 0) {
     //   for (let i = 0; i < remaining; i++) {
     //     if (savedData) {
     //       contentToDownload = savedData.concat(response);
-    //       localStorage.setItem("contentToDownload", contentToDownload);
+    //       sessionStorage.setItem("contentToDownload", contentToDownload);
     //     } else {
     //       contentToDownload = response;
-    //       localStorage.setItem("contentToDownload", contentToDownload);
+    //       sessionStorage.setItem("contentToDownload", contentToDownload);
     //     }
     //     this.downloadReport(sent);
     //     if (i === remaining) {
@@ -265,7 +265,7 @@ export class WhatsappComponent implements OnInit {
       type,
     });
     saveAs(blob, fileName);
-    localStorage.removeItem("contentToDownload");
+    sessionStorage.removeItem("contentToDownload");
   }
 
   openBlockWhatsappDialog({ action, cTime, channel, mobile }): void {

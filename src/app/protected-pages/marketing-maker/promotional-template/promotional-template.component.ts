@@ -87,7 +87,9 @@ export class PromotionalTemplateComponent implements OnInit {
       timeZone: [null,Validators.required],
       countryCodes: [null,Validators.required],
       campaignDate: [new Date(), Validators.required],
-      triggerTime: [null, [Validators.required,TriggerTimeValidator()]],
+      triggerTime: [this.defaultTime, [Validators.required,
+        // TriggerTimeValidator()
+      ]],
       importFile: [null],
       importCSVFile : [null]
     });
@@ -138,7 +140,7 @@ export class PromotionalTemplateComponent implements OnInit {
 
   configure(timeZone : any){
 
-    this.form.controls['triggerTime'].reset(); //For Setting Time Zone as Null
+    this.form.controls['triggerTime'].setValue(this.defaultTime); //For Setting Time Zone as Null
 
     if(timeZone){
       this.fromBlockTime = timeZone['blockedFrom'] ? timeZone['blockedFrom'] : null;
@@ -200,7 +202,7 @@ export class PromotionalTemplateComponent implements OnInit {
             this.form.controls['countryCodes'].patchValue('');
             this.showTemplateMessageFlag = false;
             this.labelImport.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
-            this.labelImportCSV.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
+            // this.labelImportCSV.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
             this.documentUploadId = null;
             this.csvdocumentUploadId = null;
             this.loading = false;

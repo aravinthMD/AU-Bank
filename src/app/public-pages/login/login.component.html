@@ -15,7 +15,7 @@
         autocomplete="off"
         class="form-control"
         autofocus
-        required
+        appBlockCopyPaste
       />
       <small id="userIdHelp" class="form-text text-muted"
         >Enter a valid user id</small
@@ -29,9 +29,8 @@
         id="password"
         placeholder="Enter your password"
         aria-describedby="passwordHelp"
-        autocomplete="off"
         class="form-control"
-        required
+        appBlockCopyPaste
       />
       <small id="passwordHelp" class="form-text text-muted"
         >Enter a valid password</small
@@ -48,7 +47,7 @@
         >External User</label
       >
     </div>
-    <button class="shadow" [disabled]="loginForm.invalid || loading">
+    <button class="btn submit-btn shadow" [disabled]="loginForm.invalid || loading">
       <span
         *ngIf="loading"
         class="spinner-border"

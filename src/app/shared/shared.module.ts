@@ -6,7 +6,7 @@ import { VerticalMenuComponent } from "./components/vertical-menu/vertical-menu.
 import { ToastComponent } from "./components/toast/toast.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import {LocalTimeConverterPipe} from './CustomPipes/local-time-converter.pipe'
+import {LocalTimeConverterPipe} from './CustomPipes/local-time-converter.pipe';
 
 @NgModule({
   declarations: [SidenavComponent, VerticalMenuComponent, ToastComponent,LocalTimeConverterPipe],

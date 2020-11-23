@@ -14,7 +14,7 @@ import { PAGES } from "../utils/constant";
 export class AuthenticationGuard implements CanActivate {
   constructor(private router: Router) {}
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const currentUser = localStorage.getItem("currentUser");
+    const currentUser = sessionStorage.getItem("currentUser");
     if (currentUser) {
       return true;
     } else {

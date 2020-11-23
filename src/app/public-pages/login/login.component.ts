@@ -35,16 +35,16 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
-      userId: ["", Validators.required],
-      password: ["", Validators.required],
+      userId: [null, Validators.required],
+      password: [null, Validators.required],
       isExternalUser: [false],
     });
 
     // If user already logged in and redirect to home page
     const currentUser: LoginProcessVariables = JSON.parse(
-      localStorage.getItem("currentUser")
+      sessionStorage.getItem("currentUser")
     );
-    const currentHome = localStorage.getItem("currentHome");
+    const currentHome = sessionStorage.getItem("currentHome");
 
     if (currentUser) {
       const isUserAndFirstLogin =

@@ -5,6 +5,7 @@ import {
   BUTTON_TEXTS,
   TOASTER_MESSAGES,
   RESPONSES,
+  SMSTEXT
 } from "src/app/shared/utils/constant";
 import { ToasterService } from "src/app/shared/services/toaster.service";
 import { UserService } from "src/app/shared/services/user.service";
@@ -24,6 +25,7 @@ export class BlockWhatsappDialogComponent implements OnInit {
 
   blockButtonText = BUTTON_TEXTS.BLOCK_BUTTON_TEXT;
   cancelButtonText = BUTTON_TEXTS.CANCEL_BUTTON_TEXT;
+  smsMsgText = SMSTEXT.smsMsgText;
 
   form: FormGroup;
 
@@ -86,4 +88,13 @@ export class BlockWhatsappDialogComponent implements OnInit {
   close(message?: string): void {
     this.ngbActiveModal.close(message);
   }
+
+  // sendSms(){
+  //   this.inputData.mobile;
+  //   this.smsMsgText
+  //   this.userService.sendSmsMessageForBlocked(this.inputData.mobile,this.smsMsgText).subscribe((response) => {
+  //     console.log(response);
+
+  //   })
+  // }
 }

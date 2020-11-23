@@ -1,6 +1,6 @@
 @import "../../shared/styles/variables.scss";
 
-button {
+.submit-btn {
   width: -webkit-fill-available;
   color: $white-color;
   background-color: $maroon-color;
@@ -9,6 +9,7 @@ button {
   margin-top: 10px;
   font-size: 18px;
 }
+
 
 input[type="checkbox"] {
   margin-top: 7px !important;

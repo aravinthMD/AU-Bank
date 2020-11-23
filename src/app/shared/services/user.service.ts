@@ -49,20 +49,20 @@ export class UserService {
     @Inject(WINDOW) private window: Window
   ) {
     this.tokenSubject = new BehaviorSubject<string>(
-      JSON.parse(localStorage.getItem("token"))
+      JSON.parse(sessionStorage.getItem("token"))
     );
     this.token = this.tokenSubject.asObservable();
 
     this.currentUserSubject = new BehaviorSubject<LoginProcessVariables>(
-      JSON.parse(localStorage.getItem("currentUser"))
+      JSON.parse(sessionStorage.getItem("currentUser"))
     );
     this.currentUser = this.currentUserSubject.asObservable();
     this.currentHomeSubject = new BehaviorSubject<string>(
-      JSON.parse(localStorage.getItem("currentHome"))
+      JSON.parse(sessionStorage.getItem("currentHome"))
     );
     this.currentHome = this.currentHomeSubject.asObservable();
     this.currentMenuSubject = new BehaviorSubject<Menu[]>(
-      JSON.parse(localStorage.getItem("currentMenu"))
+      JSON.parse(sessionStorage.getItem("currentMenu"))
     );
     this.currentMenu = this.currentMenuSubject.asObservable();
 
@@ -92,7 +92,7 @@ export class UserService {
   }
 
   public setCurrentUserSubject(response: LoginProcessVariables) {
-    localStorage.setItem("currentUser", JSON.stringify(response));
+    sessionStorage.setItem("currentUser", JSON.stringify(response));
     this.currentUserSubject.next(response);
   }
 
@@ -100,16 +100,16 @@ export class UserService {
     if (roleName === ROLES.SUPER_ADMIN) {
       this.currentMenuSubject.next(SUPER_ADMIN_MENU_ITEMS);
       this.currentHomeSubject.next(PAGES.USER_CREATION);
-      localStorage.setItem("currentHome", JSON.stringify(PAGES.USER_CREATION));
-      localStorage.setItem(
+      sessionStorage.setItem("currentHome", JSON.stringify(PAGES.USER_CREATION));
+      sessionStorage.setItem(
         "currentMenu",
         JSON.stringify(SUPER_ADMIN_MENU_ITEMS)
       );
     } else if (roleName === ROLES.ADMIN) {
       this.currentMenuSubject.next(ADMIN_MENU_ITEMS);
       this.currentHomeSubject.next(PAGES.USER_CREATION);
-      localStorage.setItem("currentHome", JSON.stringify(PAGES.USER_CREATION));
-      localStorage.setItem("currentMenu", JSON.stringify(ADMIN_MENU_ITEMS));
+      sessionStorage.setItem("currentHome", JSON.stringify(PAGES.USER_CREATION));
+      sessionStorage.setItem("currentMenu", JSON.stringify(ADMIN_MENU_ITEMS));
     } else {
       const USER_MENU_ITEMS = [];
       const isViewWhatsappControlAvailable = activityList.find(
@@ -147,11 +147,11 @@ export class UserService {
 
       this.currentMenuSubject.next(USER_MENU_ITEMS);
       this.currentHomeSubject.next(USER_MENU_ITEMS[0].routerLink);
-      localStorage.setItem(
+      sessionStorage.setItem(
         "currentHome",
         JSON.stringify(USER_MENU_ITEMS[0].routerLink)
       );
-      localStorage.setItem("currentMenu", JSON.stringify(USER_MENU_ITEMS));
+      sessionStorage.setItem("currentMenu", JSON.stringify(USER_MENU_ITEMS));
     }
   }
 
@@ -166,7 +166,7 @@ export class UserService {
       .pipe(
         map((response) => {
           const { token } = response;
-          localStorage.setItem("token", JSON.stringify(token));
+          sessionStorage.setItem("token", JSON.stringify(token));
           this.tokenSubject.next(token);
           return response;
         })
@@ -207,7 +207,7 @@ export class UserService {
         map((response) => {
           if (response && response.ProcessVariables) {
             const userResponse = response.ProcessVariables;
-            localStorage.setItem("currentUser", JSON.stringify(userResponse));
+            sessionStorage.setItem("currentUser", JSON.stringify(userResponse));
             this.currentUserSubject.next(userResponse);
             const { roleName, activityList } = userResponse;
             this.setHomeAndMenu(roleName, activityList);
@@ -820,10 +820,10 @@ export class UserService {
   }
 
   clear() {
-    localStorage.removeItem("currentUser");
-    localStorage.removeItem("currentHome");
-    localStorage.removeItem("currentMenu");
-    localStorage.removeItem("token");
+    sessionStorage.removeItem("currentUser");
+    sessionStorage.removeItem("currentHome");
+    sessionStorage.removeItem("currentMenu");
+    sessionStorage.removeItem("token");
     this.currentUserSubject.next(null);
     this.currentHomeSubject.next(null);
     this.currentMenuSubject.next(null);
@@ -1201,6 +1201,6 @@ export class UserService {
     );
 
     }
-  
+
 
 }

@@ -94,7 +94,9 @@ export class PreApprovedOffersComponent implements OnInit {
       countryCodes: ["",Validators.required],
       campaignStartDate: [new Date(), Validators.required],
       campaignEndDate: [null, Validators.required],
-      triggerTime: [null, [Validators.required,TriggerTimeValidator()]],
+      triggerTime: [this.defaultTime, [Validators.required,
+        // TriggerTimeValidator()
+      ]],
       importFile: [null],
       importCSVFile : [null],
     });
@@ -141,7 +143,7 @@ export class PreApprovedOffersComponent implements OnInit {
 
   configure(timeZone : any){
 
-    this.form.controls['triggerTime'].reset(); //For Setting Time Zone as Null
+    this.form.controls['triggerTime'].setValue(this.defaultTime); //For Setting Time Zone as Null
 
     if(timeZone){
       this.fromBlockTime = timeZone['blockedFrom'] ? timeZone['blockedFrom'] : null;
@@ -225,8 +227,8 @@ export class PreApprovedOffersComponent implements OnInit {
               );
               this.form.reset();
               this.form.controls['timeZone'].patchValue('');
-              this.labelImport.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
-              this.labelImportCSV.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
+              // this.labelImport.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE; //Commented for Testing
+              // this.labelImportCSV.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE; //Commented for Changes
               this.documentUploadId = null;
               this.csvdocumentUploadId = null;
               this.showTemplateMessageFlag = false;

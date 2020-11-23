@@ -77,7 +77,7 @@
         <div class="input-group">
           <input
             class="form-control bg-search btn-outline-secondary"
-            placeholder="Campaign Date"
+            placeholder="yyyy-dd-mm"
             formControlName="campaignDate"
             name="fromDate"
             ngbDatepicker
@@ -110,6 +110,8 @@
         </div>
       </div>
 
+      <!--PDF Upload-->
+
       <div class="form-group">
         <label>Choose PDF File</label>
         <div class="input-group">
@@ -120,17 +122,16 @@
               id="inputGroupFile"
               formControlName="importFile"
               (change)="onFileChange($event.target.files,'PDF')" />
-              <!-- <div class="Xbox"> --> 
                 <button class = "custom-button Xbox" *ngIf = "pdfFileToUploadFlag" type="button" (click) = "cancelFileUpload()">X</button>
-              <!-- </div> -->
-            <!-- </input> -->
             <label class="custom-file-label" for="inputGroupFile" #labelImport>Choose file</label>
           </div>
         </div>
-        <!-- <button class = "custom-button" *ngIf = "fileToUpload" type="button" (click) = "cancelFileUpload()">Cancel</button> -->
       </div>
 
-      <div class="form-group">
+
+      <!--CSV Upload-->
+
+      <!-- <div class="form-group">
         <label>Choose CSV File</label>
         <div class="input-group">
           <div class="custom-file">
@@ -147,7 +148,7 @@
         <div *ngIf = "csvfileFlag" class="alert alert-danger">
         <small *ngIf = "csvfileFlag" class="medium form-text text-danger">File Upload failed Missing columns {{stringErrorArray}}</small>
       </div>
-      </div>
+      </div> -->
 
       <button
         type="button"

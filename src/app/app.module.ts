@@ -13,7 +13,8 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { ChangePasswordComponent } from "./public-pages/change-password/change-password.component";
 import { WINDOW_INTERCEPTOR } from "./shared/interceptors/window.interceptor";
 import {MaterialModule} from "./material/material.module";
-
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { BlockCopyPasteDirective} from './shared/customDirectives/block-copy-paste.directive'
 
 @NgModule({
   declarations: [
@@ -22,7 +23,7 @@ import {MaterialModule} from "./material/material.module";
     PublicHomeComponent,
     LoginComponent,
     ChangePasswordComponent,
-    
+    BlockCopyPasteDirective
   ],
   imports: [
     BrowserModule,
@@ -38,6 +39,9 @@ import {MaterialModule} from "./material/material.module";
       provide: HTTP_INTERCEPTORS,
       useClass: Interceptor,
       multi: true,
+    },
+    {
+      provide: LocationStrategy, useClass: HashLocationStrategy
     },
     WINDOW_INTERCEPTOR,
   ],
