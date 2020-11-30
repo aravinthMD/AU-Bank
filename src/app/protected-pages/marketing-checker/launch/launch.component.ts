@@ -68,7 +68,7 @@ export class LaunchComponent implements OnInit {
     {name : "PreApproved",value:"3"}
   ];
 
-  tableHeaders = ["Template Id", "Template", "Campaign Start Date", "Upload Time","Campaign End Date","Campaign Type","Action","Document"];
+  tableHeaders = ["Template Id", "Template", "Campaign Start Date", "Upload Time","Campaign End Date","Campaign Type","Action","PDF","CSV"];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -259,9 +259,13 @@ export class LaunchComponent implements OnInit {
     });
   }
 
-  openFilePreviewDialog(Template : any)
+  openFilePreviewDialog(Template : any,type : string)
   {
-    this.previewFileUrl = this.host+this.newAppiyoDrive+Template.documentId;
+    if(type == 'pdf'){
+      this.previewFileUrl = this.host+this.newAppiyoDrive+Template.documentId;
+    }else if(type == 'csv'){
+      this.previewFileUrl = this.host+this.newAppiyoDrive+Template.csvDocId;
+    }
     console.log("Preview Url"+this.previewFileUrl)
     const dialogRef = this.previewDialog.open(FilePreviewDialogBoxComponent,{
       data: {previewData : this.previewFileUrl,

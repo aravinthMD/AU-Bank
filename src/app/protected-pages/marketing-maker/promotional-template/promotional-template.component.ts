@@ -74,6 +74,9 @@ export class PromotionalTemplateComponent implements OnInit {
   disableTemplateFlag : boolean;
   pdfFileToUploadFlag : boolean;
 
+
+  selectedItems = [];
+
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
@@ -82,8 +85,8 @@ export class PromotionalTemplateComponent implements OnInit {
     private ngxCsvParser: NgxCsvParser
   ) {
     this.form = this.formBuilder.group({
-      templateId: [null],
-      template: [null],
+      templateId: [null,Validators.required],
+      template: [null,Validators.required],
       timeZone: [null,Validators.required],
       countryCodes: [null,Validators.required],
       campaignDate: [new Date(), Validators.required],
@@ -199,10 +202,10 @@ export class PromotionalTemplateComponent implements OnInit {
             );
             this.form.reset();
             this.form.controls['timeZone'].patchValue('');
-            this.form.controls['countryCodes'].patchValue('');
+            this.selectedItems = [];
             this.showTemplateMessageFlag = false;
             this.labelImport.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
-            // this.labelImportCSV.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
+            this.labelImportCSV.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
             this.documentUploadId = null;
             this.csvdocumentUploadId = null;
             this.loading = false;
@@ -301,6 +304,9 @@ export class PromotionalTemplateComponent implements OnInit {
       const templateId = templateObj ? templateObj.message : null;
       this.form.controls['template'].setValue(templateId ? templateId : "");
       this.showTemplateMessageFlag = true;
+    }else{
+      this.form.controls['template'].reset();
+      this.showTemplateMessageFlag = false;
     }
     
   }

@@ -55,28 +55,30 @@
         <div class="form-group">
          <label>Template ID</label><br>
           <mat-form-field floatLabel="never" class = "example-full-width" appearance="standard" >
-             <mat-label>template ID </mat-label>
+             <!-- <mat-label>template ID </mat-label> -->
              <input
              formControlName = "templateId"
-             matInput class="form-controls">
+             matInput class="form-controls"
+             placeholder="Enter the template Id">
           </mat-form-field>
         </div> 
         <div class="form-group">
          <label>Template Name</label><br>
          <mat-form-field class = "example-full-width" appearance="standard">
-            <mat-label>name</mat-label>
+            <!-- <mat-label>name</mat-label> -->
             <input 
             formControlName = "templateName"
-            matInput class="form-controls">
+            matInput class="form-controls"
+            placeholder="Enter the Template Name">
          </mat-form-field>
        </div> 
 
        <label>Template Message</label><br>
        <mat-form-field class="example-full-width" appearance="standard">
-         <mat-label>message</mat-label>
+         <!-- <mat-label>message</mat-label> -->
          <textarea 
          formControlName = "templateMessage"
-         matInput></textarea>
+         matInput placeholder="Enter the Template Message"></textarea>
        </mat-form-field>
        <button type="button" [disabled] = "form1.invalid" class="btn submit-btn shadow" (click) = "OnSubmitPromotional()">Submit</button>
      </form>
@@ -89,28 +91,28 @@
         <div class="form-group">
          <label>Template ID</label><br>
           <mat-form-field class = "example-full-width" appearance="standard" floatLabel = "never">
-             <mat-label>template ID</mat-label>
+             <!-- <mat-label>template ID</mat-label> -->
              <input 
              formControlName = "templateId"
-             matInput class="form-controls">
+             matInput class="form-controls" placeholder="Enter the Template Id">
           </mat-form-field>
         </div> 
         <div class="form-group">
          <label>Template Name</label><br>
          <mat-form-field class = "example-full-width" appearance="standard">
-            <mat-label>name</mat-label>
+            <!-- <mat-label>name</mat-label> -->
             <input 
             formControlName = "templateName"
-            matInput class="form-controls">
+            matInput class="form-controls" placeholder="Enter the Template Name">
          </mat-form-field>
        </div> 
 
        <label>Template Message</label><br>
        <mat-form-field class="example-full-width" appearance="standard">
-         <mat-label>message</mat-label>
+         <!-- <mat-label>message</mat-label> -->
          <textarea
          formControlName = "templateMessage" 
-         matInput></textarea>
+         matInput placeholder="Enter the Template Message"></textarea>
        </mat-form-field>
        <button type="button" class="btn submit-btn shadow" [disabled] = "form2.invalid" (click) = "OnSubmitPreApproved()">Submit</button>
      </form>

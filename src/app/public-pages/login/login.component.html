@@ -47,6 +47,9 @@
         >External User</label
       >
     </div>
+    <mat-error class="errMsg" *ngIf = "invalidUserFlag">
+      {{errroMsg}} 
+    </mat-error>
     <button class="btn submit-btn shadow" [disabled]="loginForm.invalid || loading">
       <span
         *ngIf="loading"

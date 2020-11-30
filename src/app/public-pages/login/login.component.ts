@@ -7,6 +7,7 @@ import {
   PAGES,
   ROLES,
   BOOLEANS,
+  MESSAGES
 } from "src/app/shared/utils/constant";
 import { UserService } from "src/app/shared/services/user.service";
 import { ToasterService } from "src/app/shared/services/toaster.service";
@@ -24,6 +25,8 @@ export class LoginComponent implements OnInit {
 
   loading = false;
   returnUrl: string;
+  errroMsg : string = MESSAGES.INVALID_USER;
+  invalidUserFlag : boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -77,11 +80,13 @@ export class LoginComponent implements OnInit {
       )
       .subscribe(
         () => {
+          this.invalidUserFlag = false;
           this.getUserDetail();
           this.loading = false;
         },
         (error) => {
           this.toasterService.showError(error);
+          this.invalidUserFlag = true
           this.loading = false;
         }
       );

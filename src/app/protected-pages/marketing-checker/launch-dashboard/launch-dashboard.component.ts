@@ -49,7 +49,8 @@ export class LaunchDashboardComponent implements OnInit {
     "Campaign Type",
     "Action",
     "Audit",
-    "Document"
+    "PDF",
+    "CSV"
   ];
 
   //filterOptions = ["All", "Active", "Inactive"];
@@ -315,9 +316,13 @@ export class LaunchDashboardComponent implements OnInit {
  
   }
   
-  openFilePreviewDialog(Template : any)
+  openFilePreviewDialog(Template : any,type : string)
   {
-    this.previewFileUrl = this.host+this.newAppiyoDrive+Template.documentId;
+    if(type == "pdf"){
+      this.previewFileUrl = this.host+this.newAppiyoDrive+Template.documentId;
+    }else if(type == "csv"){
+      this.previewFileUrl = this.host+this.newAppiyoDrive+Template.csvDocId;
+    }
     const dialogRef = this.previewDialog.open(FilePreviewDialogComponent,{
       data: {previewData : this.previewFileUrl,
               templateId : Template.id},

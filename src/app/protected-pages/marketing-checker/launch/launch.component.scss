@@ -26,8 +26,10 @@ tr {
   color: $white-color;
   background-color: $maroon-color;
   border: 1px solid $maroon-color;
-  font-size: 12px;
   text-transform: uppercase;
+  width: 72px;
+  font-size: 11px !important;
+  border-radius: 3px !important;
 }
 
 .rejected-btn {

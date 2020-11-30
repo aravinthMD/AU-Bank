@@ -96,6 +96,7 @@ export enum CONCAT_HELPERS {
 
 export enum MESSAGES {
   NETWORK_NOT_AVAILABLE = "Network connection not available.",
+  INVALID_USER = "Enter valid User ID and Password "
 }
 
 export enum TEMPLATE_STATUS_CODES {

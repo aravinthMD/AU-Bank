@@ -49,7 +49,7 @@ export class DashboardComponent implements OnInit {
   host : any = environment.host;
   newAppiyoDrive  = environment.newAppiyoDrive;
 
-  tableHeaders = ["Template Id", "Template", "Campaign StartDate","Trigger Time","Campaign EndDate","Template Type","Status","Reason","Document"];
+  tableHeaders = ["Template Id", "Template", "Campaign StartDate","Trigger Time","Campaign EndDate","Template Type","Status","Reason","PDF","CSV "];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -189,9 +189,13 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  openFilePreviewDialog(Template : any)
+  openFilePreviewDialog(Template : any,type : string)
   {
+    if(type == 'pdf'){
     this.previewFileUrl = this.host+this.newAppiyoDrive+Template.documentId;
+    } else if(type == 'csv'){
+    this.previewFileUrl = this.host+this.newAppiyoDrive+Template.csvDocId;
+    }
     console.log("Preview Url"+this.previewFileUrl)
     const dialogRef = this.previewDialog.open(FilePreviewDialogBoxComponent,{
       data: {previewData : this.previewFileUrl,

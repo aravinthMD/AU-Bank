@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "app/shared/styles/variables.scss";
+@import '~material-icons/iconfont/material-icons.css';
+
 
 .page-container {
   position: relative;
@@ -292,6 +294,8 @@ td {
     color: $white-color;
   }
 }
+
+
 
 /* block list style end  */
 

@@ -79,6 +79,8 @@ export class PreApprovedOffersComponent implements OnInit {
 
   csvfileToUpload : boolean;
 
+  selectedItems = [];
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -227,6 +229,7 @@ export class PreApprovedOffersComponent implements OnInit {
               );
               this.form.reset();
               this.form.controls['timeZone'].patchValue('');
+              this.selectedItems = [];
               // this.labelImport.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE; //Commented for Testing
               // this.labelImportCSV.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE; //Commented for Changes
               this.documentUploadId = null;

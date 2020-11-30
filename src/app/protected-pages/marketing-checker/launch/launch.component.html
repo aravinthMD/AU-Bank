@@ -150,7 +150,7 @@
             <button
               *ngIf="template.status === '10'"
               type="button"
-              class="btn action-btn shadow"
+              class="btn action-btn shadow mr-2"
               (click)="openApproveTemplateDialog(template)"
             >
               {{ launchButtonText }}
@@ -185,11 +185,24 @@
             <!-- <button mat-icon-button matTooltip="preview document" matTooltipClass="example-tooltip-red" aria-label="Example icon-button with a preview icon" (click) = "openFilePreviewDialog(template)">
               <mat-icon>preview</mat-icon>
             </button> -->
-            <button mat-icon-button matTooltip="preview document" aria-label="Example icon-button with a preview icon" (click) = "openFilePreviewDialog(template)" >
-              <mat-icon>preview</mat-icon>
+            <button mat-icon-button matTooltip="preview document" aria-label="Example icon-button with a preview icon" (click) = "openFilePreviewDialog(template,'pdf')" >
+              <img src="assets/preview-black-24dp.svg">
             </button>
           </ng-template>
           <ng-template [ngIf] = "!template.documentId">
+            No
+          </ng-template>
+        </td>
+        <td>
+          <ng-template [ngIf] = "template.csvDocId">
+            <!-- <button mat-icon-button matTooltip="preview document" matTooltipClass="example-tooltip-red" aria-label="Example icon-button with a preview icon" (click) = "openFilePreviewDialog(template)">
+              <mat-icon>preview</mat-icon>
+            </button> -->
+            <button mat-icon-button matTooltip="preview document" aria-label="Example icon-button with a preview icon" (click) = "openFilePreviewDialog(template,'csv')" >
+              <img src="assets/preview-black-24dp.svg">
+            </button>
+          </ng-template>
+          <ng-template [ngIf] = "!template.csvDocId">
             No
           </ng-template>
         </td>

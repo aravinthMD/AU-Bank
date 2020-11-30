@@ -68,6 +68,9 @@ export class MessageTemplateComponent implements OnInit {
 
   defaultTime = {hour :  12,minute : 0}
 
+  selectedItems = [];
+
+
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
@@ -241,6 +244,7 @@ export class MessageTemplateComponent implements OnInit {
               this.toasterService.showSuccess(
                 TOASTER_MESSAGES.CREATE_MESSAGE_TEMPLATE_SUCCESS
               );
+              this.selectedItems = [];
               this.form.reset();
               this.form.controls['timeZone'].setValue("");
               this.labelImport.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
@@ -265,6 +269,11 @@ export class MessageTemplateComponent implements OnInit {
           }
         );
     }
+  }
+
+
+  reset(){
+    this.form.controls['countryCodes'].setValue([]);
   }
 
   // onFileChange(event)
