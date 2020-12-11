@@ -232,7 +232,7 @@ export class UserService {
     const userEmail = emailId;
     const index = userEmail.indexOf("@");
     const formattedUserEmail =
-      index === -1 ? `${userEmail}@uataxisb.com` : userEmail;
+      index === -1 ? `${userEmail}${CONCAT_HELPERS.USER_ID_CONCAT_HELPER}` : userEmail;
     const data = {
       emailId: formattedUserEmail,
       roleName,

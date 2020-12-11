@@ -67,7 +67,10 @@ export enum TOASTER_MESSAGES {
   PRMOTIONAL_TEMPLATE_ADMIN_FAIL  = "Failed to Create Promotional Template",
   PREAPPROVED_TEMPLATE_ADMIN_FAIL  = "Failed to Create PreApproved Offer",
   PREAPPROVED_DUPLICATE_CHECK = "Already Exists",
-  DASHBOARD_DETAILS_FAIL = "Failed to Fetch Data"
+  DASHBOARD_DETAILS_FAIL = "Failed to Fetch Data",
+  FILE_INVAILD = "File Upload Failed.Invaild File Name",
+  PDF_INVALID = "Selected file is not a PDF type",
+  CSV_INVALID = "Selected file is not Csv type"
 }
 
 export enum DATE_FORMATS {
@@ -91,7 +94,7 @@ export enum REPORT_FILTER_TYPES {
 }
 
 export enum CONCAT_HELPERS {
-  USER_ID_CONCAT_HELPER = "@uataxisb.com",
+  USER_ID_CONCAT_HELPER = "@axisbank.com",
 }
 
 export enum MESSAGES {

@@ -71,13 +71,11 @@ export class LoginComponent implements OnInit {
   onSubmit(): void {
     this.loading = true;
     const fieldControls = this.loginForm.controls;
-    const isExternalUser = fieldControls.isExternalUser.value;
     this.userService
       .login(
         this.fieldControls.userId.value,
         this.fieldControls.password.value,
-        isExternalUser ? false : true
-      )
+        true)
       .subscribe(
         () => {
           this.invalidUserFlag = false;
@@ -85,7 +83,7 @@ export class LoginComponent implements OnInit {
           this.loading = false;
         },
         (error) => {
-          this.toasterService.showError(error);
+          this.toasterService.showError(MESSAGES.INVALID_USER);
           this.invalidUserFlag = true
           this.loading = false;
         }

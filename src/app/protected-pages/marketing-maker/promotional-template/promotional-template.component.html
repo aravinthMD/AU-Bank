@@ -42,12 +42,11 @@
       </div>
 
       <div class="form-group">
-        <label>Time Zones</label><br>
-        <mat-form-field class="example-full-width" floatLabel = "never">
+        <label class="timezone">Time Zones</label><br>
+        <!-- <mat-form-field class="example-full-width" floatLabel = "never"> -->
           <input type="text"
-                 placeholder="select time zones"
-                 aria-label="Number"
-                 matInput
+                 placeholder="select the Time Zone"
+                 aria-label="Number" style="border-color: #6c757d;"
                  [formControl]="form.controls['timeZone']"
                  formControlName = "timeZone"
                  [matAutocomplete]="auto" class="form-control">
@@ -56,7 +55,7 @@
               {{timeZone.text}}
             </mat-option>
           </mat-autocomplete>
-        </mat-form-field>
+        <!-- </mat-form-field> -->
       </div>
 
       <div class="form-group">
@@ -127,6 +126,9 @@
             <label class="custom-file-label" for="inputGroupFile" #labelImport>Choose file</label>
           </div>
         </div>
+        <div *ngIf = "onlyPdf" class="alert alert-danger">
+          <small *ngIf = "onlyPdf" class="medium form-text text-danger">{{pdfErrorMsg}}</small>
+        </div>
       </div>
 
 
@@ -148,6 +150,9 @@
         </div>
         <div *ngIf = "csvfileFlag" class="alert alert-danger">
         <small *ngIf = "csvfileFlag" class="medium form-text text-danger">File Upload failed Missing columns {{stringErrorArray}}</small>
+      </div>
+      <div *ngIf = "onlyCsv" class="alert alert-danger">
+        <small *ngIf = "onlyCsv" class="medium form-text text-danger">{{csvErrorMsg}}</small>
       </div>
       </div>
 

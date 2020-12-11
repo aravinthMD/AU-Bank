@@ -50,7 +50,6 @@ export class LaunchDashboardComponent implements OnInit {
     "Action",
     "Audit",
     "PDF",
-    "CSV"
   ];
 
   //filterOptions = ["All", "Active", "Inactive"];

@@ -46,10 +46,21 @@ export class DashboardComponent implements OnInit {
   ]
 
   previewFileUrl : any;
+  downloadCsvUrl : string = '';
   host : any = environment.host;
   newAppiyoDrive  = environment.newAppiyoDrive;
 
-  tableHeaders = ["Template Id", "Template", "Campaign StartDate","Trigger Time","Campaign EndDate","Template Type","Status","Reason","PDF","CSV "];
+  tableHeaders = [
+                  "Template Id", 
+                  "Template", 
+                  "Campaign StartDate",
+                  "Trigger Time",
+                  "Campaign EndDate",
+                  "Template Type",
+                  "Status",
+                  "Reason",
+                  "PDF"
+                ];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -188,6 +199,8 @@ export class DashboardComponent implements OnInit {
       }
     );
   }
+
+
 
   openFilePreviewDialog(Template : any,type : string)
   {

@@ -163,9 +163,6 @@ export const environment = {
       // processId : "9849ae4a1b6311ebb6bc727d5ac274b2", //Local
       processId : "a34778981ce611eb8d2a4adb402d20cb" //Production
     },
-    sendSmsMsgAPI : {
-    
-    }
   },
   host: "http://178.128.125.44/appiyo",
   appiyoDrive: "/d/drive/upload/",

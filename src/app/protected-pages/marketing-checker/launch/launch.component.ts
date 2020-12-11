@@ -68,7 +68,14 @@ export class LaunchComponent implements OnInit {
     {name : "PreApproved",value:"3"}
   ];
 
-  tableHeaders = ["Template Id", "Template", "Campaign Start Date", "Upload Time","Campaign End Date","Campaign Type","Action","PDF","CSV"];
+  tableHeaders = ["Template Id", 
+                  "Template", 
+                  "Campaign Start Date", 
+                  "Upload Time",
+                  "Campaign End Date",
+                  "Campaign Type",
+                  "Action",
+                  "PDF"];
 
   constructor(
     private formBuilder: FormBuilder,

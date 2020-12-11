@@ -13,6 +13,10 @@ import { ReferenceService } from "src/app/shared/services/reference.service";
 import { UserService } from "src/app/shared/services/user.service";
 import { ToasterService } from "src/app/shared/services/toaster.service";
 import { saveAs } from "file-saver";
+import COUNTRY_CODE_CONSTANTS from 'src/app/shared/JsonFiles/countryCodes.json'
+import { Observable } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: "app-whatsapp",
@@ -26,6 +30,11 @@ export class WhatsappComponent implements OnInit {
   // filterOptions = ["ALL","BLOCKED","UNBLOCKED"];
   filterOptions = [{name:"ALL",value:"0"},{name:"BLOCKED",value:"1"},{name:"UNBLOCKED",value:"2"}]
   tableHeaders: string[] = [];
+
+  countryCodes = new FormControl();
+  countryCodeList : any[] = COUNTRY_CODE_CONSTANTS;
+  filteredOptions: Observable<string[]>;
+
 
   isViewOnly = false;
 
@@ -80,7 +89,13 @@ export class WhatsappComponent implements OnInit {
     this.setValidators();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.filteredOptions = this.countryCodes.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
+  }
 
   setValidators(): void {
     const {
@@ -93,6 +108,16 @@ export class WhatsappComponent implements OnInit {
 
     this.toMinDate = minDate;
     this.toMaxDate = maxDate;
+  }
+
+  
+    
+  
+
+  private _filter(value : string){
+
+    const filterValue = value ? value.toLowerCase(): "";
+    return this.countryCodeList.filter(cntCode => cntCode.name.toLowerCase().includes(filterValue) | cntCode.dial_code.toLowerCase().includes(filterValue));
   }
 
   onFromDateChange(event: NgbDate): void {
@@ -108,8 +133,11 @@ export class WhatsappComponent implements OnInit {
   validate(input: HTMLInputElement) {
     const { value } = input;
     this.validSearch = value.length === 10;
-    if (this.validSearch) {
-      this.fetchUserByMobileNumber(value);
+    const CountryCode = this.countryCodes.value;
+    if (this.validSearch && CountryCode) {
+      const CountryCodeFormatted = CountryCode.substring(1);
+      const MobileNoWithCntCode = `${CountryCodeFormatted}${value}`
+      this.fetchUserByMobileNumber(MobileNoWithCntCode);
     } else {
       this.userDetail = null;
     }

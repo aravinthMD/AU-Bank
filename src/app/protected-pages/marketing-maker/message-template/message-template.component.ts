@@ -28,6 +28,11 @@ export class MessageTemplateComponent implements OnInit {
   @Input('timeZonesList') timeZonesListArr : any[];
   @ViewChild('fileImportInput', { static: false }) fileImportInput: any;
 
+  regexPattern = /^[^*&%]+$/; 
+
+  pdfErrorMsg = TOASTER_MESSAGES.PDF_INVALID;
+  csvErrorMsg = TOASTER_MESSAGES.CSV_INVALID;
+
   FromBlockTimeHour : any;
   FromBlockTimeMinute : any;
   ToBlockTimeHour : any;
@@ -39,6 +44,7 @@ export class MessageTemplateComponent implements OnInit {
 
   submitButtonText = BUTTON_TEXTS.SUBMIT_BUTTON_TEXT;
 
+
   form: FormGroup;
   dropdownSettings = {};
 
@@ -47,6 +53,7 @@ export class MessageTemplateComponent implements OnInit {
   toMinDate: any;
   toMaxDate: any;
   onlyPdf:boolean = false;
+  onlyCsv:boolean ;
   minTime:any;
 
   loading = false;
@@ -258,6 +265,8 @@ export class MessageTemplateComponent implements OnInit {
               this.csvfileFlag = false;
               this.csvfileToUpload = false;
               this.pdfFileToUploadFlag  =false;
+              this.onlyCsv = false;
+              this.onlyPdf = false;
             } else {
               this.loading = false;
               this.toasterService.showError(message.value);
@@ -287,22 +296,45 @@ export class MessageTemplateComponent implements OnInit {
   // }
 
   onFileChange(files: FileList,type : any) {
+    let arr :[] = [];
+    let ext  = '';
+    this.fileToUpload = files.item(0);
     if(type === 'PDF'){
+      this.documentUploadId = null
     this.labelImport.nativeElement.innerText = Array.from(files)
       .map((f) => f.name)
       .join(", ");
       this.pdfFileToUploadFlag = true
       console.log("PDF Label");
+
+    ext = this.fileToUpload.name.split('.').pop();
+    
+    if(ext !== 'pdf'){
+        this.onlyPdf = true
+        this.toasterService.showError(TOASTER_MESSAGES.PDF_INVALID);
+      return;
+    }else {
+      this.onlyPdf = false;
+    }
+
     }else if(type === "CSV"){
       this.labelImportCSV.nativeElement.innerText = Array.from(files)
       .map((f) => f.name)
       .join(", ");
       console.log("CSV Label");
-
+      this.onlyCsv = false
     }
-    this.fileToUpload = files.item(0);
+
+    arr = this.fileToUpload.name.split(".");
+
+    if(Number(arr.length) > 2){
+        this.toasterService.showError(TOASTER_MESSAGES.FILE_INVAILD);
+        return;
+    }
+
     if(this.fileToUpload){
       console.log("FiletoUpload"+this.fileToUpload);
+      
     const userId = String(this.userService.currentUserValue.userId);
     const modifiedFile = Object.defineProperty(this.fileToUpload, "name", {
       writable: true,
@@ -323,6 +355,7 @@ export class MessageTemplateComponent implements OnInit {
     this.fileUploadFlag = false
     this.documentUploadId = null;
     this.pdfFileToUploadFlag = false
+    this.onlyPdf = false
     this.labelImport.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
   }
 
@@ -333,6 +366,7 @@ export class MessageTemplateComponent implements OnInit {
     this.disableTemplateFlag = false
     this.labelImportCSV.nativeElement.innerText = TOASTER_MESSAGES.LABLE_MESSAGE;
     this.csvfileFlag = false;
+    this.onlyCsv = false
     this.errorCountArray = [];
   }
 
@@ -450,6 +484,7 @@ export class MessageTemplateComponent implements OnInit {
  
    // input change listener for the CSV File
    fileChangeListener($event: any): void {
+     this.csvdocumentUploadId = null
      const files : FileList= $event.srcElement.files;
      this.labelImportCSV.nativeElement.innerText = Array.from(files)
       .map((f) => f.name)
@@ -486,6 +521,9 @@ export class MessageTemplateComponent implements OnInit {
          this.csvRecords = result;
        }, (error: NgxCSVParserError) => {
          console.log('Error', error);
+         this.toasterService.showError(error.message);
+         if(error.type = 'NOT_A_CSV_FILE')
+            this.onlyCsv = true
        });
   
    }
