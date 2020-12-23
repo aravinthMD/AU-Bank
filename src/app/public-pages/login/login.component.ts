@@ -71,11 +71,13 @@ export class LoginComponent implements OnInit {
   onSubmit(): void {
     this.loading = true;
     const fieldControls = this.loginForm.controls;
+    const isExternalUser = fieldControls.isExternalUser.value;
+
     this.userService
       .login(
         this.fieldControls.userId.value,
         this.fieldControls.password.value,
-        true)
+        isExternalUser ? false : true)
       .subscribe(
         () => {
           this.invalidUserFlag = false;

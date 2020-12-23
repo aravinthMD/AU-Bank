@@ -94,7 +94,7 @@ export enum REPORT_FILTER_TYPES {
 }
 
 export enum CONCAT_HELPERS {
-  USER_ID_CONCAT_HELPER = "@axisbank.com",
+  USER_ID_CONCAT_HELPER = "@uataxisb.com",
 }
 
 export enum MESSAGES {
