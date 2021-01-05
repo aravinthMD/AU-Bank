@@ -1,4 +1,4 @@
-# Axis Bank - Application to manage axis bank users who opted for whatsapp banking
+# AU Bank - Application to manage axis bank users who opted for whatsapp banking
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.3.
 
@@ -35,5 +35,4 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## Steps to build 
 1.ng build --prod --base-href=/waba-admin/
-"# axis-bank-project" 
-"# axis-bank-project" 
+
