@@ -30,7 +30,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 1.git status
 2.git add -A
-3.git commit -m"commit message"
+3.git commit -m"commit message"git push -f origin master
 4.git push
 
 ## Steps to build 
