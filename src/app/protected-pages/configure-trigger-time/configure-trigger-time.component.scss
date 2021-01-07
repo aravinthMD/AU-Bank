@@ -1,60 +1,55 @@
 @import "../../shared/styles/variables.scss";
-
 button {
     color: $white-color;
     border-radius: 3px;
-  }
+}
 
-  .card-header {
+.card-header {
     background-color: $maroon-color;
     color: $white-color;
     padding: 0.75rem !important;
     border-top-left-radius: unset;
     border-top-right-radius: unset;
-  }
-
-
-tr {
-  td {
-    vertical-align: middle;
-    font-size: 14px;
-    a {
-      cursor: pointer;
-      color: $maroon-color;
-      font-size: 14px;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-  }
-
-  th {
-    vertical-align: middle;
-    color: $maroon-color !important;
-    font-size: 15px;
-  }
 }
 
-
+tr {
+    td {
+        vertical-align: middle;
+        font-size: 14px;
+        a {
+            cursor: pointer;
+            color: $maroon-color;
+            font-size: 14px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    }
+    th {
+        vertical-align: middle;
+        color: $maroon-color !important;
+        font-size: 15px;
+        font-weight: 600;
+    }
+}
 
 table button {
-  color: $white-color;
-  font-size: 14px;
-  background-color: $maroon-color;
-  border: 1px solid $maroon-color;
+    color: $white-color;
+    font-size: 14px;
+    background-color: $maroon-color;
+    border: 1px solid $maroon-color;
 }
 
 table {
-  width: 100%;
-  margin-bottom: 0rem !important;
-
+    width: 100%;
+    margin-bottom: 0rem !important;
 }
 
-.header{
-  padding-left: 18px;
-  padding-bottom: 24px;
+.header {
+    padding-left: 18px;
+    padding-bottom: 24px;
 }
 
-.filter{
-  width: 250px;
+.filter {
+    width: 250px;
 }

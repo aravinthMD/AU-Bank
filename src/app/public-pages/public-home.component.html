@@ -1,22 +1,21 @@
 <div class="page-container">
-  <div class="content-wrap">
-    <div class="logo">
-      <a><img src="assets/topnav-logo.png" alt="Axis Bank Admin" /></a>
+    <div class="content-wrap">
+        <div class="logo">
+            <a><img src="../../assets/au_bank_logo_admin.png" alt="Au Bank Admin" /></a>
+        </div>
+        <router-outlet></router-outlet>
     </div>
-    <router-outlet></router-outlet>
-  </div>
-  <footer>
-    <div class="row">
-      <div class="col-2"></div>
-      <div class="col-8">
-        <h6>
-          Copyright @{{ currentYear }} Axis Bank Disclaimer Privacy Policy Code
-          of Commitment Responsible Disclosure Policy
-        </h6>
-      </div>
-      <div class="col-2">
-        <h6>version {{ version }}</h6>
-      </div>
-    </div>
-  </footer>
+    <footer>
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <h6>
+                    Copyright @{{ currentYear }} Au Bank Disclaimer Privacy Policy Code of Commitment Responsible Disclosure Policy
+                </h6>
+            </div>
+            <div class="col-2">
+                <h6>version {{ version }}</h6>
+            </div>
+        </div>
+    </footer>
 </div>
