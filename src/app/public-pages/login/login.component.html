@@ -1,24 +1,13 @@
 <div class="login shadow-lg p-4">
-  <div class="admin_img">
-    <img src="assets/axis_admin_logo.png" alt="" srcset="" />
-  </div>
+    <div class="admin_img">
+        <img src="/assets/au_bank_logo_login.png" alt="" srcset="" />
+    </div>
 
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="userId">USER ID</label>
-      <input
-        type="text"
-        formControlName="userId"
-        id="userId"
-        placeholder="Eg: USER0001"
-        aria-describedby="userIdHelp"
-        autocomplete="off"
-        class="form-control"
-        autofocus
-        appBlockCopyPaste
-      />
-      <small id="userIdHelp" class="form-text text-muted"
-        >Enter a valid user id</small
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="userId">USER ID</label>
+            <input type="text" formControlName="userId" id="userId" placeholder="Eg: USER0001" aria-describedby="userIdHelp" autocomplete="off" class="form-control" autofocus appBlockCopyPaste />
+            <small id="userIdHelp" class="form-text text-muted">Enter a valid user id</small
       >
     </div>
     <div class="form-group">
@@ -50,7 +39,9 @@
     <mat-error class="errMsg" *ngIf = "invalidUserFlag">
       {{errroMsg}} 
     </mat-error>
-    <button class="btn submit-btn shadow" [disabled]="loginForm.invalid || loading">
+    <!-- <button class="btn submit-btn shadow" [disabled]="loginForm.invalid || loading"> -->
+      <button class="btn submit-btn shadow">
+
       <span
         *ngIf="loading"
         class="spinner-border"
