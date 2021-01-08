@@ -124,26 +124,26 @@ export class UserService {
       const isMarketingCheckerControlAvailable = activityList.find(
         (value) => value === 4
       );
-      // if (isViewWhatsappControlAvailable) {
-      //   USER_MENU_ITEMS.push(
-      //     new Menu(10, "View Whatsapp", "/view-whatsapp", false, 0)
-      //   );
-      // }
-      // if (isBlockWhatsappControlAvailable) {
-      //   USER_MENU_ITEMS.push(
-      //     new Menu(20, "Block Whatsapp", "/block-whatsapp", false, 0)
-      //   );
-      // }
+      if (isViewWhatsappControlAvailable) {
+        USER_MENU_ITEMS.push(
+          new Menu(10, "View Whatsapp", "/view-whatsapp", false, 0)
+        );
+      }
+      if (isBlockWhatsappControlAvailable) {
+        USER_MENU_ITEMS.push(
+          new Menu(20, "Block Whatsapp", "/block-whatsapp", false, 0)
+        );
+      }
       if (isMarketingMakerControlAvailable) {
         USER_MENU_ITEMS.push(
           new Menu(30, "Marketing Maker", "/marketing-maker", false, 0)
         );
       }
-      // if (isMarketingCheckerControlAvailable) {
-      //   USER_MENU_ITEMS.push(
-      //     new Menu(40, "Marketing Checker", "/marketing-checker", false, 0)
-      //   );
-      // }
+      if (isMarketingCheckerControlAvailable) {
+        USER_MENU_ITEMS.push(
+          new Menu(40, "Marketing Checker", "/marketing-checker", false, 0)
+        );
+      }
 
       this.currentMenuSubject.next(USER_MENU_ITEMS);
       this.currentHomeSubject.next(USER_MENU_ITEMS[0].routerLink);
