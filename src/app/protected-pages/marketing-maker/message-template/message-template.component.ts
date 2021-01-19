@@ -96,8 +96,8 @@ export class MessageTemplateComponent implements OnInit {
       triggerTime: [this.defaultTime, [Validators.required,
         // TriggerTimeValidator()
       ]],
-      timeZone: ["",Validators.required],
-      countryCodes: ["",Validators.required],
+      timeZone: [""],
+      countryCodes: [""],
       importFile: [null],
       importCSVFile : [null],
     });

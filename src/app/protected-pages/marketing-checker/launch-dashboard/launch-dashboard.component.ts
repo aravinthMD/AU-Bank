@@ -35,7 +35,7 @@ export class LaunchDashboardComponent implements OnInit {
   pageSize = 10;
   collectionSize : number;
 
-  newAppiyoDrive  = environment.newAppiyoDrive;
+  newAppiyoDrive  = environment.previewDocappiyoDrive;
   host = environment.host;
 
   previewFileUrl:any;

@@ -37,13 +37,13 @@ textarea {
   line-height: 1.5;
   color: #ffffff;
   content: "Browse";
-  background-color: #97146b;
+  background-color:  $maroon-color;
   border-left: inherit;
   border-radius: 0 0.25rem 0.25rem 0;
 }
 
 .custom-button{
-  background-color: #97146b;
+  background-color:  $maroon-color;
   margin-left: 466px;
   color: #ffffff !important;
 }

@@ -26,7 +26,7 @@
           <!-- <mat-form-field class="example-full-width" floatLabel="never"> -->
             <input type="text" style="border-color: #6c757d;"
                    class="form-control"
-                   placeholder="select the Time Zone"
+                   placeholder="Select time zone"
                    [formControl]="form.controls['timeZone']"
                    formControlName = "timeZone"
                    [matAutocomplete]="auto" 
@@ -43,7 +43,7 @@
           <div class="country-code">
           <label>Country Code</label>
           <ng-multiselect-dropdown formControlName="countryCodes" floatLabel = "never"
-          placeholder="select country code"
+          placeholder="Select country code"
           [(ngModel)] = "selectedItems"
           [settings]="dropdownSettings"
           [data]="countryCodeList"

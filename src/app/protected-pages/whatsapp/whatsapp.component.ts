@@ -189,7 +189,6 @@ export class WhatsappComponent implements OnInit {
   }
 
   downloadReport(fromVal ?: number): void {
-    debugger;
     this.reportLoading = true;
     const fromDate = this.fieldControls.fromDate.value;
     const toDate = this.fieldControls.toDate.value;
@@ -210,7 +209,6 @@ export class WhatsappComponent implements OnInit {
       )
       .subscribe(
         (response) => {
-          debugger;
           const {
             ProcessVariables: { status, message = {},more },
           } = response;

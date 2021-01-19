@@ -92,6 +92,54 @@ export class LoginComponent implements OnInit {
       );
   }
 
+  onSubmitAUlogin() { 
+
+    this.loading = true;
+    const fieldControls = this.loginForm.controls;
+
+    this.userService.AUlogin(
+       fieldControls.userId.value,
+       fieldControls.password.value).subscribe((response) => {
+         const { 
+           ProcessVariables :  {status,message}
+         } = response;
+        if(status){
+          const userResponse = response.ProcessVariables;
+          sessionStorage.setItem("currentUser",JSON.stringify(userResponse))
+          this.userService.currentUserSubject.next(userResponse)  
+          const  { roleName ,activityList,isFirstLogin } = userResponse;
+          this.userService.setHomeAndMenu(roleName,activityList);
+          if(roleName !== ROLES.USER || (roleName === ROLES.USER &&isFirstLogin === BOOLEANS.FALSE)){
+            this.loading = false;
+            this.toasterService.showSuccess(TOASTER_MESSAGES.LOGIN_SUCCESS);
+            const currentHome = this.userService.currentHomeValue;
+            this.router.navigate([currentHome]);
+          }
+          else if(roleName === ROLES.USER && isFirstLogin === BOOLEANS.TRUE){
+            this.loading = false;
+            this.toasterService.showWarning(
+              TOASTER_MESSAGES.CHANGE_PASSWORD_WARNING
+            );
+
+            this.router.navigate([PAGES.CHANGE_PASSWORD]);
+          
+          }
+          
+        }else if(!status){
+        this.invalidUserFlag = true
+          this.toasterService.showError(message['value']);
+          this.loading = false
+        }
+                
+      },(error) => {
+        this.toasterService.showError(MESSAGES.INVALID_USER);
+        this.invalidUserFlag = true;
+        this.loading =false
+      })
+  }
+
+  
+
   getUserDetail() {
     this.loading = true;
     this.userService.getUserDetail(this.fieldControls.userId.value).subscribe(

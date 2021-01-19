@@ -7,9 +7,10 @@ import { ToastComponent } from "./components/toast/toast.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {LocalTimeConverterPipe} from './CustomPipes/local-time-converter.pipe';
+import { SecurePipePipe } from './secure-pipe.pipe';
 
 @NgModule({
-  declarations: [SidenavComponent, VerticalMenuComponent, ToastComponent,LocalTimeConverterPipe],
+  declarations: [SidenavComponent, VerticalMenuComponent, ToastComponent,LocalTimeConverterPipe, SecurePipePipe],
   imports: [
     ReactiveFormsModule,
     FormsModule,
@@ -24,6 +25,7 @@ import {LocalTimeConverterPipe} from './CustomPipes/local-time-converter.pipe';
     NgbModule,
     ReactiveFormsModule,
     FormsModule,
+    SecurePipePipe
   ],
 })
 export class SharedModule {}

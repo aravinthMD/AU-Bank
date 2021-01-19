@@ -40,6 +40,12 @@ const routes: Routes = [
       
         ),
       },{
+        path :  "report/master",
+        loadChildren :  () => 
+          import("./protected-pages/reports/reports.module").then(
+            (m) => m.ReportsModule
+          ),
+      },{
         path : "template/master",
         loadChildren : () => 
           import("./protected-pages/promotional-admin/promotional-admin.module").then(

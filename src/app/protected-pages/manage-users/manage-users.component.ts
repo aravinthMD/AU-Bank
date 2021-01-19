@@ -36,7 +36,7 @@ export class ManageUsersComponent implements OnInit {
   fetchUsers(pageNumber: number): void {
     window.scroll(0, 0);
     this.loading = true;
-    this.userService.fetchUsers(this.pageSize, pageNumber).subscribe(
+    this.userService.fetchUsers(pageNumber).subscribe(
       (response) => {
         const {
           ProcessVariables: { status, message = {} },

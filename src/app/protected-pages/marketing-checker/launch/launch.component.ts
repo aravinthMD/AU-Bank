@@ -52,7 +52,7 @@ export class LaunchComponent implements OnInit {
 
   previewFileUrl : any;
   host : any = environment.host;
-  newAppiyoDrive  = environment.newAppiyoDrive;
+  newAppiyoDrive  = environment.previewDocappiyoDrive;
 
   filterOptions = [
     { name: "ALL", value: "40" },

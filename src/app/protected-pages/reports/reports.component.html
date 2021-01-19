@@ -1,0 +1,23 @@
+<div class="loading-indicator">
+    <div class="uploader-status">
+  <mat-spinner *ngIf = "loading"  mode="indeterminate"></mat-spinner>
+  </div>
+  </div>
+<div class="main">
+    <div class="p-2 reportHeader">Reports for Opted In</div> 
+    <report-table [data] = "optedInData"></report-table>
+    <div class="p-2 reportHeader">Reports for Opted Out</div>
+    <report-table [data] = "optedOutData"></report-table>
+    <div class="p-2 reportHeader">Reports for Blocked OptedOn</div>
+    <report-table [data] =  "blockedOptedOn"></report-table>
+    <div class="p-2 reportHeader">Reports for Channel SMS</div> 
+    <report-table [data] = "smsOptedOn"></report-table>
+    <div class="p-2 reportHeader">Reports for Channel Missed Call</div>
+    <report-table [data] = "missedCallOptedOn"></report-table>
+    <div class="p-2 reportHeader">Reports for Channel whatsApp</div>
+    <report-table [data] = "whatsAppOptedOn"></report-table>
+    <div class="p-2 reportHeader">Report for Channel Website</div>
+    <report-table [data] = "webSiteOptedOn"></report-table>
+    <div class="p-2 reportHeader">Report for Channel MB/IB</div>
+    <report-table [data] =  "MBIBOptedOn"></report-table>
+</div>

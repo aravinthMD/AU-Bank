@@ -23,7 +23,7 @@ export class FilePreviewDialogComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.doesFileExist(this.data.previewData);
+    // this.doesFileExist(this.data.previewData);
   }
 
 //   doesFileExist(urlToFile) {

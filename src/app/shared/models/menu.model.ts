@@ -20,4 +20,5 @@ export const ADMIN_MENU_ITEMS = [
   new Menu(20, "Manage Users", "/manage-users", false, 0),
   new Menu(30, "Configure BlockTime","/configure-triggerTime",false,0),
   new Menu(40,"Add Template","/template/master",false,0),
+  new Menu(50,"Reports","/report/master",false,0)
 ];

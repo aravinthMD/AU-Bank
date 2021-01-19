@@ -15,3 +15,11 @@ export interface uploadType {
     type ? : string
 
 }
+
+export interface reportType  { 
+    lastMonToTill : string;
+    monthToTill : string;
+    todaysCount  :string;
+    totalCount : string;
+    yesterdayCount : string
+}

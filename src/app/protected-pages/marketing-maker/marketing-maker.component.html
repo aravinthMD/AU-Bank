@@ -1,5 +1,5 @@
-<div class="main">
-  <div class="container">
+<div class="main p-0">
+  <div class="container-fluid">
     <div class="row">
       <div class="col card shadow p-0">
         <ngb-tabset justify="justified">
@@ -13,7 +13,7 @@
           </ngb-tab>
           <ngb-tab>
             <ng-template ngbTabTitle>
-              <span class="tab-title">Message Template</span>
+              <span class="tab-title">Campaign - Servers Window</span>
             </ng-template>
             <ng-template ngbTabContent
               ><app-message-template [timeZonesList] = "timeZonesList" ></app-message-template>
@@ -21,20 +21,20 @@
           </ngb-tab>
           <ngb-tab>
             <ng-template ngbTabTitle>
-              <span class="tab-title">Promotional Template</span>
+              <span class="tab-title">Campaign - Approved Template</span>
             </ng-template>
             <ng-template ngbTabContent
               ><app-promotional-template [timeZonesList] = "timeZonesList"></app-promotional-template>
             </ng-template>
           </ngb-tab>
-          <ngb-tab>
+          <!-- <ngb-tab>
             <ng-template ngbTabTitle>
               <span class="tab-title">Pre Approved Offers</span>
             </ng-template>
             <ng-template ngbTabContent
               ><app-pre-approved-offers [timeZonesList] = "timeZonesList"></app-pre-approved-offers>
             </ng-template>
-          </ngb-tab>
+          </ngb-tab> -->
         </ngb-tabset>
       </div>
     </div>

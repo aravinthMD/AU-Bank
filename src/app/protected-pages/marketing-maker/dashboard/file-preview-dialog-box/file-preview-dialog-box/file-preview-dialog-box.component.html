@@ -1,8 +1,8 @@
 <h2 mat-dialog-title>Preview</h2>
-<span mat-dialog-title align = "centre">Template Id:{{data.templateId}}</span>
+<!-- <span mat-dialog-title align = "centre">Template Id:{{data.templateId}}</span> -->
 <mat-dialog-content>
-    <embed [src]= "previewUrl"  type="application/pdf"   height="900px" width="1000px">
-      <h1 *ngIf = "!validUrl">***404***</h1>
+    <iframe [src]= "data.previewData | securePipe | async"  type="application/pdf"   height="900px" width="1000px"></iframe>
+      <!-- <h1 *ngIf = "!validUrl">***404***</h1> -->
         <!-- <embed src= "http://178.128.125.44/appiyo/account/appiyo_drive/5f3f78e0f2903d7b8d41f39f" type="application/pdf" height="900px" width="1000px"> -->
           <!-- <embed src= "http://178.128.125.44/appiyo/d/drive/docs/5f3e9f47f2903d7b8d41f20c" type="application/pdf" height="900px" width="1000px"> -->
 

@@ -48,7 +48,7 @@ export class DashboardComponent implements OnInit {
   previewFileUrl : any;
   downloadCsvUrl : string = '';
   host : any = environment.host;
-  newAppiyoDrive  = environment.newAppiyoDrive;
+  newAppiyoDrive  = environment.previewDocappiyoDrive;
 
   tableHeaders = [
                   "Template Id", 

@@ -2,9 +2,9 @@
   <div class="container">
     <form [formGroup]="form">
       <div class="form-group">
-        <label>TemplateId</label><br>
+        <label>Template ID</label><br>
         <mat-form-field floatLabel = "never" class="example-full-width">
-          <mat-select placeholder = "select the id" formControlName="templateId" (selectionChange) = "onTemplateIdChange()">
+          <mat-select placeholder = "select ID" formControlName="templateId" (selectionChange) = "onTemplateIdChange()">
             <mat-option>None</mat-option>
             <mat-option *ngFor="let data of templateDropDown" [value]="data">{{data.templateId}}-{{data.template_name}}</mat-option>
           </mat-select>
@@ -25,7 +25,7 @@
         <label class="timezone">Time Zones</label><br>
         <!-- <mat-form-field class="example-full-width" floatLabel = "never"> -->
           <input type="text" style="border-color: #6c757d;"
-                 placeholder="select the Time Zone"
+                 placeholder="Select the time zone"
                  aria-label="Number"
                  [formControl]="form.controls['timeZone']"
                  formControlName = "timeZone"
@@ -42,7 +42,7 @@
         <div class="country-code">
         <label>Country Code</label>
         <ng-multiselect-dropdown formControlName="countryCodes" 
-        placeholder="select country code"
+        placeholder="Select country code"
         [settings]="dropdownSettings"
         [(ngModel)] = "selectedItems"
         [data]="countryCodeList"

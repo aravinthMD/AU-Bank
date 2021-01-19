@@ -45,7 +45,7 @@ export class ChangePasswordComponent implements OnInit {
           currentPassword,
           newPassword,
           confirmPassword,
-          Number(userId)
+          userId
         )
         .subscribe(
           (response) => {

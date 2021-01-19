@@ -1,5 +1,5 @@
 <div class="sidenav shadow">
-  <div *ngFor="let menuItem of parentMenu">
+  <div class="pt-1" *ngFor="let menuItem of parentMenu">
     <a
       *ngIf="!menuItem.hasSubMenu"
       [routerLink]="[menuItem.routerLink]"

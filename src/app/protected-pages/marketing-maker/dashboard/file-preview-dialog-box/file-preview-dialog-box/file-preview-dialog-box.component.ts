@@ -20,7 +20,8 @@ export class FilePreviewDialogBoxComponent implements OnInit {
    }
 
    ngOnInit(): void {
-    this.doesFileExist(this.data.previewData);
+    // this.doesFileExist(this.data.previewData);
+    this.previewUrl = this.data.previewData;
     // console.log("URL:"+this.previewUrl);
   }
 
@@ -28,6 +29,7 @@ export class FilePreviewDialogBoxComponent implements OnInit {
     // this.urlToFileSanitized = this.sanitizer.bypassSecurityTrustResourceUrl(urlToFile);
     var xhr = new XMLHttpRequest();
     xhr.open('GET', urlToFile, false);
+    xhr.setRequestHeader("authentication-token","iByoHc1fk2CnmUDdQsdDDO91POqp71JMNDApQvdIujQfXZJCEMLuKFgxM9RtZPcl")
     xhr.send();
      
     if (xhr.status === this.stat) {

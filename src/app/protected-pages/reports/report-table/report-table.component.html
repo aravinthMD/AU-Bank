@@ -1,0 +1,43 @@
+<div class="table-responsive">
+    <table class="table custom-table">
+        <thead class="thead-light">
+            <tr>
+                <th>
+                    Today's Count
+                </th>
+                <th>
+                    Yesterday's Count
+                </th>
+                <th>
+                    This Month Till Date                
+                </th>
+                <th>
+                    Last Month Till
+                </th>
+                <th>
+                    Total Count
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    {{data.todaysCount || ''}}
+                </td>
+                <td>
+                    {{data.yesterdayCount || ''}}
+                </td>
+                <td>
+                    {{data.monthToTill || ''}}
+                </td>
+                <td>
+                    {{data.lastMonToTill || ''}}
+                </td>
+                <td>
+                    {{data.totalCount || ''}}
+                </td>
+            </tr>
+        </tbody>
+        
+    </table>
+</div>

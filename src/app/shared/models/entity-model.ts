@@ -58,6 +58,15 @@ export interface EntityResponse {
     templateDetails ? : any[],
     dupTempId ?: string;
     dupTempName ?: string;
+    manageUsers ?: any[];
+    optedTrue ?: any[];
+    optedOutOn ?: any[];
+    missedCallOpedOn ?: any[];
+    mbIbOptedOn ?: any[];
+    smsOptedOn ?:any[];
+    websiteOptedOn  ?:any[];
+    whatsappOptedOn ?:any[];
+    blockedOptedOn  ?:any[];
   };
 
   Status: string;
@@ -98,11 +107,11 @@ export interface LoginProcessVariables {
   isFirstLogin?: string;
   isInput?: boolean;
   password: string;
-  role?: string;
+  role?: any;
   roleName?: string;
   activityList?: number[];
-  status?: string;
-  userId: string;
+  status?: boolean;
+  userId: any;
   userName: string;
   message?: { type?: string; value?: string };
   payload?: { error?: string };

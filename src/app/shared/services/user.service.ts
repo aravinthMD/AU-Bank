@@ -35,7 +35,7 @@ export class UserService {
   public currentMenu: Observable<Menu[]>;
   public token: Observable<string>;
 
-  private currentUserSubject: BehaviorSubject<LoginProcessVariables>;
+  public currentUserSubject: BehaviorSubject<LoginProcessVariables>;
   private currentHomeSubject: BehaviorSubject<string>;
   private currentMenuSubject: BehaviorSubject<Menu[]>;
   private tokenSubject: BehaviorSubject<string>;
@@ -225,9 +225,8 @@ export class UserService {
   ) {
     const {
       api: {
-        createUser: { processId, workflowId },
-      },
-      projectId,
+        createUser: { processId, workflowId,projectId },
+      }
     } = environment;
     const userEmail = emailId;
     const index = userEmail.indexOf("@");
@@ -337,7 +336,7 @@ export class UserService {
     currentPassword: string,
     newPassword: string,
     confirmNewPassword: string,
-    userId: number
+    userId: string
   ) {
     const data = {
       currentPassword,
@@ -398,9 +397,9 @@ export class UserService {
     );
   }
 
-  fetchUsers(perPage: number, currentPage: number) {
+  fetchUsers(currentPage: number) {
     const data = {
-      perPage,
+      // perPage,
       currentPage,
     };
     const {
@@ -690,11 +689,18 @@ export class UserService {
       currentPage,
       templateType
     };
-    const {
-      api: {
-        fetchTemplates: { processId, workflowId, projectId },
-      },
-    } = environment;
+    // const {
+    //   api: {
+    //     fetchTemplates: { processId, workflowId, projectId },
+    //   },
+    // } = environment;
+
+    const { 
+      api : {
+        fetchMakerScreenTemplates  :  { processId, workflowId,projectId }
+      }
+    } =  environment
+
     const requestEntity: RequestEntity = {
       processId,
       ProcessVariables: data,
@@ -1201,6 +1207,69 @@ export class UserService {
     );
 
     }
+
+    fetchReportsAPi(){
+      const data = {};
+
+      const {
+        api : {
+          fetReportsApi :{ processId ,workflowId, projectId},
+        } ,
+      } = environment;
+
+      const requestEntity: RequestEntity = {
+        processId,
+        ProcessVariables: data,
+        workflowId,
+        projectId,
+      };
+
+      const body = {
+        processVariables: JSON.stringify(requestEntity)
+      };
+
+      const formData = this.transform(body);
+
+    return this.http.post<EntityResponse>(
+      `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+      formData
+    );
+
+    }
+
+    AUlogin(email : string,password : string){
+      const data =  {
+        userName :  email,
+        password : password
+      }
+
+      const { 
+        api : {
+          userLoginApi : { processId,workflowId,projectId },
+        },
+      } = environment;
+
+      const requestEntity: RequestEntity = {
+        processId,
+        ProcessVariables: data,
+        workflowId,
+        projectId,
+      };
+  
+  
+      const body = {
+        processVariables: JSON.stringify(requestEntity)
+      };
+  
+      const formData = this.transform(body);
+  
+      return this.http.post<EntityResponse>(
+        `${this.host}/ProcessStore/d/workflows/${workflowId}/execute?projectId=${projectId}`,
+        formData
+      );
+    }
+
+    
 
 
 }
